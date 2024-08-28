@@ -2,7 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import LoginPage from '@/views/LoginPage.vue';
-import { useAuthStore } from '@/store/auth';
+import { useAuthStore } from '@/store/modules/auth';
 
 const routes = [
     { path: '/', component: Home, meta: { requiresAuth: true } },
