@@ -1,43 +1,36 @@
-import axios from 'axios';
 import { defineStore } from 'pinia';
+import { login } from '@/api/api_auth';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: JSON.parse(localStorage.getItem('user')) || null,
         token: localStorage.getItem('token') || null,
-        status: 'idle',
+        status: 'idle',  // 초기 상태는 idle
         error: null,
     }),
     actions: {
         async login(credentials) {
-            this.status = 'loading';
+            this.status = 'loading';  // 로그인 요청 시작 시 상태를 loading으로 설정
             try {
-                const response = await axios.post('https://api.yourservice.com/login', credentials);
-
-                // 응답 헤더에서 JWT 토큰을 추출
-                const token = response.headers['authorization'].split(' ')[1];  // 'Bearer <token>' 형식에서 <token> 추출
-                const user = response.data.user;
-
+                const { token, user } = await login(credentials);
                 this.user = user;
                 this.token = token;
-                this.status = 'success';
+                this.status = 'success';  // 로그인 성공 시 상태를 success로 설정
 
-                // JWT 토큰과 사용자 정보를 localStorage에 저장
-                localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('token', token);
             } catch (error) {
                 this.error = error.message;
-                this.status = 'error';
+                this.status = 'error';  // 로그인 실패 시 상태를 error로 설정
             }
         },
         logout() {
             this.user = null;
             this.token = null;
-            this.status = 'idle';
+            this.status = 'idle';  // 로그아웃 후 상태를 idle로 설정
 
-            // localStorage에서 JWT 토큰과 사용자 정보를 제거
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('token');
         },
         checkAuth() {
             const token = localStorage.getItem('token');
@@ -46,9 +39,9 @@ export const useAuthStore = defineStore('auth', {
             if (token && user) {
                 this.token = token;
                 this.user = JSON.parse(user);
-                this.status = 'success';
+                this.status = 'success';  // 유효한 토큰이 있으면 success 상태로 설정
             } else {
-                this.logout();
+                this.logout();  // 토큰이 없으면 로그아웃 처리
             }
         }
     },
