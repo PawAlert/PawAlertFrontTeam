@@ -1,11 +1,18 @@
-<script setup>
-
-</script>
-
+<!-- src/views/Home.vue -->
 <template>
-<h1>HOME</h1>
+  <div>
+    <h1>환영합니다, {{ authStore.user.name }}님!</h1>
+    <v-btn @click="logout">로그아웃</v-btn>
+  </div>
 </template>
 
-<style scoped>
+<script setup>
+import { useAuthStore } from '@/store/auth';
 
-</style>
+const authStore = useAuthStore();
+
+const logout = () => {
+  authStore.logout();
+  window.location.href = '/login';
+};
+</script>
