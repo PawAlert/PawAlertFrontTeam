@@ -81,7 +81,7 @@ const handleLogin = async () => {
     await authStore.login({email: email.value, password: password.value});
     if (authStore.status === 'success') {
       // 로그인 성공 시 홈 페이지로 리디렉션
-      await router.push('/home');
+      await router.push({name: 'Main'});
     }
   } catch (error) {
     console.error('로그인 중 오류 발생:', error);
