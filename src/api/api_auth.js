@@ -1,3 +1,6 @@
+import axios from "axios";
+import {API_URL} from "@/config/url";
+
 export const login = async (credentials) => {
     try {
         const response = await axios.post(`${API_URL}/api/user/login`, credentials);
