@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
         async login(credentials) {
             this.status = 'loading';  // 로그인 요청 시작 시 상태를 loading으로 설정
             try {
-                const { token, user } = await login(credentials);  // API 호출
+                const { token } = await login(credentials);  // API 호출
 
                 this.token = token;
                 this.status = 'success';  // 로그인 성공 시 상태를 success로 설정
@@ -23,7 +23,6 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         logout() {
-            this.user = null;
             this.token = null;
             this.status = 'idle';  // 로그아웃 후 상태를 idle로 설정
 

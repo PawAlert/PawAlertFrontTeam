@@ -17,6 +17,9 @@ export const login = async (credentials) => {
             // 토큰을 로컬 스토리지에 저장합니다.
             localStorage.setItem('token', token);
             console.log('토큰이 로컬스토리지에 저장되었습니다:', token);
+
+            // 로그인 성공 후 리디렉션
+            window.location.href = 'https://web-pawalertfrontteam-m06zwfj8628a2164.sel4.cloudtype.app/home';
             return { token };
         } else {
             // 토큰을 찾을 수 없는 경우 오류를 던집니다.
