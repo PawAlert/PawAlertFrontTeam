@@ -1,33 +1,34 @@
 import axios from "axios";
-import {API_URL} from "@/config/url";
+import { API_URL } from "@/config/url";
 
 export const login = async (credentials) => {
     try {
+        // 로그인 자격 증명을 사용하여 POST 요청을 보냅니다.
         const response = await axios.post(`${API_URL}/api/user/login`, credentials);
 
-        // 응답 객체 전체를 로그로 출력
+        // 응답 객체 전체를 로그로 출력하여 디버깅합니다.
         console.log('응답 객체:', response);
 
-        // 서버 응답 헤더에서 JWT 토큰 추출
-        const authorizationHeader = response.headers['authorization'];
-        if (authorizationHeader) {
-            const token = authorizationHeader.split(' ')[1];  // 'Bearer <token>' 형식에서 <token> 추출
-            if (token) {
-                localStorage.setItem('token', token);
-                console.log('토큰이 로컬스토리지에 저장되었습니다:', token);
-                return { token };
-            } else {
-                throw new Error('토큰을 추출하지 못했습니다');
-            }
+        // 응답 본문에서 JWT 토큰을 추출합니다.
+        const token = response.data.data.token;
+
+        // 토큰이 존재하는지 확인합니다.
+        if (token) {
+            // 토큰을 로컬 스토리지에 저장합니다.
+            localStorage.setItem('token', token);
+            console.log('토큰이 로컬스토리지에 저장되었습니다:', token);
+            return { token };
         } else {
-            throw new Error('Authorization 헤더가 없습니다');
+            // 토큰을 찾을 수 없는 경우 오류를 던집니다.
+            throw new Error('토큰을 추출하지 못했습니다');
         }
     } catch (e) {
-        console.error('Error detail:', e);  // 에러 상세 로그 출력
+        // 오류 세부 정보를 로그로 출력합니다.
+        console.error('오류 세부 사항:', e);
 
-        // e.response가 없는 경우를 대비해 기본값을 사용하여 에러 메시지 출력
+        // 응답 오류가 있는 경우 상태와 메시지를 추출합니다.
         const status = e.response ? e.response.status : 500;
-        const message = e.response && e.response.data ? e.response.data.message : 'Unknown error';
-        throw new Error(`Error ${status}: ${message}`);
+        const message = e.response && e.response.data ? e.response.data.message : '알 수 없는 오류';
+        throw new Error(`오류 ${status}: ${message}`);
     }
 };

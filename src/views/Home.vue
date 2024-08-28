@@ -9,6 +9,7 @@
 <script>
 import axios from 'axios';
 import { API_URL } from '@/config/url';
+import { useRouter } from 'vue-router';
 
 export default {
   data() {
