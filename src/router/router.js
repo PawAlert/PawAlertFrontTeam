@@ -1,27 +1,39 @@
-// src/router/index.js
+// src/router/router.js
+
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import LoginPage from '@/views/LoginPage.vue';
-import { useAuthStore } from '@/store/modules/auth';
 
+// 라우트 설정
 const routes = [
-    { path: '/', component: Home, meta: { requiresAuth: true } },
-    { path: '/login', component: LoginPage },
+    {
+        path: '/',
+        name: 'Home',
+        component: Home,
+        meta: { requiresAuth: true }, // 인증이 필요한 페이지
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: LoginPage,
+    },
+
 ];
 
+// 라우터 생성
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(), // HTML5 History 모드를 사용
     routes,
 });
 
+// 전역 네비게이션 가드 설정
 router.beforeEach((to, from, next) => {
-    const authStore = useAuthStore();
+    const token = localStorage.getItem('token');
 
-    // 인증이 필요한 페이지에 접근할 때 로그인 여부 확인
-    if (to.meta.requiresAuth && !authStore.token) {
-        next('/login');
+    if (to.meta.requiresAuth && !token) {
+        next('/login'); // 인증이 필요하지만 토큰이 없는 경우 로그인 페이지로 리다이렉트
     } else {
-        next();
+        next(); // 그렇지 않으면 다음 페이지로 이동
     }
 });
 
