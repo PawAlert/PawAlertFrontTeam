@@ -12,11 +12,13 @@ export const useAuthStore = defineStore('auth', {
         async login(credentials) {
             this.status = 'loading';  // 로그인 요청 시작 시 상태를 loading으로 설정
             try {
-                const { token, user } = await login(credentials);
+                const { token, user } = await login(credentials);  // API 호출
+
                 this.user = user;
                 this.token = token;
                 this.status = 'success';  // 로그인 성공 시 상태를 success로 설정
 
+                // 사용자 정보와 JWT 토큰을 localStorage에 저장
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('token', token);
             } catch (error) {
