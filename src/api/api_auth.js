@@ -1,6 +1,5 @@
 import axios from "axios";
 import {API_URL} from "@/config/url";
-import respose from "core-js/internals/is-forced";
 import router from "@/router/router";
 
 export const login = async (credentials) => {

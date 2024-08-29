@@ -7,3 +7,11 @@ export const AUTH_URLS = {
     NAVER: `${API_URL}/oauth2/authorization/naver`,
     KAKAO: `${API_URL}/oauth2/authorization/kakao`,
 };
+
+export const API_MISSING = {
+    M_CREATE : `${API_URL}/api/missing/create`,
+    M_PATCH : `${API_URL}/api/missing/update`,
+    M_DELETE: (id) => `${API_URL}/api/missing/delete/${id}`,
+    M_DetailView: (id) => `${API_URL}/api/missing/getdetail/${id}`,
+    M_LIST: `${API_URL}/api/missing/search`,
+}

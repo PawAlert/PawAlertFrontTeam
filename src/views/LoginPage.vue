@@ -1,10 +1,10 @@
 <template>
   <v-container class="login-container" fluid>
     <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="4">
-        <v-card>
-          <v-card-title>로그인</v-card-title>
-          <v-card-subtitle>이메일과 비밀번호를 입력하세요</v-card-subtitle>
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-card class="pa-4">
+          <v-card-title class="text-h5">로그인</v-card-title>
+          <v-card-subtitle class="text-subtitle-1">이메일과 비밀번호를 입력하세요</v-card-subtitle>
 
           <v-form @submit.prevent="handleLogin">
             <v-text-field
@@ -13,6 +13,8 @@
                 type="email"
                 required
                 :rules="emailRules"
+                class="mt-4"
+                density="comfortable"
             ></v-text-field>
 
             <v-text-field
@@ -21,10 +23,12 @@
                 type="password"
                 required
                 :rules="passwordRules"
+                class="mt-4"
+                density="comfortable"
             ></v-text-field>
 
             <!-- 상태가 error일 경우 오류 메시지를 표시 -->
-            <v-alert v-if="authStore.status === 'error'" type="error">
+            <v-alert v-if="authStore.status === 'error'" type="error" class="mt-4">
               {{ authStore.error }}
             </v-alert>
 
@@ -32,21 +36,42 @@
             <v-btn
                 type="submit"
                 color="primary"
+                class="mt-4"
                 :disabled="authStore.status === 'loading'"
+                block
             >
               <v-progress-circular
                   v-if="authStore.status === 'loading'"
                   indeterminate
                   color="white"
+                  size="20"
               ></v-progress-circular>
               <span v-else>로그인</span>
             </v-btn>
           </v-form>
 
+          <v-divider class="my-4"></v-divider>
+
           <v-card-actions>
-            <v-btn @click="redirectToGoogle" color="google">Google로 로그인</v-btn>
-            <v-btn @click="redirectToNaver" color="naver">Naver로 로그인</v-btn>
-            <v-btn @click="redirectToKakao" color="kakao">Kakao로 로그인</v-btn>
+            <div class="d-flex justify-space-between flex-wrap">
+              <v-btn @click="redirectToKakao" color="yellow darken-3" class="flex-grow-1 mx-2 my-2">
+                Kakao 로그인
+              </v-btn>
+
+
+              <v-btn @click="redirectToNaver" color="green darken-2" class="flex-grow-1 mx-2 my-2">
+                Naver 로그인
+              </v-btn>
+
+              <v-btn @click="redirectToGoogle" color="grey darken-1" class="flex-grow-1 mx-2 my-2 google-btn">
+                Google 로그인
+              </v-btn>
+
+
+              <v-btn @click="router.push('/signup')" class="flex-grow-1 mx-2 my-2">
+                회원가입
+              </v-btn>
+            </div>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -109,5 +134,41 @@ const redirectToKakao = () => {
 <style scoped>
 .login-container {
   min-height: 100vh;
+}
+
+.v-btn {
+  font-size: 0.875rem;
+}
+.v-card-actions {
+  padding: 16px;
+}
+
+.v-col {
+  padding: 8px;
+}
+
+.google-btn {
+  background-color: rgba(255, 252, 243, 0.16); /* Google 빨간색 */
+  color: white; /* 텍스트 색상 */
+}
+
+.naver-btn {
+  background-color: #03C75A; /* Naver 초록색 */
+  color: white; /* 텍스트 색상 */
+}
+
+.kakao-btn {
+  background-color: #FEE500; /* Kakao 노란색 */
+  color: black; /* 텍스트 색상 */
+}
+
+.signup-btn {
+  background-color: #1976D2; /* 파란색 */
+  color: white; /* 텍스트 색상 */
+}
+
+/* Vuetify 버튼에 대한 추가 스타일을 설정하고 싶다면 */
+.v-btn {
+  font-weight: bold;
 }
 </style>

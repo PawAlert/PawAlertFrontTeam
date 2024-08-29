@@ -2,7 +2,7 @@
 <template>
   <v-app-bar app>
     <v-toolbar-title @click="navigateToHome">PawAlert</v-toolbar-title>
-    <v-btn text to="/실종글">실종글</v-btn>
+    <v-btn @click="router.push({ name: 'Missing' })">실종글</v-btn>
     <v-btn text to="/보호소">보호소</v-btn>
     <v-btn text to="/동물병원">동물병원</v-btn>
     <v-btn text to="/동물봉사">동물봉사</v-btn>
@@ -36,14 +36,15 @@
 
     <!-- 로그인 상태에 따라 사용자 이메일 또는 Login 버튼 표시 -->
     <v-btn text v-if="authStore.user" to="/profile">{{ authStore.user.email }} 님!</v-btn>
-    <v-btn text v-else to="/login">Login</v-btn>
+    <v-btn text v-else to="/login">Login / Signup</v-btn>
     <v-btn text v-if="authStore.user" @click="handleLogout">Logout</v-btn>
   </v-app-bar>
 </template>
 
 <script setup>
   import { useAuthStore } from '@/store/modules/auth';  // Pinia 스토어 가져오기
-  import { useRouter } from 'vue-router';  // Composition API 방식으로 라우터 사용
+  import { useRouter } from 'vue-router';
+  import MissingListView from "@/views/MissingListView.vue";  // Composition API 방식으로 라우터 사용
 
   const authStore = useAuthStore(); // 스토어 인스턴스 생성
   const router = useRouter();  // 라우터 인스턴스 생성
