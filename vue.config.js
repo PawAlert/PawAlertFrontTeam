@@ -11,5 +11,13 @@ module.exports = defineConfig({
         vuetify: {
             // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
         }
+    },
+
+    css: {
+        loaderOptions: {
+            scss: {
+                additionalData: `@import "@/assets/styles/global.scss";` // 글로벌 Sass 파일을 모든 컴포넌트에 추가
+            }
+        }
     }
 });

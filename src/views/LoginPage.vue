@@ -136,39 +136,10 @@ const redirectToKakao = () => {
   min-height: 100vh;
 }
 
-.v-btn {
-  font-size: 0.875rem;
-}
-.v-card-actions {
-  padding: 16px;
-}
-
-.v-col {
-  padding: 8px;
-}
 
 .google-btn {
   background-color: rgba(255, 252, 243, 0.16); /* Google 빨간색 */
   color: white; /* 텍스트 색상 */
 }
 
-.naver-btn {
-  background-color: #03C75A; /* Naver 초록색 */
-  color: white; /* 텍스트 색상 */
-}
-
-.kakao-btn {
-  background-color: #FEE500; /* Kakao 노란색 */
-  color: black; /* 텍스트 색상 */
-}
-
-.signup-btn {
-  background-color: #1976D2; /* 파란색 */
-  color: white; /* 텍스트 색상 */
-}
-
-/* Vuetify 버튼에 대한 추가 스타일을 설정하고 싶다면 */
-.v-btn {
-  font-weight: bold;
-}
 </style>

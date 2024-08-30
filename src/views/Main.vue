@@ -1,13 +1,23 @@
 <template>
-  <div>
 
-  </div>
+  <MainView_1 class="mainview1"/>
+  <MainView_2 class="mainview2"/>
+  <MainView_3 class="mainview3"/>
+  <MainView_4 class="mainview4" />
+
 </template>
 
 <script>
 import {profile} from "@/api/api_auth";
+import MainView_1 from "@/components/layout/MainView_1.vue";
+import MainView_2 from "@/components/layout/MainView_2.vue";
+import MainView_3 from "@/components/layout/MainView_3.vue";
+import MainView_4 from "@/components/layout/MainView_4.vue";
+
 
 export default {
+  components: {MainView_4, MainView_3, MainView_2, MainView_1},
+
   data() {
     return {
       user: null
@@ -26,3 +36,21 @@ export default {
 
 
 </script>
+
+<style lang="scss" scoped>
+.mainview1 {
+  background-color: #F7F5FD;
+}
+
+.mainview2 {
+  background-color: #F2FAF8;
+  height: 600px;
+}
+
+.mainview3 {
+  background-color: #FFFFFF;
+}
+.mainview4 {
+  background-color: #FFFFFF;
+}
+</style>
