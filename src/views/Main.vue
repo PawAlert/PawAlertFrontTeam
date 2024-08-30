@@ -2,8 +2,10 @@
 
   <MainView_1 class="mainview1"/>
   <MainView_2 class="mainview2"/>
-  <MainView_3 class="mainview3"/>
   <MainView_4 class="mainview4" />
+
+  <MainView_3 class="mainview3"/>
+  <MainView_5 class="mainview5"/>
 
 </template>
 
@@ -13,10 +15,11 @@ import MainView_1 from "@/components/layout/MainView_1.vue";
 import MainView_2 from "@/components/layout/MainView_2.vue";
 import MainView_3 from "@/components/layout/MainView_3.vue";
 import MainView_4 from "@/components/layout/MainView_4.vue";
+import MainView_5 from "@/components/layout/MainView_5.vue";
 
 
 export default {
-  components: {MainView_4, MainView_3, MainView_2, MainView_1},
+  components: {MainView_5, MainView_4, MainView_3, MainView_2, MainView_1},
 
   data() {
     return {
@@ -52,5 +55,13 @@ export default {
 }
 .mainview4 {
   background-color: #FFFFFF;
+}
+.mainview5{
+  background-color: #FCFAF5;
+}
+@media (max-width: 1020px) {
+  .mainview4 {
+    display: none;
+  }
 }
 </style>

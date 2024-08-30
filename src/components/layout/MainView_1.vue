@@ -11,7 +11,7 @@
         <p class="p-text">동물의 종류, 특징, 실종된 장소 및 시간, 연락처 등을</p>
         <p class="p-text">구체적으로 기재하여 더 많은 사람들이 정보를 공유하고 찾을 수 있도록</p>
         <p class="p-text">도와주세요.</p>
-
+        <v-btn class="started-btn">Get Started</v-btn>
       </v-col>
 
       <!-- 오른쪽 이미지 영역 -->
@@ -58,6 +58,15 @@
   .p-text {
     margin-left: 100px;
     color: $grey-color;
+  }
+
+  .started-btn{
+    width: 203px;
+    height: 64px;
+    color: #2D2D2D;
+    margin-top: 80px;
+    background-color: #F8D57E;
+    margin-left: 100px;
   }
 </style>
 <script setup lang="ts">

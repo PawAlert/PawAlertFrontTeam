@@ -4,8 +4,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginPage from '@/views/LoginPage.vue';
 import Signup from "@/views/Signup.vue";
 import Main from "@/views/Main.vue";
-import MissingListView from "@/views/MissingListView.vue";
-import MissingCreate from "@/views/MissingCreate.vue";
 
 // 라우트 설정
 const routes = [

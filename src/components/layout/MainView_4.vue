@@ -2,7 +2,7 @@
   <v-container class="maincol" fluid>
     <v-row align="center" justify="center">
       <!-- 첫 번째 카드 -->
-      <v-col cols="12" md="2" class="text-center">
+      <v-col cols="12" md="2" class="text-center text-1">
         <v-card class="card">
           <v-card-item>
             <!-- 첫 번째 이미지의 크기 조절 -->
@@ -70,7 +70,9 @@
 </template>
 
 <style lang="scss" scoped>
+
   .maincol {
+    background-color: #FFFFFF;
     margin-top: 20px;
   }
 
@@ -79,34 +81,36 @@
     justify-content: center; /* 이미지 가로 중앙 정렬 */
     align-items: center; /* 이미지 세로 중앙 정렬 */
     width: 120px; /* 카드 너비 */
-    height: 120px; /* 카드 높이 */
+    height: 268px; /* 카드 높이 */
     margin: 10px;
+    border: none; /* 테두리 제거 */
+    box-shadow: none; /* 그림자 제거 */
   }
 
   /* 각 이미지별 크기 조정 */
   .img-nestle {
-    width: 85px; /* 첫 번째 이미지의 너비 */
-    height: 85px; /* 첫 번째 이미지의 높이 */
+    width: 120px; /* 첫 번째 이미지의 너비 */
+    height: 35px; /* 첫 번째 이미지의 높이 */
   }
 
   .img-apple {
-    width: 90px; /* 두 번째 이미지의 너비 */
-    height: 90px; /* 두 번째 이미지의 높이 */
+    width: 30px; /* 두 번째 이미지의 너비 */
+    height: 35px; /* 두 번째 이미지의 높이 */
   }
 
   .img-walmart {
-    width: 80px; /* 세 번째 이미지의 너비 */
-    height: 80px; /* 세 번째 이미지의 높이 */
+    width: 119px; /* 세 번째 이미지의 너비 */
+    height: 35px; /* 세 번째 이미지의 높이 */
   }
 
   .img-google {
-    width: 100px; /* 네 번째 이미지의 너비 */
+    width: 105px; /* 네 번째 이미지의 너비 */
     height: 100px; /* 네 번째 이미지의 높이 */
   }
 
   .img-beco {
-    width: 95px; /* 다섯 번째 이미지의 너비 */
-    height: 95px; /* 다섯 번째 이미지의 높이 */
+    width: 60px; /* 다섯 번째 이미지의 너비 */
+    height: 40px; /* 다섯 번째 이미지의 높이 */
   }
 </style>
 

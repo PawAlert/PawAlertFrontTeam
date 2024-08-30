@@ -76,12 +76,16 @@
   .maincol {
     background-color: #FFFFFF;
   }
+
   .card {
     height: 268px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 10px;
+    border: none; /* 테두리 제거 */
+    box-shadow: none; /* 그림자 제거 */
+
   }
 
   .v-img {
@@ -99,6 +103,7 @@
   .margintop {
     margin-top: 10px;
   }
+
 </style>
 <script setup lang="ts">
 </script>

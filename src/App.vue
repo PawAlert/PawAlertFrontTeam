@@ -7,6 +7,7 @@
     <v-main class="main-content">
       <v-container class="content-container">
         <router-view />
+        <Footer v-if="$route.meta.showFooter" />
       </v-container>
     </v-main>
   </v-app>
@@ -15,6 +16,7 @@
 <script setup>
 import Header from '@/components/layout/Header.vue';
 import { useAuthStore } from '@/store/modules/auth';
+import Footer from "@/components/layout/Footer.vue";
 
 const authStore = useAuthStore();
 authStore.checkAuth(); // 앱이 로드될 때 로그인 상태 확인
