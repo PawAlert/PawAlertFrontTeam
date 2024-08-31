@@ -101,7 +101,7 @@
 
                           <!-- Description (40자 이상일 경우 줄임) -->
                           <v-list-item-subtitle class="mt-3" style="font-size: 0.9rem; color: #888;">
-                            {{ truncateText(post.description, 40) }}
+                            {{ truncateText(post.content, 40) }}
                           </v-list-item-subtitle>
                           <v-list-item-subtitle class="address-text mt-3" style="font-size: 0.9rem; color: #888;">
                             {{ post.address }} - {{ post.addressDetail1 }}

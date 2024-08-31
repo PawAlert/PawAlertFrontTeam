@@ -11,7 +11,7 @@
           ></v-text-field>
 
           <v-textarea
-              v-model="missingReportData.content"
+              v-model="missingReportData.description"
               label="상세 내용을 입력해주세요"
               required
           ></v-textarea>
@@ -94,10 +94,26 @@
                       :items="['Male', 'Female']"
                       label="성별"
                   ></v-select>
+                  <v-text-field
+                      v-model="missingReportData.microchipId"
+                      label="마이크로칩 ID">
+                  </v-text-field>
                   <v-textarea
                       v-model="missingReportData.petDescription"
                       label="반려동물 설명"
+                      placeholder="저희 강아지는 사람을 잘 따르는 편이에요."
                   ></v-textarea>
+                  <v-text-field
+                      v-model="missingReportData.rewardAmount"
+                      label="보상금"
+                      type="number"
+                      min="0">
+                  </v-text-field>
+                  <v-text-field
+                      v-model="missingReportData.rewardDescription"
+                      label="보상금 설명"
+                      placeholder="발견시 보상금 지급"
+                  ></v-text-field>
                 </v-card-text>
               </v-col>
             </v-row>
@@ -107,7 +123,7 @@
 
       <!-- 이미지 업로드 영역 -->
       <v-row class="mt-4">
-        <v-col cols="12" class="d-flex align-cente">
+        <v-col cols="12" class="d-flex align-center">
           <!-- 업로드 아이콘 -->
           <div class="upload-icon-container mr-4" @click="triggerFileInput">
             <v-icon size="80" color="grey">mdi-camera</v-icon>
@@ -143,6 +159,20 @@
           @change="handleImageUpload"
       />
 
+      <!-- 지도 및 주소 검색 기능 -->
+      <v-row class="mt-4">
+        <v-col cols="12">
+          <div id="map" style="width: 100%; height: 400px;"></div>
+          <v-text-field
+              v-model="addressQuery"
+              label="주소 입력"
+              @keyup.enter="searchAddress"
+              placeholder="주소를 입력하세요"
+          ></v-text-field>
+          <v-btn @click="searchAddress">주소 검색</v-btn>
+        </v-col>
+      </v-row>
+
       <!-- 제출 버튼 -->
       <v-row class="mt-4">
         <v-col cols="12">
@@ -154,7 +184,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from 'vue';
 import { useMissingStore } from "@/store/modules/missing";
 
 const missingStore = useMissingStore();
@@ -163,8 +193,8 @@ const missingReportData = ref({
   title: "",
   content: "",
   dateLost: null,
-  latitude: 37.5665,
-  longitude: 126.9780,
+  latitude: 0,
+  longitude: 0,
   description: "",
   status: "MISSING",
   microchipId: "",
@@ -184,12 +214,76 @@ const missingReportData = ref({
 const imageFiles = ref([]);
 const showDatePicker = ref(false);
 const selectedDate = ref(null);
+const addressQuery = ref('');
 
 const formattedDate = computed(() => {
   return missingReportData.value.dateLost
       ? new Date(missingReportData.value.dateLost).toLocaleDateString()
       : '';
 });
+
+const map = ref(null);
+const marker = ref(null);
+
+onMounted(() => {
+  if (window.kakao && window.kakao.maps) {
+    initMap();
+  } else {
+    console.error('Kakao map SDK not loaded');
+  }
+});
+
+function initMap() {
+  const container = document.getElementById('map');
+  const options = {
+    center: new kakao.maps.LatLng(missingReportData.value.latitude, missingReportData.value.longitude),
+    level: 3,
+  };
+  map.value = new kakao.maps.Map(container, options);
+
+  // 초기 마커 생성
+  marker.value = new kakao.maps.Marker({
+    position: new kakao.maps.LatLng(missingReportData.value.latitude, missingReportData.value.longitude),
+    map: map.value,
+  });
+
+  // 지도 클릭 이벤트 처리
+  kakao.maps.event.addListener(map.value, 'click', function(mouseEvent) {
+    const latlng = mouseEvent.latLng;
+    marker.value.setPosition(latlng);
+    updateCoordinates(latlng.getLat(), latlng.getLng());
+  });
+}
+
+function updateCoordinates(lat, lng) {
+  missingReportData.value.latitude = lat;
+  missingReportData.value.longitude = lng;
+
+  // 좌표로 주소 정보 얻기
+  const geocoder = new kakao.maps.services.Geocoder();
+  geocoder.coord2Address(lng, lat, (result, status) => {
+    if (status === kakao.maps.services.Status.OK) {
+      const addr = result[0];
+      missingReportData.value.address = addr.address.address_name;
+      missingReportData.value.addressDetail1 = addr.road_address ? addr.road_address.building_name : '';
+      addressQuery.value = missingReportData.value.address;
+    }
+  });
+}
+
+function searchAddress() {
+  const geocoder = new kakao.maps.services.Geocoder();
+  geocoder.addressSearch(addressQuery.value, (result, status) => {
+    if (status === kakao.maps.services.Status.OK) {
+      const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+      map.value.setCenter(coords);
+      marker.value.setPosition(coords);
+      updateCoordinates(coords.getLat(), coords.getLng());
+    } else {
+      alert('주소 검색 실패');
+    }
+  });
+}
 
 function triggerFileInput() {
   document.querySelector('input[type="file"]').click();
@@ -262,4 +356,8 @@ function getImageUrl(file) {
   font-size: 14px;
 }
 
+#map {
+  width: 100%;
+  height: 400px;
+}
 </style>
