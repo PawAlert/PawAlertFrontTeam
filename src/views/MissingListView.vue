@@ -1,18 +1,14 @@
 <template>
   <v-container>
     <v-row>
-
       <v-col>
-
-        <v-col>
-          <v-row align="center">
-            <v-col class="text-center">
-              <h1>실종 신고 목록</h1>
-            </v-col>
-            <v-btn @click="router.push({name: 'MissingCreate'});">글쓰러가기</v-btn>
-          </v-row>
-        </v-col>
-
+        <!-- Header -->
+        <v-row align="center" class="mb-4">
+          <v-col class="text-center">
+            <h1>실종 신고 목록</h1>
+          </v-col>
+          <v-btn @click="router.push({name: 'MissingCreate'})">글쓰러가기</v-btn>
+        </v-row>
 
         <!-- 검색 필드 -->
         <v-card class="pa-3 mb-4 mt-2">
@@ -64,48 +60,83 @@
         <v-alert type="error" v-else-if="status === 'error'">오류: {{ error }}</v-alert>
 
         <!-- 게시글 목록 -->
-        <v-list v-else>
-          <v-list-item
+        <v-row v-else>
+          <v-col
               v-for="post in content"
               :key="post.missingReportId"
-              class="my-4 position-relative"
+              cols="12"
+              md="6"
+              class="d-flex justify-center"
           >
-            <v-row>
-              <!-- 이미지와 상태 -->
-              <v-col cols="12" md="1">
-                <v-img
-                    :src="defaultImageUrl"
-                    max-width="100"
-                    max-height="100"
-                    min-width="50"
-                    min-height="50"
-                    class="rounded"
-                    contain
-                ></v-img>
-              </v-col>
+            <v-card
+                class="d-flex flex-column align-center justify-center my-2 post-card card-item"
+                :style="{ width: '515px', height: '200px' }"
+            >
+              <v-row class="rowimage">
+                <!-- 이미지와 상태 -->
+                <v-col cols="4" class="d-flex align-center justify-center">
+                  <v-img
+                      :src="post.petImageUrls"
+                      width="100%"
+                      height="100%"
+                      cover
+                      class="rounded"
+                  ></v-img>
+                </v-col>
 
-              <!-- 게시글 내용 -->
-              <v-col cols="12" md="9" class="position-relative">
-                <!-- 상태 뱃지 -->
-                <v-badge
-                    :color="getBadgeColor(post.missingStatus)"
-                    class="status-badge"
-                    :content="getBadgeText(post.missingStatus)"
-                ></v-badge>
+                <!-- 게시글 내용 -->
+                <v-col cols="8" class="position-relative">
 
-                <v-list-item-title class="font-weight-bold mb-2 mt-0">
-                  {{ post.title }}
-                </v-list-item-title>
-                <v-list-item-subtitle class="mb-2">
-                  {{ formatDate(post.dateLost) }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle class="mb-2">
-                  {{ post.address }} - {{ post.addressDetail1 }}
-                </v-list-item-subtitle>
-              </v-col>
-            </v-row>
-          </v-list-item>
-        </v-list>
+
+                  <!-- 수평 및 수직 중앙 정렬 -->
+                  <v-container class="pa-0">
+                    <v-row justify="center" align="center">
+                      <v-col cols="12" class="post-text">
+                        <v-list-item-title class="font-weight-bold mb-1" style="font-size: 1rem;">
+                          {{ post.title }}
+                        </v-list-item-title>
+
+                        <!-- 가로로 나란히 배치 -->
+                        <v-row class="text-items">
+
+                          <!-- Description (40자 이상일 경우 줄임) -->
+                          <v-list-item-subtitle class="mt-3" style="font-size: 0.9rem; color: #888;">
+                            {{ truncateText(post.description, 40) }}
+                          </v-list-item-subtitle>
+                          <v-list-item-subtitle class="address-text mt-3" style="font-size: 0.9rem; color: #888;">
+                            {{ post.address }} - {{ post.addressDetail1 }}
+                          </v-list-item-subtitle>
+
+                          <v-list-item-subtitle class="date-text mt-3" style="font-size: 0.9rem; color: #666;">
+                            {{ formatDate(post.dateLost) }}
+                          </v-list-item-subtitle>
+                          <v-list-item-subtitle style="font-size: 0.9rem; color: #666;" class="mt-3">
+                            포상금액 {{ post.rewardAmount }} 원
+                          </v-list-item-subtitle>
+                        </v-row>
+
+                      </v-col>
+
+                    </v-row>
+
+                  </v-container>
+
+                </v-col>
+
+              </v-row>
+              <!-- 상태 뱃지 -->
+              <v-badge
+                  :color="getBadgeColor(post.missingStatus)"
+                  class="status-badge"
+                  :content="getBadgeText(post.missingStatus)"
+                  style="font-size: 0.75rem; right: 80px;"
+              ></v-badge>
+            </v-card>
+            <!-- 상태 뱃지 -->
+
+          </v-col>
+
+        </v-row>
 
         <!-- 페이지네이션 -->
         <v-row justify="center" class="mt-4">
@@ -113,16 +144,19 @@
           <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
           <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>
         </v-row>
+
       </v-col>
+
     </v-row>
+
   </v-container>
 </template>
+
 
 <script setup>
 import {useMissingStore} from '@/store/modules/missing';
 import {storeToRefs} from 'pinia';
 import {ref, onMounted} from 'vue';
-import Router from "@/router/router";
 import router from "@/router/router";
 
 const missingStore = useMissingStore();
@@ -196,6 +230,11 @@ const formatDate = (dateStr) => {
   });
 };
 
+// 설명을 40자로 줄이고 ... 추가하는 함수
+const truncateText = (text, maxLength) => {
+  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+};
+
 // 뱃지 색상 설정
 const getBadgeColor = (status) => {
   switch (status) {
@@ -225,6 +264,7 @@ const getBadgeText = (status) => {
 };
 </script>
 
+
 <style scoped>
 .mx-4 {
   margin-left: 16px;
@@ -235,13 +275,14 @@ const getBadgeText = (status) => {
   border-radius: 8px;
 }
 
-.v-list-item {
-  align-items: flex-start;
-}
-
 .my-4 {
   margin-top: 16px;
   margin-bottom: 16px;
+}
+
+.my-2 {
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .position-relative {
@@ -250,11 +291,38 @@ const getBadgeText = (status) => {
 
 .status-badge {
   position: absolute;
-  top: 25px;
-  right: 8px;
+  top: 150px;
   font-weight: bold;
   font-size: 0.85rem;
-  padding: 4px 8px;
 }
 
+.post-text {
+  margin-top: 5%;
+}
+
+.date-text {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.address-text {
+  display: inline-block;
+}
+
+.card-item {
+  border-radius: 25px;
+  overflow: hidden; /* 이미지가 카드 범위를 넘지 않도록 */
+}
+
+.text-items {
+  margin-left: 2px;
+}
+
+.des-add {
+  margin-left: -15px;
+}
+
+.rowimage {width: 100%;
+}
 </style>
+

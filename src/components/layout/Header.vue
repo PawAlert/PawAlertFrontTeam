@@ -2,16 +2,14 @@
   <v-app-bar color="white" fixed app>
     <v-container class="d-flex align-center" style="max-width: 1280px;">
       <!-- 로고 및 메뉴 버튼들 -->
-      <Logo @click="router.push({ name: 'Main' })" />
-      <v-spacer></v-spacer>
-
+      <Logo @click="router.push({ name: 'Main' })"/>
       <!-- 큰 화면에서 보이는 메뉴 버튼들 -->
-      <div class="hidden-sm-and-down">
-        <v-btn text @click="router.push({ name: 'Missing' })">실종글</v-btn>
-<!--        <v-btn text to="/보호소">보호소</v-btn>-->
-<!--        <v-btn text to="/동물병원">동물병원</v-btn>-->
-<!--        <v-btn text to="/동물봉사">동물봉사</v-btn>-->
-      </div>
+      <v-col class="hidden-sm-and-down colmain">
+        <v-btn class="v_text1" text @click="router.push({ name: 'Missing' })">실종글</v-btn>
+        <v-btn class="v_text1" text to="/보호소">보호소</v-btn>
+        <v-btn class="v_text1" text to="/동물병원">동물병원</v-btn>
+        <v-btn class="v_text1" text to="/동물봉사">동물봉사</v-btn>
+      </v-col>
 
       <v-spacer class="hidden-sm-and-down"></v-spacer>
       <v-btn icon class="mr-2">
@@ -43,7 +41,7 @@
         </template>
         <v-list>
           <v-list-item @click="router.push({ name: 'Missing' })">
-            <v-list-item-title>실종글</v-list-item-title>
+            <v-list-item-title>실종 게시글</v-list-item-title>
           </v-list-item>
           <v-list-item to="/보호소">
             <v-list-item-title>보호소</v-list-item-title>
@@ -70,8 +68,8 @@
 </template>
 
 <script setup>
-  import { useAuthStore } from '@/store/modules/auth';
-  import { useRouter } from 'vue-router';
+  import {useAuthStore} from '@/store/modules/auth';
+  import {useRouter} from 'vue-router';
   import Logo from "@/components/layout/Logo.vue";
 
   const authStore = useAuthStore();
@@ -84,4 +82,8 @@
 </script>
 
 <style scoped>
+  .v_text1 {
+    font-weight: 800;
+    color: #2D2D2D;
+  }
 </style>

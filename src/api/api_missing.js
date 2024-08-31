@@ -34,6 +34,7 @@ export const createMissingReportRequest = async (data, images) => {
 
         const response = await axios.post(API_MISSING.M_CREATE, formData, {
             headers: {
+
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`, // 로컬 저장소에서 토큰 가져오기
             },
