@@ -16,6 +16,12 @@
               required
           ></v-textarea>
 
+          <v-textarea
+              v-model="missingReportData.content"
+              label="실종 당시 상세 설명"
+              required
+          ></v-textarea>
+
           <!-- 날짜 선택 -->
           <v-text-field
               prepend-icon="mdi-calendar"
@@ -133,7 +139,7 @@
           <!-- 업로드된 이미지 목록 -->
           <div class="d-flex flex-wrap iconupload">
             <div
-                v-for="(file, index) in imageFiles.slice(0)"
+                v-for="(file, index) in imageFiles"
                 :key="index"
                 class="ma-2"
             >
@@ -149,6 +155,38 @@
         </v-col>
       </v-row>
 
+      <!-- 주소 입력 컴포넌트 -->
+      <div>
+        <!-- 우편번호 및 주소 입력 필드 -->
+        <v-text-field
+            v-model="addressData.postcode"
+            label="우편번호"
+            readonly
+            placeholder="우편번호"
+        ></v-text-field>
+        <v-btn @click="execDaumPostcode">우편번호 찾기</v-btn>
+
+        <v-text-field
+            v-model="addressData.address"
+            label="주소"
+            readonly
+            placeholder="주소"
+        ></v-text-field>
+
+        <v-text-field
+            v-model="addressData.extraAddress"
+            label="참고항목"
+            readonly
+            placeholder="참고항목"
+        ></v-text-field>
+
+        <v-text-field
+            v-model="addressData.detailAddress"
+            label="상세주소"
+            placeholder="상세주소"
+        ></v-text-field>
+      </div>
+
       <!-- 숨겨진 파일 입력 -->
       <input
           ref="fileInput"
@@ -158,45 +196,30 @@
           style="display: none"
           @change="handleImageUpload"
       />
-
-      <!-- 지도 및 주소 검색 기능 -->
-      <v-row class="mt-4">
-        <v-col cols="12">
-          <div id="map" style="width: 100%; height: 400px;"></div>
-          <v-text-field
-              v-model="addressQuery"
-              label="주소 입력"
-              @keyup.enter="searchAddress"
-              placeholder="주소를 입력하세요"
-          ></v-text-field>
-          <v-btn @click="searchAddress">주소 검색</v-btn>
-        </v-col>
-      </v-row>
-
-      <!-- 제출 버튼 -->
-      <v-row class="mt-4">
-        <v-col cols="12">
-          <v-btn color="primary" type="submit">제출하기</v-btn>
-        </v-col>
-      </v-row>
+      <v-btn
+          color="primary"
+          @click="submitMissingReport"
+      >
+        제출하기
+      </v-btn>
     </v-form>
+
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useMissingStore } from "@/store/modules/missing";
-
+import {ref, onMounted, watch} from 'vue';
+import {useMissingStore} from "@/store/modules/missing";
+import { createMissingReportRequest } from "@/api/api_missing";
 const missingStore = useMissingStore();
 
 const missingReportData = ref({
   title: "",
-  content: "",
-  dateLost: null,
-  latitude: 0,
-  longitude: 0,
   description: "",
-  status: "MISSING",
+  content : "",
+  dateLost: null,
+  latitude: 37.497951,
+  longitude: 127.027618,
   microchipId: "",
   petName: "",
   species: "",
@@ -206,107 +229,144 @@ const missingReportData = ref({
   petDescription: "",
   rewardAmount: 0,
   rewardDescription: "",
-  address: "",
   addressDetail1: "",
-  addressDetail2: "",
+});
+
+const addressData = ref({
+  postcode: "",
+  address: "",
+  extraAddress: "",
+  detailAddress: "",
 });
 
 const imageFiles = ref([]);
 const showDatePicker = ref(false);
 const selectedDate = ref(null);
-const addressQuery = ref('');
-
-const formattedDate = computed(() => {
-  return missingReportData.value.dateLost
-      ? new Date(missingReportData.value.dateLost).toLocaleDateString()
-      : '';
-});
-
-const map = ref(null);
-const marker = ref(null);
 
 onMounted(() => {
-  if (window.kakao && window.kakao.maps) {
-    initMap();
-  } else {
-    console.error('Kakao map SDK not loaded');
+  if (!window.daum || !window.daum.Postcode) {
+    const script = document.createElement("script");
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.onload = () => console.log("Daum Postcode API 스크립트 로드 완료");
+    document.head.appendChild(script);
   }
 });
 
-function initMap() {
-  const container = document.getElementById('map');
-  const options = {
-    center: new kakao.maps.LatLng(missingReportData.value.latitude, missingReportData.value.longitude),
-    level: 3,
-  };
-  map.value = new kakao.maps.Map(container, options);
+// 카카오 지도 API 스크립트 로드
+onMounted(() => {
+  if (!window.daum || !window.daum.Postcode) {
+    const script = document.createElement("script");
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.onload = () => console.log("Daum Postcode API 스크립트 로드 완료");
+    document.head.appendChild(script);
+  }
 
-  // 초기 마커 생성
-  marker.value = new kakao.maps.Marker({
-    position: new kakao.maps.LatLng(missingReportData.value.latitude, missingReportData.value.longitude),
-    map: map.value,
-  });
+  // 카카오 지도 API 스크립트 로드
+  const kakaoScript = document.createElement("script");
+  kakaoScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_API_KEY&libraries=services`;
+  kakaoScript.onload = () => console.log("Kakao Maps API 스크립트 로드 완료");
+  document.head.appendChild(kakaoScript);
+});
 
-  // 지도 클릭 이벤트 처리
-  kakao.maps.event.addListener(map.value, 'click', function(mouseEvent) {
-    const latlng = mouseEvent.latLng;
-    marker.value.setPosition(latlng);
-    updateCoordinates(latlng.getLat(), latlng.getLng());
-  });
-}
+// 주소 변경 시 좌표 업데이트
+watch(addressData, (newAddressData) => {
+  console.log("주소 변경 감지:", newAddressData); // 주소 변경 감지 로그
+  missingReportData.value.address = `${newAddressData.address} ${newAddressData.extraAddress}`;
+  missingReportData.value.addressDetail1 = newAddressData.detailAddress;
 
-function updateCoordinates(lat, lng) {
-  missingReportData.value.latitude = lat;
-  missingReportData.value.longitude = lng;
+  if (newAddressData.address) {
+    // 주소로 좌표를 얻기 위해 Kakao 지도 API의 Geocoder 사용
+    const geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(newAddressData.address, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const {x, y} = result[0];
+        missingReportData.value.longitude = parseFloat(x); // 경도 업데이트
+        missingReportData.value.latitude = parseFloat(y);  // 위도 업데이트
+        console.log("좌표 업데이트 성공:", {latitude: y, longitude: x}); // 좌표 업데이트 성공 로그
+      }
+    });
+  }
+}, {deep: true});
+watch(addressData, (newAddressData) => {
+  missingReportData.value.address = `${newAddressData.address} ${newAddressData.extraAddress}`;
+  missingReportData.value.addressDetail1 = newAddressData.detailAddress;
+}, {deep: true});
 
-  // 좌표로 주소 정보 얻기
-  const geocoder = new kakao.maps.services.Geocoder();
-  geocoder.coord2Address(lng, lat, (result, status) => {
-    if (status === kakao.maps.services.Status.OK) {
-      const addr = result[0];
-      missingReportData.value.address = addr.address.address_name;
-      missingReportData.value.addressDetail1 = addr.road_address ? addr.road_address.building_name : '';
-      addressQuery.value = missingReportData.value.address;
-    }
-  });
-}
-
-function searchAddress() {
-  const geocoder = new kakao.maps.services.Geocoder();
-  geocoder.addressSearch(addressQuery.value, (result, status) => {
-    if (status === kakao.maps.services.Status.OK) {
-      const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-      map.value.setCenter(coords);
-      marker.value.setPosition(coords);
-      updateCoordinates(coords.getLat(), coords.getLng());
-    } else {
-      alert('주소 검색 실패');
-    }
-  });
-}
-
-function triggerFileInput() {
+const triggerFileInput = () => {
   document.querySelector('input[type="file"]').click();
-}
+};
 
-function handleImageUpload(e) {
+const handleImageUpload = (e) => {
   imageFiles.value = [...imageFiles.value, ...Array.from(e.target.files)];
-}
+};
 
-function updateDate() {
+const updateDate = () => {
   if (selectedDate.value) {
     missingReportData.value.dateLost = new Date(selectedDate.value);
   }
   showDatePicker.value = false;
-}
+};
 
-function submitMissingReport() {
-  missingStore.createMissingReport(missingReportData.value, imageFiles.value);
-}
 
-function getImageUrl(file) {
+const getImageUrl = (file) => {
   return file ? URL.createObjectURL(file) : '';
-}
+};
+
+const execDaumPostcode = () => {
+  new window.daum.Postcode({
+    oncomplete: (data) => {
+      let extraAddr = "";
+      let addr = "";
+
+      if (data.userSelectedType === "R") {
+        addr = data.roadAddress;
+      } else {
+        addr = data.jibunAddress;
+      }
+
+      if (data.userSelectedType === "R") {
+        if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+          extraAddr += data.bname;
+        }
+        if (data.buildingName !== "" && data.apartment === "Y") {
+          extraAddr += extraAddr !== "" ? `, ${data.buildingName}` : data.buildingName;
+        }
+        if (extraAddr !== "") {
+          extraAddr = `(${extraAddr})`;
+        }
+      }
+
+      addressData.value.postcode = data.zonecode;
+      addressData.value.address = addr;
+      addressData.value.extraAddress = extraAddr;
+    },
+  }).open();
+};
+
+// 제출버튼
+const submitMissingReport = async () => {
+  if (!missingReportData.value.title || !missingReportData.value.description) {
+    alert('제목과 상세 내용은 필수 입력 사항입니다.');
+    return;
+  }
+
+  try {
+    // 서버로 전송할 데이터 구성
+    const payload = {
+      ...missingReportData.value,
+      ...addressData.value,
+    };
+
+    // API 요청 호출
+    const response = await createMissingReportRequest(payload, imageFiles.value);
+    console.log('서버 응답:', response);
+    alert('신고가 성공적으로 제출되었습니다.');
+  } catch (error) {
+    console.error('서버로 데이터 전송 중 오류 발생:', error.message);
+    alert('신고 제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+  }
+};
+
 </script>
 
 <style scoped>
