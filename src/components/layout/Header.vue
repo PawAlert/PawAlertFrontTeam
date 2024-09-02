@@ -74,7 +74,8 @@
   import SockJS from 'sockjs-client';
   import {Client} from '@stomp/stompjs';
   import {ref, onMounted, onBeforeUnmount} from 'vue';
-  import { profile } from "@/api/api_auth";
+  import {profile} from "@/api/api_auth";
+
   const authStore = useAuthStore();
   const router = useRouter();
 
@@ -83,7 +84,6 @@
   const notificationCount = ref(0); // 알림 개수를 저장할 ref
   let stompClient = null; // WebSocket 클라이언트를 저장할 변수
   // WebSocket 연결 설정 함수
-
   const connectWebSocket = () => {
     const socket = new SockJS('https://port-0-pawalertbackendteamgroup-m06zwfj8628a2164.sel4.cloudtype.app/ws');
     stompClient = new Client({
@@ -93,6 +93,7 @@
       },
       onConnect: () => {
         console.log('Connected to WebSocket');
+        console.log('Subscribing to notifications for user:', userId.value); // 사용자 ID 디버깅
         // 사용자의 고유 ID로 알림 구독
         stompClient.subscribe(`/topic/notifications/${userId.value}`, (message) => {
           console.log('Received notification:', message.body);
@@ -108,12 +109,18 @@
     stompClient.activate();
   };
 
+
   // 컴포넌트가 마운트될 때 WebSocket 연결
   onMounted(async () => {
     try {
       const data = await profile(); // 프로필 정보를 가져옴
-      userId.value = data.id; // 서버에서 받아온 사용자 ID를 저장
-      connectWebSocket(); // WebSocket 연결
+      if (data && data.id) {
+        userId.value = data.id; // 서버에서 받아온 사용자 ID를 저장
+        console.log('User ID fetched:', userId.value); // 사용자 ID 디버깅
+        connectWebSocket(); // WebSocket 연결
+      } else {
+        console.error('User ID is missing in the response:', data);
+      }
     } catch (error) {
       console.error('Failed to fetch user ID:', error);
     }
