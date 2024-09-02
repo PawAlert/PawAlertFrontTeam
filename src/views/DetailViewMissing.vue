@@ -12,8 +12,7 @@ const commentData = ref({
   content: '',
 });
 
-const submitComment = () => {
-  const id = 39; // 실제로 사용할 게시물 ID로 대체
+const submitComment = (id) => {
   const comment = commentData.value.content;
 
   // commentMissingReport 메서드 호출
@@ -132,7 +131,7 @@ const response = computed(() => missingStore.detail);
           v-model="commentData.content"
           placeholder="댓글을 작성해주세요"
       />
-      <v-btn @click="submitComment(response.data.missingReportId, commentData.content)">
+      <v-btn @click="submitComment(response.data.missingReportId)">
         댓글 작성
       </v-btn>
     </v-col>
