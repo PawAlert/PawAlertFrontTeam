@@ -89,11 +89,12 @@
     stompClient = new Client({
       webSocketFactory: () => socket,
       debug: function (str) {
-        console.log(str);
+        console.log('WebSocket Debug:', str); // WebSocket 디버깅
       },
       onConnect: () => {
         console.log('Connected to WebSocket');
         console.log('Subscribing to notifications for user:', userId.value); // 사용자 ID 디버깅
+
         // 사용자의 고유 ID로 알림 구독
         stompClient.subscribe(`/topic/notifications/${userId.value}`, (message) => {
           console.log('Received notification:', message.body);
@@ -110,11 +111,12 @@
   };
 
 
+
   // 컴포넌트가 마운트될 때 WebSocket 연결
   onMounted(async () => {
     try {
       const data = await profile(); // 프로필 정보를 가져옴
-      if (data && data.id) {
+      if (data) {
         userId.value = data.id; // 서버에서 받아온 사용자 ID를 저장
         console.log('User ID fetched:', userId.value); // 사용자 ID 디버깅
         connectWebSocket(); // WebSocket 연결

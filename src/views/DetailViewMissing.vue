@@ -14,6 +14,7 @@ const commentData = ref({
 
 const submitComment = (id) => {
   const comment = commentData.value.content;
+  console.log(id)
 
   // commentMissingReport 메서드 호출
   missingStore.commentMissingReport(id, comment);
@@ -98,6 +99,7 @@ const response = computed(() => missingStore.detail);
         </v-card-text>
         <v-card-text>
           펫 이름 : {{ response.data.petName }}
+
         </v-card-text>
         <v-card-text>
           펫 나이 : {{ response.data.age }}
