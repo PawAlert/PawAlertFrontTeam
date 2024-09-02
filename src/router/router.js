@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginPage from '@/views/LoginPage.vue';
 import Signup from "@/views/Signup.vue";
 import Main from "@/views/Main.vue";
+import DetailViewMissing from "@/views/DetailViewMissing.vue";
 
 // 라우트 설정
 const routes = [
@@ -37,6 +38,19 @@ const routes = [
         name: 'MissingCreate',
         component: () => import('@/views/MissingCreate.vue'),
         meta: { showHeader: true, showFooter: true }
+    },
+    {
+        path: '/myPage',
+        name: 'MyPage',
+        component: () => import('@/views/MyPage.vue'),
+        meta: { showHeader: true, showFooter: false }
+    },
+    {
+        path: '/detail/:id',  // URL 파라미터로 id 받기
+        name: 'DetailView',
+        component: DetailViewMissing,
+        meta: { showHeader: true, showFooter: true },
+        props: true,
     },
 
 ];

@@ -14,4 +14,5 @@ export const API_MISSING = {
     M_DELETE: (id) => `${API_URL}/api/missing/delete/${id}`,
     M_DetailView: (id) => `${API_URL}/api/missing/getdetail/${id}`,
     M_LIST: `${API_URL}/api/missing/search`,
+    M_comment: (id) => `${API_URL}/api/posts/${id}/comments`,
 }

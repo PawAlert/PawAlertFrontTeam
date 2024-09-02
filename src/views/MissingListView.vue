@@ -61,12 +61,12 @@
 
         <!-- 게시글 목록 -->
         <v-row v-else>
-          <v-col
-              v-for="post in content"
-              :key="post.missingReportId"
-              cols="12"
-              md="6"
-              class="d-flex justify-center"
+          <v-col @click="viewDetail(post.missingReportId)"
+                 v-for="post in content"
+                 :key="post.missingReportId"
+                 cols="12"
+                 md="6"
+                 class="d-flex justify-center"
           >
             <v-card
                 class="d-flex flex-column align-center justify-center my-2 post-card card-item"
@@ -114,13 +114,9 @@
                             포상금액 {{ post.rewardAmount }} 원
                           </v-list-item-subtitle>
                         </v-row>
-
                       </v-col>
-
                     </v-row>
-
                   </v-container>
-
                 </v-col>
 
               </v-row>
@@ -132,10 +128,7 @@
                   style="font-size: 0.75rem; right: 80px;"
               ></v-badge>
             </v-card>
-            <!-- 상태 뱃지 -->
-
           </v-col>
-
         </v-row>
 
         <!-- 페이지네이션 -->
@@ -167,9 +160,9 @@ const address = ref('');
 const addressDetail1 = ref('');
 const statusFilter = ref(''); // 기본 상태는 '전체'
 
-// 기본 이미지 URL 설정
-const defaultImageUrl =
-    'https://fastly.picsum.photos/id/701/300/300.jpg?hmac=I01SYsoRBR6HATSI9xSORt0XIUpz5E5wFpkr02_Ps7A'; // 외부 URL에서 기본 이미지를 가져옵니다.
+const viewDetail = (getId) => {
+  router.push({name: 'DetailView', params: {id: getId}});
+};
 
 // 한국의 행정구역 목록
 const addressOptions = [
@@ -322,7 +315,8 @@ const getBadgeText = (status) => {
   margin-left: -15px;
 }
 
-.rowimage {width: 100%;
+.rowimage {
+  width: 100%;
 }
 </style>
 

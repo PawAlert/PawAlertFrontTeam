@@ -210,13 +210,15 @@
 <script setup>
 import {ref, onMounted, watch} from 'vue';
 import {useMissingStore} from "@/store/modules/missing";
-import { createMissingReportRequest } from "@/api/api_missing";
+import {createMissingReportRequest} from "@/api/api_missing";
+
 const missingStore = useMissingStore();
 
 const missingReportData = ref({
   title: "",
   description: "",
-  content : "",
+  status: "MISSING",
+  content: "",
   dateLost: null,
   latitude: 37.497951,
   longitude: 127.027618,
@@ -297,7 +299,7 @@ const triggerFileInput = () => {
 };
 
 const handleImageUpload = (e) => {
-  imageFiles.value = [...imageFiles.value, ...Array.from(e.target.files)];
+  imageFiles.value = Array.from(e.target.files);
 };
 
 const updateDate = () => {
@@ -358,7 +360,7 @@ const submitMissingReport = async () => {
     };
 
     // API 요청 호출
-    const response = await createMissingReportRequest(payload, imageFiles.value);
+    const response = await missingStore.createMissingReport(payload, imageFiles.value);
     console.log('서버 응답:', response);
     alert('신고가 성공적으로 제출되었습니다.');
   } catch (error) {
