@@ -68,7 +68,7 @@
               </v-btn>
 
 
-              <v-btn @click="router.push('/signup')" class="flex-grow-1 mx-2 my-2">
+              <v-btn @click="router.push('/SignupStart')" class="flex-grow-1 mx-2 my-2">
                 회원가입
               </v-btn>
             </div>

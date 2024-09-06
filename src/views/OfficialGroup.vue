@@ -1,27 +1,6 @@
 <template>
   <v-container fluid class="fill-height">
     <v-row>
-      <v-col class="d-flex align-center justify-center" cols="1" sm="12" md="12">
-        <div class="d-flex mt-15">
-          <v-img
-              :width="50"
-              height="50"
-              src="@/assets/images/paw 2.png"
-          >
-          </v-img>
-          <v-typography style="font-size: 30px; font-weight: bold">동물 실종 알림 시스템</v-typography>
-        </div>
-      </v-col>
-      <v-col class="d-flex align-center justify-center">
-        <v-typography style="font-size: 40px; color: #2D2D2D; font-weight: bold">회원가입</v-typography>
-      </v-col>
-
-      <v-img :width="1280"
-             aspect-ratio="1/1"
-             cover
-             src="@/assets/images/signup-2.png">
-      </v-img>
-
       <!--  약관동의 첫번쨰-->
       <v-col class="mt-16 d-flex">
         <v-row class="d-flex">
@@ -38,10 +17,11 @@
         </v-row>
       </v-col>
       <!--약관동의 첫번째 스크롤-->
-      <v-col  class="mt-5" cols="12" >
-        <v-card  style="width: 100%; height: 200px" max-height="400" class=" d-flex align-center justify-center mt-5 scroll-card">
+      <v-col class="mt-5" cols="12">
+        <v-card style="width: 100%; height: 200px" max-height="400"
+                class=" d-flex align-center justify-center mt-5 scroll-card">
           <v-card-text>
-            <div >
+            <div>
               {{ termsContent }}
             </div>
           </v-card-text>
@@ -149,7 +129,7 @@
     </v-row>
     <v-col class="d-flex align-center justify-center" v-if="!isNextStep" cols="12">
       <!-- 에러 메시지 -->
-      <v-typography  style="color: red; font-weight: bold; font-size: 20px; text-align: center;">
+      <v-typography style="color: red; font-weight: bold; font-size: 20px; text-align: center;">
         모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.
       </v-typography>
 
@@ -167,16 +147,11 @@
       </v-btn>
     </v-col>
 
-
-
-
-
-
-
   </v-container>
 </template>
 
-<style scoped>.fill-height {
+<style scoped>
+.fill-height {
   font-family: 'Noto Sans KR', sans-serif;
   height: 100vh; /* 뷰포트 높이에 맞춤 */
 }
@@ -196,8 +171,9 @@ td {
 
 </style>
 <script setup>
-import termsContent from '@/assets/terms.txt';
-import {ref, computed, watch} from 'vue';
+import { ref, watch } from 'vue';
+
+const emit = defineEmits(['agreement-step']);
 
 const check1 = ref(false);
 const check2 = ref(false);
@@ -216,23 +192,24 @@ const check = (check4) => {
   }
 };
 
-const isNextStep = ref(true); // 다음 단계로 진행할 수 있는지 확인하는 상태
+const isNextStep = ref(true);
 
 const nextCheck = () => {
   if (check1.value && check2.value && check3.value) {
     isNextStep.value = true; // 모든 체크가 완료된 경우
-    // 다음 단계로 이동하는 로직을 여기에 추가
+    emit('agreement-step', true);
   } else {
     isNextStep.value = false; // 체크가 하나라도 안 되어 있는 경우
   }
 };
 
-// check1,2,3 이 전부 true 이면 자동으로 check4 도 truf로 변경
+// check1,2,3 이 전부 true 이면 자동으로 check4 도 true로 변경
 watch([check1, check2, check3], ([newCheck1, newCheck2, newCheck3]) => {
   if (newCheck1 && newCheck2 && newCheck3) {
     check4.value = true;
   }
 });
+
 
 
 const items = [
@@ -242,5 +219,6 @@ const items = [
     이용기간: "2년 (회원탈퇴 시까지)"
   }
 ];
+
 
 </script>

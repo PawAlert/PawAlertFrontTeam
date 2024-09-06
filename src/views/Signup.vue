@@ -1,37 +1,22 @@
 <script setup>
 
 import {useRouter} from 'vue-router';
+import {ref, defineEmits} from 'vue';
 
 const router = useRouter();
+const emit = defineEmits(['next-step'])
 
+// 사용자 클릭 시 호출되는 메서드
+const goToNextStep = (type) => {
+  // type은 선택된 회원가입 유형을 나타냅니다.
+  emit('next-step', type);
+};
 
 </script>
 
 <template>
   <v-container fluid class="d-flex align-center justify-center fill-height">
     <v-row class="justify-center">
-
-      <v-col class="d-flex align-center justify-center" cols="12" sm="12" md="12">
-        <div class="d-flex mt-15">
-          <v-img
-              :width="50"
-              height="50"
-              src="@/assets/images/paw 2.png"
-          >
-          </v-img>
-          <v-typography style="font-size: 30px; font-weight: bold">동물 실종 알림 시스템</v-typography>
-        </div>
-      </v-col>
-      <v-col class="d-flex align-center justify-center">
-        <v-typography  style="font-size: 40px; color: #2D2D2D; font-weight: bold">회원가입</v-typography>
-      </v-col>
-
-      <v-img :width="1280"
-             aspect-ratio="1/1"
-             cover
-             src="@/assets/images/signup-1.png">
-      </v-img>
-
 
       <v-row class="justify-lg-space-between mt-12">
         <!--        1번카드 -->
@@ -48,7 +33,7 @@ const router = useRouter();
               <v-typography class="text-2">빠른 인증을 통해 동물 예방정보,
                 보호활동을 공유할 수 있습니다
               </v-typography>
-              <v-btn class="ma-auto btn" @click="router.push({ name: 'Official' })"
+              <v-btn class="ma-auto btn" @click="goToNextStep('official')"
                      style="background-color: #00813E; color: #FFFFFF; font-size: 20px">
                 관계자 회원가입
               </v-btn>
@@ -70,7 +55,8 @@ const router = useRouter();
               <v-typography class="text-2">반려동물의 실종글 작성 및
                 각종 봉사활동과 관련정보를 확인할 수 있습니다.
               </v-typography>
-              <v-btn class="ma-auto btn" style="background-color: #096A9D; color: #FFFFFF; font-size: 20px">
+              <v-btn @click="goToNextStep('general')" class="ma-auto btn"
+                     style="background-color: #096A9D; color: #FFFFFF; font-size: 20px">
                 일반 회원가입
               </v-btn>
             </v-col>
