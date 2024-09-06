@@ -3,49 +3,85 @@ import {ref} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-const drawer = ref(false);
-
-const exampleList = ref([
-  { name: 'Home', path: '/' },
-  { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' },
-  { name: 'Blog', path: '/blog' }
-]);
-
-const navigateTo = (path) => {
-  router.push(path); // router.push를 사용하여 페이지 이동
-  drawer.value = false; // 사이드바 닫기
-};
-
 </script>
 
 <template>
   <v-container>
-    <!--  토글 버튼-->
-    <v-btn v-if="!drawer" icon @click="drawer = !drawer">
-      <v-icon>mdi-menu</v-icon>
+    <v-row>
+      <v-col cols="3">
+        <v-list>
+          <!-- 왼쪽 리스트 배치 -->
+          <v-list>
+            <v-list-item @click="router.push({name: 'Animal'})"npm run serve>
+              <v-card-text >
+                동물병원 HOME
+              </v-card-text>
+            </v-list-item>
+            <v-list-item @click="router.push({name: 'Shelter'})">
+              <v-card-text>
+                보호센터 HOME
+              </v-card-text>
+            </v-list-item>
+            <v-list-item @click="router.push({name: 'MyPage'})">
+              <v-card-text>
+                마이페이지
 
-    </v-btn>
-    <!--  사이드바  -->
-    <v-navigation-drawer v-model="drawer" app>
-      <v-list>
-        <v-list-item v-for="item in exampleList" :key="item">
-          <v-btn class="itemlist" @click="navigateTo(item.path)" >{{ item.name }}</v-btn>
-        </v-list-item>
-        <v-btn class="close-btn" @click="drawer = !drawer">
-          닫기
-        </v-btn>
-      </v-list>
-    </v-navigation-drawer>
+              </v-card-text>
+            </v-list-item>
+            <v-list-item>
+            </v-list-item>
+          </v-list>
+        </v-list>
+      </v-col>
+      <v-col>
+        <!-- 나머지 콘텐츠 배치 -->
+        <v-row>
+          <v-col>
+            <h1>setting</h1>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-card-text>
+              이미지
+              <v-btn>
+                이미지 수정
+              </v-btn>
+            </v-card-text>
+            <v-card-text>
+              유저 이메일
+            </v-card-text>
+            <v-card-text>
+              유저이름
+              <v-btn>
+                이름 수정
+              </v-btn>
+            </v-card-text>
+            <v-card-text>
+              유저 휴대폰 번호
+              <v-btn>
+                번호변경
+              </v-btn>
+            </v-card-text>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
   </v-container>
-
 </template>
 
 <style scoped>
-.itemlist{
-  width: 100%;
+.text-link {
+  color: #1976D2; /* 버튼처럼 보이게 할 색상 */
+  cursor: pointer; /* 마우스 포인터를 손 모양으로 변경 */
+  text-decoration: underline; /* 밑줄 추가 */
 }
-.close-btn{
-  width: 100%;
+
+.text-link:hover {
+  color: #155A8A; /* 호버 시 색상 변경 */
+}
+
+.text-link:active {
+  color: #0D47A1; /* 클릭 시 색상 변경 */
 }
 </style>

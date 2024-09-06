@@ -1,7 +1,10 @@
 const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
-    transpileDependencies: true,
+    transpileDependencies: [
+        'vuetify',
+        'vue-tel-input-vuetify'
+    ],
 
     devServer: {
         port: 8080, // 개발 서버 포트를 8080으로 설정

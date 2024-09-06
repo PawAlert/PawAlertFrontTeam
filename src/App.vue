@@ -23,13 +23,15 @@ authStore.checkAuth(); // 앱이 로드될 때 로그인 상태 확인
 </script>
 
 <style scoped>
-.main-content {
-  padding-top: 64px; /* 헤더 높이만큼 패딩 추가 */
-}
+
 
 .content-container {
   max-width: 1280px; /* 고정된 최대 너비 설정 */
   margin: 0 auto; /* 중앙 정렬 */
   padding: 0; /* 내부 여백 제거 */
 }
+.main-content{
+  padding: 0;
+}
+
 </style>

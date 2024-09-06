@@ -11,6 +11,16 @@ const vuetify = createVuetify({
             mdi,
         },
     },
+    theme: {
+        themes: {
+            light: {
+                // 전역 테마 설정
+                variables: {
+                    fontFamily: 'Noto Sans KR, sans-serif', // 기본 폰트 설정
+                },
+            },
+        },
+    },
 });
 
 export default vuetify;
