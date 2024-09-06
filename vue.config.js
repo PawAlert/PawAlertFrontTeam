@@ -1,6 +1,14 @@
-const { defineConfig } = require('@vue/cli-service');
+const {defineConfig} = require('@vue/cli-service');
 
 module.exports = defineConfig({
+    chainWebpack: config => {
+        config.module
+            .rule('txt')
+            .test(/\.txt$/)
+            .use('raw-loader')
+            .loader('raw-loader')
+            .end();
+    },
     transpileDependencies: [
         'vuetify',
         'vue-tel-input-vuetify'
