@@ -33,28 +33,28 @@
             </v-img>
           </v-col>
           <v-col>
-            <v-typography style="font-size: 30px; font-weight: bold">회원가입 약관동의</v-typography>
+            <v-typography style="font-size: 25px; font-weight: bold">회원가입 약관동의</v-typography>
           </v-col>
         </v-row>
       </v-col>
       <!--약관동의 첫번째 스크롤-->
-      <v-col class="mt-5" cols="12">
-        <v-card max-height="400" class="scroll-card">
+      <v-col  class="mt-5" cols="12" >
+        <v-card  style="width: 100%; height: 200px" max-height="400" class=" d-flex align-center justify-center mt-5 scroll-card">
           <v-card-text>
-            <div>
+            <div >
               {{ termsContent }}
             </div>
           </v-card-text>
         </v-card>
         <v-row class="mt-5">
           <v-checkbox v-model="check1"></v-checkbox>
-          <v-typography class="mt-2" style="font-weight: bold; font-size: 25px; color: #333333; ">회원가입 약관에 동의합니다.
+          <v-typography class="mt-4" style="font-weight: bold; font-size: 15px; color: #333333; ">회원가입 약관에 동의합니다.
           </v-typography>
         </v-row>
       </v-col>
 
       <!--  약관동의 두번째-->
-      <v-col class="mt-16 d-flex">
+      <v-col class="mt-5 d-flex">
         <v-row class="d-flex">
           <v-col cols="auto">
             <v-img
@@ -64,29 +64,29 @@
             </v-img>
           </v-col>
           <v-col>
-            <v-typography style="font-size: 30px; font-weight: bold">고유식별정보 수집 및 이용안내</v-typography>
+            <v-typography style="font-size: 25px; font-weight: bold">고유식별정보 수집 및 이용안내</v-typography>
           </v-col>
         </v-row>
       </v-col>
       <!--약관동의 두번째 스크롤-->
-      <v-col class="mt-5" cols="12">
-        <v-card max-height="400" class="scroll-card">
+      <v-col cols="12">
+        <v-card style="width: 100%; height: 200px" max-height="400" class="scroll-card">
           <v-card-text>
             <div>
               {{ termsContent }}
             </div>
           </v-card-text>
         </v-card>
-        <v-row class="mt-5">
+        <v-row class="mt-2">
           <v-checkbox v-model="check2"></v-checkbox>
-          <v-typography class="mt-2" style="font-weight: bold; font-size: 25px; color: #333333; ">고유식별정보 수집 및 이용안내 약관에
+          <v-typography class="mt-4" style="font-weight: bold; font-size: 15px; color: #333333; ">고유식별정보 수집 및 이용안내 약관에
             동의합니다.
           </v-typography>
         </v-row>
       </v-col>
 
       <!--세번째 약관동의-->
-      <v-col class="mt-16 d-flex">
+      <v-col class="mt-5 d-flex">
         <v-row class="d-flex">
           <v-col cols="auto">
             <v-img
@@ -96,7 +96,7 @@
             </v-img>
           </v-col>
           <v-col>
-            <v-typography style="font-size: 30px; font-weight: bold">개인정보 수집·이용 동의</v-typography>
+            <v-typography style="font-size: 25px; font-weight: bold">개인정보 수집·이용 동의</v-typography>
             <v-typography style="color: #DB7D7D; font-size: 20px">[필수]</v-typography>
           </v-col>
         </v-row>
@@ -105,7 +105,7 @@
       <!--세번째 약관동의 -->
 
       <v-col cols="12">
-        <v-table style="width: 100%">
+        <v-table style="width: 1280px">
           <thead>
           <tr>
             <th class="text-left">
@@ -132,7 +132,7 @@
         </v-table>
         <v-row class="mt-5">
           <v-checkbox v-model="check3"></v-checkbox>
-          <v-typography class="mt-2" style="font-weight: bold; font-size: 25px; color: #333333; ">행정정보 공동 이용 동의에 동의합니다.
+          <v-typography class="mt-4" style="font-weight: bold; font-size: 15px; color: #333333; ">행정정보 공동 이용 동의에 동의합니다.
           </v-typography>
         </v-row>
       </v-col>
@@ -186,11 +186,11 @@
 }
 
 .text-left {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 td {
-  font-size: 20px;
+  font-size: 15px;
 }
 
 
