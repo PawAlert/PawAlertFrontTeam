@@ -171,7 +171,8 @@ td {
 
 </style>
 <script setup>
-import { ref, watch } from 'vue';
+import {ref, watch} from 'vue';
+import termsContent from '@/assets/terms.txt';
 
 const emit = defineEmits(['agreement-step']);
 
@@ -209,7 +210,6 @@ watch([check1, check2, check3], ([newCheck1, newCheck2, newCheck3]) => {
     check4.value = true;
   }
 });
-
 
 
 const items = [

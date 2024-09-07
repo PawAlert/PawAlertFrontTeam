@@ -16,3 +16,8 @@ export const API_MISSING = {
     M_LIST: `${API_URL}/api/missing/search`,
     M_comment: (id) => `${API_URL}/api/posts/${id}/comments`,
 }
+
+export const API_CERTIFICATION={
+    C_HOSPITAL: `${API_URL}/api/hospital/doctor/certification`,
+    C_SHELTER: `${API_URL}/api/shelter/certification`,
+}

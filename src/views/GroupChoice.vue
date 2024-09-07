@@ -1,12 +1,21 @@
 <script setup>
 
-import router from "@/router/router";
+import {ref} from "vue";
+const emit = defineEmits(['choiceGroup-step']);
+
+const choiceGroup = ref("");
+const choiceGroupType = (type) => {
+  emit('choiceGroup-step', type);
+  choiceGroup.value = type;
+};
+
+
+
 </script>
 
 <template>
   <v-container fluid class="fill-height d-flex align-center justify-center">
     <v-row class="justify-center">
-
 
 
       <!-- Cards -->
@@ -15,9 +24,9 @@ import router from "@/router/router";
           <v-card style="background-color: #BCCBFF" class="card d-flex flex-column align-center justify-center">
             <v-img width="250" height="200" src="@/assets/images/hospi-image.png"></v-img>
             <v-col class="d-flex justify-center mt-4">
-              <v-btn style="font-size: 15px; font-weight: bold; border: 1px solid #BCCBFF" @click="router.push({name : 'SignupHospital'})">
-
-              동물병원 등록하기
+              <v-btn style="font-size: 15px; font-weight: bold; border: 1px solid #BCCBFF"
+                     @click="choiceGroupType('official')">
+                동물병원 등록하기
               </v-btn>
             </v-col>
           </v-card>
@@ -27,7 +36,9 @@ import router from "@/router/router";
           <v-card style="background-color: #B4FC92" class="card d-flex flex-column align-center justify-center">
             <v-img width="220" height="200" src="@/assets/images/shelter-img.png"></v-img>
             <v-col class="d-flex justify-center mt-4">
-              <v-btn style="font-size: 15px; font-weight: bold; border: 1px solid #B4FC92" @click="router.push({name: 'SignupShelter'})">
+              <v-btn style="font-size: 15px; font-weight: bold; border: 1px solid #B4FC92"
+                     @click="choiceGroupType('shelter')"
+              >
                 보호센터 등록하기
               </v-btn>
             </v-col>
@@ -44,6 +55,7 @@ import router from "@/router/router";
   font-family: 'Noto Sans KR', sans-serif;
   height: 100vh; /* 뷰포트 높이에 맞춤 */
 }
+
 .card {
   display: flex;
   justify-content: center; /* 이미지 가로 중앙 정렬 */

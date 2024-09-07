@@ -9,11 +9,12 @@ import AnimalHome from "@/views/AnimalHome.vue";
 import ShelterHome from "@/views/ShelterHome.vue";
 import OfficialGroup from "@/views/OfficialGroup.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
-import SignupHospital from "@/views/SignupHospital.vue";
+import SignupHospital from "@/views/hospital/signup/SignupHospital.vue";
 import SignupShelter from "@/views/SignupShelter.vue";
 import SignupShelterInfo from "@/views/SignupShelterInfo.vue";
 import SignupHospitalInfo from "@/views/SignupStart.vue";
 import SignupStart from "@/views/SignupStart.vue";
+import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
 
 // 라우트 설정
 const routes = [
@@ -74,34 +75,39 @@ const routes = [
         meta: {showHeader: true, showFooter: false},
     },
     {
-        path: '/official',  // URL 파라미터로 id 받기
+        path: '/official',
         name: 'Official',
         component: OfficialGroup,
     },
     {
-        path: '/groupChoice',  // URL 파라미터로 id 받기
+        path: '/groupChoice',
         name: 'GroupChoice',
         component: GroupChoice,
     },
     {
-        path: '/signupHospital',  // URL 파라미터로 id 받기
+        path: '/signupHospital',
         name: 'SignupHospital',
         component: SignupHospital,
     },
     {
-        path: '/signupShelter',  // URL 파라미터로 id 받기
+        path: '/signupShelter',
         name: 'SignupShelter',
         component: SignupShelter,
     },
     {
-        path: '/signupStart',  // URL 파라미터로 id 받기
+        path: '/signupStart',
         name: 'SignupStart',
         component: SignupStart,
     },
     {
-        path: '/signupShelterInfo',  // URL 파라미터로 id 받기
+        path: '/signupShelterInfo',
         name: 'SignupShelterInfo',
         component: SignupShelterInfo,
+    },
+    {
+        path: '/hospitalInfo',
+        name: 'HospitalInfo',
+        component: HospitalInfo,
     },
 
 ];

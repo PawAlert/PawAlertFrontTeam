@@ -6,10 +6,7 @@ import router from "@/router/router";
 <template>
 
   <v-container fluid class="fill-height d-flex align-center justify-center">
-
-
     <v-col class="mt-15 ml-16 d-flex flex-column">
-
       <v-col class="d-flex">
         <v-img :width="50" height="50" src="@/assets/images/paw 2.png"></v-img>
         <v-typography style="margin-left: 10px; font-size: 20px; width: 100%; font-weight: bold" class="mt-3">인증하기
