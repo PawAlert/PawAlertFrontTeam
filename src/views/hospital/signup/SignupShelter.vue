@@ -1,38 +1,35 @@
 <script setup>
 
-import {ref} from "vue";
-import {useCertificationStore} from "@/store/modules/hospital/certification"; // Pinia 스토어를 가져오기
+import router from "@/router/router";
+import {useCertificationStore} from "@/store/modules/hospital/certification";
+import {ref} from 'vue';
 
-const store = useCertificationStore(); // 스토어 인스턴스 생성
+const store = useCertificationStore();
 
-const dataHospital = ref({
-  hospitalName: "",
-  licenseNumber: ""
-})
 const emit = defineEmits(['certification-step']);
 
+const dataShelter = ref({
+  shelterName: "",
+  jurisdiction: ""
+})
+
 const submit = async () => {
-  if (dataHospital.value.hospitalName === "" || dataHospital.value.licenseNumber === "") {
-    alert("빈칸을 채워주세요")
-  }
   const data = {
-    hospitalName: dataHospital.value.hospitalName,
-    licenseNumber: dataHospital.value.licenseNumber
+    shelterName: dataShelter.value.shelterName,
+    jurisdiction: dataShelter.value.jurisdiction
   };
   try {
-    const response = await store.fetchCertificationHospital(data);
-
-    if (response.status === 200) {
+    const response = await store.fetchCertificationShelter(data);
+    if(response.status === 200) {
       alert("인증이 완료되었습니다.")
-      emit('certification-step', 'hospital', data);  // 이벤트 이름 수정
+      emit('certification-step', 'shelter', data);
     } else {
       alert("인증에 실패하였습니다.")
     }
-
   } catch (e) {
     console.error('요청 중 예외 발생:', e);
   }
-};
+}
 
 
 </script>
@@ -40,33 +37,33 @@ const submit = async () => {
 <template>
 
   <v-container fluid class="fill-height d-flex align-center justify-center">
+    <v-col class="mt-15 ml-16 d-flex flex-column">
+      <v-col class="d-flex">
+        <v-img :width="50" height="50" src="@/assets/images/paw 2.png"></v-img>
+        <v-typography style="margin-left: 10px; font-size: 20px; width: 100%; font-weight: bold" class="mt-3">인증하기
+        </v-typography>
+      </v-col>
 
-    <v-form>
-      <v-col class="mt-15 ml-16 d-flex flex-column">
-        <v-col class="d-flex">
-          <v-img :width="50" height="50" src="@/assets/images/paw 2.png"></v-img>
-          <v-typography style="margin-left: 10px; font-size: 20px; width: 100%; font-weight: bold" class="mt-3">인증하기
-          </v-typography>
-        </v-col>
+      <v-form @submit.prevent="submit">
         <v-col cols="12" class="d-flex justify-center align-center">
           <v-row class="d-flex justify-center align-center">
-            <!-- 동물병원 이름 -->
+            <!-- 보호센터 이름 -->
             <v-col cols="12" sm="6" md="5" class="d-flex flex-column align-center mb-4">
-              <v-typography style="font-size: 18px; font-weight: bold;">동물병원 이름</v-typography>
+              <v-typography style="font-size: 18px; font-weight: bold;">보호센터 이름</v-typography>
               <v-text-field
-                  v-model="dataHospital.hospitalName"
+                  v-model="dataShelter.shelterName"
                   class="custom-text-field"
-                  placeholder="동물병원 이름을 입력해주세요"
+                  placeholder="보호센터 이름을 입력해주세요"
               ></v-text-field>
             </v-col>
 
             <!-- 인허가번호 -->
             <v-col cols="12" sm="6" md="5" class="d-flex flex-column align-center mb-4">
-              <v-typography style="font-size: 18px; font-weight: bold;">인허가번호</v-typography>
+              <v-typography style="font-size: 18px; font-weight: bold;">관할구역</v-typography>
               <v-text-field
-                  v-model="dataHospital.licenseNumber"
+                  v-model="dataShelter.jurisdiction"
                   class="custom-text-field"
-                  placeholder="인허가 번호를 입력해주세요"
+                  placeholder="관할구역을 입력해주세요."
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" md="5" class="d-flex flex-column align-center mb-4">
@@ -77,8 +74,9 @@ const submit = async () => {
             </v-col>
           </v-row>
         </v-col>
-      </v-col>
-    </v-form>
+      </v-form>
+    </v-col>
+
   </v-container>
 
 

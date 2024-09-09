@@ -21,3 +21,7 @@ export const API_CERTIFICATION={
     C_HOSPITAL: `${API_URL}/api/hospital/doctor/certification`,
     C_SHELTER: `${API_URL}/api/shelter/certification`,
 }
+
+export const API_HOSPITAL={
+    H_CREATE : `${API_URL}/api/hospital/doctor/signupCreate`,
+}

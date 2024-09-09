@@ -15,7 +15,7 @@
   </v-col>
 
   <v-stepper hide-actions style="width: 1280px; border-radius: 10px" alt-labels v-model="currentStep"
-             :items="['회원가입', '약관동의', '인증하기', '정보입력', '완료하기']">
+             :items="['회원가입', '약관동의', '선택하기', '인증정보입력', '완료하기']">
     <!-- 처음 선택 -->
     <template v-slot:item.1>
       <Signup @next-step="handleNextStep"/>
@@ -38,14 +38,11 @@
     <!-- 정보입력 단계 -->
     <template v-slot:item.4>
       <v-card v-if="currentStepType === 'official'">
-        <!-- 이벤트 수신기 추가 -->
         <SignupHospital @agreement-step="agreementStep" @certification-step="certificationStep"/>
       </v-card>
-
       <v-card v-else-if="currentStepType === 'shelter'">
-        <SignupShelter @agreement-step="agreementStep"/>
+        <SignupShelter @agreement-step="agreementStep" @certification-step="certificationStep"/>
       </v-card>
-
       <v-card v-else-if="currentStepType === 'general'">
         <v-btn>general</v-btn>
       </v-card>
@@ -54,8 +51,21 @@
     <!-- 완료하기 단계 -->
     <template v-slot:item.5>
       <v-card v-if="currentStepType === 'hospital'">
-        <HospitalInfo :hospitalData="hospitalData" />
+        <HospitalInfo @agreement-step="agreementStep" @certification-step="certificationStep"/>
       </v-card>
+
+      <v-card v-else-if="currentStepType === 'shelter'">
+        <SignupShelterInfo @agreement-step="agreementStep" @certification-step="certificationStep"/>
+      </v-card>
+
+
+
+<!--      <v-card v-if="currentStepType === 'hospital'">-->
+<!--        <HospitalInfo :hospitalData="hospitalData" />-->
+<!--      </v-card>-->
+<!--      <v-card v-else-if="currentStepType === 'shelter'">-->
+<!--        <SignupShelterInfo :shelter/>-->
+<!--      </v-card>-->
     </template>
   </v-stepper>
 </template>
@@ -64,14 +74,15 @@
 import {defineComponent, ref} from "vue";
 import Signup from "@/views/Signup.vue";
 import OfficialGroup from "@/views/OfficialGroup.vue";
-import SignupShelter from "@/views/SignupShelter.vue";
+import SignupShelter from "@/views/hospital/signup/SignupShelter.vue";
 import SignupHospital from "@/views/hospital/signup/SignupHospital.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
 import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
+import SignupShelterInfo from "@/views/shelter/SignupShelterInfo.vue";
 
 export default defineComponent({
   name: 'SignupStart',
-  components: {HospitalInfo, GroupChoice, SignupHospital, SignupShelter, OfficialGroup, Signup},
+  components: {SignupShelterInfo, HospitalInfo, GroupChoice, SignupHospital, SignupShelter, OfficialGroup, Signup},
   setup() {
 
     const currentStep = ref(1);
@@ -79,6 +90,7 @@ export default defineComponent({
     const steps = [1, 2, 3, 4, 5];
     const stepLabels = ['회원가입', '약관동의', '인증하기', '정보입력', '완료하기'];
     const hospitalData = ref('');
+    const shelterData = ref('');
 
     const handleNextStep = (stepType) => {
       console.log('handleNextStep called with:', stepType);
@@ -94,7 +106,7 @@ export default defineComponent({
         currentStepType.value = stepType;
         currentStep.value = 4;
       }
-    }
+    };
 
     const agreementStep = (stepOk) => {
       if (stepOk) {
@@ -107,13 +119,16 @@ export default defineComponent({
     };
 
     const certificationStep = (stepType, data) => {
+      console.log('certificationStep called with:', stepType, data);
+      currentStepType.value = stepType;
+      currentStep.value = 5;
       if (stepType === 'hospital') {
-        currentStepType.value = stepType;
-        currentStep.value = 5;
         hospitalData.value = data;
-        console.log(data)
+      } else if (stepType === 'shelter') {
+        shelterData.value = data;
       }
     };
+
 
     return {
       currentStep,
@@ -121,6 +136,7 @@ export default defineComponent({
       steps,
       stepLabels,
       hospitalData,
+      shelterData,
       certificationStep,
       choiceGroup,
       handleNextStep,
