@@ -30,8 +30,6 @@ authStore.checkAuth(); // 앱이 로드될 때 로그인 상태 확인
   margin: 0 auto; /* 중앙 정렬 */
   padding: 0; /* 내부 여백 제거 */
 }
-.main-content{
-  padding: 0;
-}
+
 
 </style>

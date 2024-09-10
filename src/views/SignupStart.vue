@@ -44,7 +44,7 @@
         <SignupShelter @agreement-step="agreementStep" @certification-step="certificationStep"/>
       </v-card>
       <v-card v-else-if="currentStepType === 'general'">
-        <v-btn>general</v-btn>
+        <SignupInfo/>
       </v-card>
     </template>
 
@@ -69,10 +69,13 @@ import SignupHospital from "@/views/hospital/signup/SignupHospital.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
 import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
 import SignupShelterInfo from "@/views/shelter/ShelterInfo.vue";
+import SignupInfo from "@/views/hospital/SignupInfo.vue";
 
 export default defineComponent({
   name: 'SignupStart',
-  components: {SignupShelterInfo, HospitalInfo, GroupChoice, SignupHospital, SignupShelter, OfficialGroup, Signup},
+  components: {
+    SignupInfo,
+    SignupShelterInfo, HospitalInfo, GroupChoice, SignupHospital, SignupShelter, OfficialGroup, Signup},
   setup() {
 
     const currentStep = ref(1);

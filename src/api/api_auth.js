@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL} from "@/config/url";
+import {API_SIGNUP, API_URL} from "@/config/url";
 import router from "@/router/router";
 
 export const login = async (credentials) => {
@@ -27,32 +27,10 @@ export const login = async (credentials) => {
         throw new Error(`오류 ${status}: ${message}`);
     }
 };
-//회원가입
-export const register = async (userData) => {
-    try {
-        const response = await axios.post(`${API_URL}/api/user/register`, userData);
-        console.log(response.data);
 
-        if(response.status === 201){
-            await router.push({name: 'Login'});
-        }else {
-            return response.data.message;
-        }
-
-        return response;
-
-
-    } catch (e) {
-        console.error('오류 세부 사항:', e);
-
-        const status = e.response ? e.response.status : 500;
-        const message = e.response && e.response.data ? e.response.data.message : '알 수 없는 오류';
-        throw new Error(`오류 ${status}: ${message}`);
-    }
-}
 // 프로필
 export const profile = async () => {
-    try{
+    try {
         const response = await axios.get(`${API_URL}/api/user/profile`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -61,7 +39,7 @@ export const profile = async () => {
         console.log(response)
         return response.data;
 
-    }catch (e) {
+    } catch (e) {
         console.error('오류 세부 사항:', e);
 
         const status = e.response ? e.response.status : 500;
