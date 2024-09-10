@@ -12,7 +12,7 @@ const router = useRouter();
         <v-list>
           <!-- 왼쪽 리스트 배치 -->
           <v-list>
-            <v-list-item @click="router.push({name: 'Animal'})"npm run serve>
+            <v-list-item @click="router.push({name: 'Animal'})">
               <v-card-text >
                 동물병원 HOME
               </v-card-text>

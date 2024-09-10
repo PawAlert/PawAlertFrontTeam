@@ -4,29 +4,28 @@ import {useCertificationStore} from "@/store/modules/hospital/certification";
 import {createRouter as $router, useRouter} from 'vue-router';
 const router = useRouter();
 
-const hospitalStore = useCertificationStore();
+const store = useCertificationStore();
 
 
 const props = defineProps({
-  hospitalData: {
+  shelterData: {
     type: Object,
     default: () => ({}), // 데이터 기본값 설정
   },
 });
 
-const hospitalName = ref('');
-const licenseNumber = ref('');
-const major = ref('');
+const shelterName = ref('');
+const jurisdiction = ref('');
 const email = ref('');
 const password = ref('');
-const phoneNumber = ref('');
+const contactPhone = ref('');
 const show1 = ref(false)
 const show2 = ref(true)
 
 
 onMounted(() => {
-  hospitalName.value = props.hospitalData.hospitalName;
-  licenseNumber.value = props.hospitalData.licenseNumber;
+  shelterName.value = props.shelterData.shelterName;
+  jurisdiction.value = props.shelterData.jurisdiction;
 });
 
 const addressData = ref({
@@ -42,12 +41,11 @@ const addressData = ref({
 // 함수 내부에서 모든 데이터 수집
 const collectFormData = () => {
   return {
-    hospitalName: hospitalName.value,
-    licenseNumber: licenseNumber.value,
-    major: major.value,
+    shelterName: shelterName.value,
+    jurisdiction: jurisdiction.value,
     email: email.value,
     password: password.value,
-    phoneNumber: phoneNumber.value,
+    contactPhone: contactPhone.value,
     locataionRecord: {
       postcode: addressData.value.postcode,
       address: addressData.value.address,
@@ -110,7 +108,7 @@ const rules = {
 }
 
 const submit = async () => {
-  const response = await hospitalStore.fetchCreateHospital(collectFormData());
+  const response = await store.fetchSignupShelter(collectFormData());
   console.log(response);
   if(response.status === 201) {
     alert("인증이 완료되었습니다.")
@@ -146,23 +144,23 @@ export default {
       <v-col cols="12" class="d-flex flex-column">
         <v-row class="d-flex flex-column">
           <v-form @submit.prevent="submit">
-            <!-- 동물병원 이름 -->
+            <!-- 보호센터 이름 -->
             <v-col cols="12" sm="6" md="5" class="d-flex flex-column mb-1">
-              <v-typography style="font-size: 18px; font-weight: bold;">동물병원 이름</v-typography>
+              <v-typography style="font-size: 18px; font-weight: bold;">보호센터 이름</v-typography>
               <v-text-field
                   style="color: #333333; border: 1px solid #D7D7D7; background-color: #EDEDED; width: 400px; height: 50px; border-radius: 10px"
                   class="custom-text-field"
-                  v-model="hospitalName"
+                  v-model="shelterName"
                   disabled
               ></v-text-field>
             </v-col>
 
-            <!-- 인허가번호 -->
+            <!-- 관할구역 -->
             <v-col cols="12" sm="6" md="5" class="d-flex flex-column mb-1">
-              <v-typography style="font-size: 18px; font-weight: bold;">인허가 번호</v-typography>
+              <v-typography style="font-size: 18px; font-weight: bold;">관할구역</v-typography>
               <v-text-field
                   style="color: #333333; border: 1px solid #D7D7D7; background-color: #EDEDED; width: 400px; height: 50px; border-radius: 10px"
-                  v-model="licenseNumber"
+                  v-model="jurisdiction"
                   disabled
               ></v-text-field>
             </v-col>
@@ -196,17 +194,17 @@ export default {
               <v-col cols="12" sm="6" md="5" class="d-flex flex-column mb-1">
                 <v-typography style="font-size: 18px; font-weight: bold;">연락처</v-typography>
                 <v-text-field
-                    v-model="phoneNumber"
+                    v-model="contactPhone"
                     variant="outlined"
                     style="background-color: #FFFFFF; border: 1px solid #FFFFFF; width: 400px; height: 50px;"
-                    placeholder="병원 연락처를 입력해주세요"
+                    placeholder="보호센터 연락처를 입력해주세요"
                 ></v-text-field>
               </v-col>
 
 
               <v-col class="address-field-t mb-1">
                 <v-col cols="12" sm="6" md="5" class="mt-2">
-                  <v-typography style="font-size: 18px; font-weight: bold;">병원 위치</v-typography>
+                  <v-typography style="font-size: 18px; font-weight: bold;">보호센터 위치</v-typography>
                   <v-btn class="ml-16" @click="execDaumPostcode">우편번호 찾기</v-btn>
                 </v-col>
                 <v-col cols="12" sm="6" md="5" class="d-flex flex-column address-field">

@@ -10,7 +10,7 @@ import ShelterHome from "@/views/ShelterHome.vue";
 import OfficialGroup from "@/views/OfficialGroup.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
 import SignupHospital from "@/views/hospital/signup/SignupHospital.vue";
-import SignupShelter from "@/views/hospital/signup/SignupShelter.vue";
+import SignupShelter from "@/views/shelter/SignupShelter.vue";
 import SignupShelterInfo from "@/views/SignupShelterInfo.vue";
 import SignupHospitalInfo from "@/views/SignupStart.vue";
 import SignupStart from "@/views/SignupStart.vue";

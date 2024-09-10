@@ -51,21 +51,11 @@
     <!-- 완료하기 단계 -->
     <template v-slot:item.5>
       <v-card v-if="currentStepType === 'hospital'">
-        <HospitalInfo @agreement-step="agreementStep" @certification-step="certificationStep"/>
+        <HospitalInfo :hospitalData="hospitalData" />
       </v-card>
-
       <v-card v-else-if="currentStepType === 'shelter'">
-        <SignupShelterInfo @agreement-step="agreementStep" @certification-step="certificationStep"/>
+        <SignupShelterInfo :shelterData = "shelterData"/>
       </v-card>
-
-
-
-<!--      <v-card v-if="currentStepType === 'hospital'">-->
-<!--        <HospitalInfo :hospitalData="hospitalData" />-->
-<!--      </v-card>-->
-<!--      <v-card v-else-if="currentStepType === 'shelter'">-->
-<!--        <SignupShelterInfo :shelter/>-->
-<!--      </v-card>-->
     </template>
   </v-stepper>
 </template>
@@ -74,11 +64,11 @@
 import {defineComponent, ref} from "vue";
 import Signup from "@/views/Signup.vue";
 import OfficialGroup from "@/views/OfficialGroup.vue";
-import SignupShelter from "@/views/hospital/signup/SignupShelter.vue";
+import SignupShelter from "@/views/shelter/SignupShelter.vue";
 import SignupHospital from "@/views/hospital/signup/SignupHospital.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
 import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
-import SignupShelterInfo from "@/views/shelter/SignupShelterInfo.vue";
+import SignupShelterInfo from "@/views/shelter/ShelterInfo.vue";
 
 export default defineComponent({
   name: 'SignupStart',
@@ -122,6 +112,7 @@ export default defineComponent({
       console.log('certificationStep called with:', stepType, data);
       currentStepType.value = stepType;
       currentStep.value = 5;
+
       if (stepType === 'hospital') {
         hospitalData.value = data;
       } else if (stepType === 'shelter') {

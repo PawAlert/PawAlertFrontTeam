@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia';
 import {fetchHospitalCertification, fetchShelterCertification} from "@/api/hospital/api_certification";
 import {fetchHospitalCreate} from "@/api/hospital/api_hospital";
+import {fetchShelterSignup} from "@/api/hospital/api_shelter";
 
 // 인증 관련 스토어 정의
 export const useCertificationStore = defineStore('certification', {
@@ -33,6 +34,17 @@ export const useCertificationStore = defineStore('certification', {
                 return response;
             } catch (error) {
                 console.error('보호소 인증 실패:', error);
+                throw error;
+            }
+        },
+        // 보호센터 회원가입 요청
+        async fetchSignupShelter(data) {
+            try {
+                const response = await fetchShelterSignup(data);
+                console.log('보호센터 등록 응답:', response);
+                return response;
+            }catch (error) {
+                console.error('보호센터 등록 실패:', error);
                 throw error;
             }
         },

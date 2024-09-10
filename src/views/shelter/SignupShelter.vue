@@ -18,9 +18,11 @@ const submit = async () => {
     shelterName: dataShelter.value.shelterName,
     jurisdiction: dataShelter.value.jurisdiction
   };
+
   try {
     const response = await store.fetchCertificationShelter(data);
-    if(response.status === 200) {
+    if (response.status === 200) {
+      console.log("data = ", data)
       alert("인증이 완료되었습니다.")
       emit('certification-step', 'shelter', data);
     } else {
