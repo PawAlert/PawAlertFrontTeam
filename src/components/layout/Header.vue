@@ -67,6 +67,7 @@
   const authStore = useAuthStore();
   const router = useRouter();
 
+  // user 상태의 변경을 정확히 반영하도록 computed 설정
   const isAuthenticated = computed(() => !!authStore.user);
 
   const handleLogout = () => {
@@ -74,6 +75,7 @@
     router.push('/login');
   };
 </script>
+
 
 <style scoped>
   .v_text1 {
