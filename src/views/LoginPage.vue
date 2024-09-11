@@ -106,33 +106,34 @@ const handleLogin = async () => {
     console.error('로그인 중 오류 발생:', error);
   }
 };
-const handleTokenAndRedirect = () => {
-  console.log('Current URL:', window.location.href);
-
-  // URL에서 토큰 추출을 위한 정규표현식
-  const tokenMatch = window.location.href.match(/[?&]token=([^&]+)/);
-
-  if (tokenMatch) {
-    const token = decodeURIComponent(tokenMatch[1]);
-    console.log('Extracted Token:', token);
-
-    authStore.setToken(token);
-    router.replace({ name: 'Main' });
-  } else {
-    console.log('No token found in URL');
-  }
-};
-
-// 즉시 실행 함수
-(() => {
-  console.log("즉시 실행 함수 시작");
-  handleTokenAndRedirect();
-  console.log("handleTokenAndRedirect 실행 완료");
-})();
-
-onMounted(() => {
-  console.log("onMounted 호출");
-});
+//
+// const handleTokenAndRedirect = () => {
+//   console.log('Current URL:', window.location.href);
+//
+//   // URL에서 토큰 추출을 위한 정규표현식
+//   const tokenMatch = window.location.href.match(/[?&]token=([^&]+)/);
+//
+//   if (tokenMatch) {
+//     const token = decodeURIComponent(tokenMatch[1]);
+//     console.log('Extracted Token:', token);
+//
+//     authStore.setToken(token);
+//     router.replace({ name: 'Main' });
+//   } else {
+//     console.log('No token found in URL');
+//   }
+// };
+//
+// // 즉시 실행 함수
+// (() => {
+//   console.log("즉시 실행 함수 시작");
+//   handleTokenAndRedirect();
+//   console.log("handleTokenAndRedirect 실행 완료");
+// })();
+//
+// onMounted(() => {
+//   console.log("onMounted 호출");
+// });
 
 const redirectToGoogle = () => {
   console.log("Google 로그인 리다이렉트 시작");
