@@ -47,12 +47,6 @@ onMounted(async () => {
   await handleToken();
 });
 
-
-// 컴포넌트가 마운트될 때 토큰 처리
-onMounted(() => {
-  handleToken();
-});
-
 // URL 변경을 감지하여 토큰 처리
 watch(() => route.fullPath, handleToken);
 </script>
