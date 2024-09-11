@@ -41,12 +41,17 @@
           <v-list-item to="/동물봉사">
             <v-list-item-title>동물봉사</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="authStore.user" to="/myPage">
+
+          <v-btn text="" v-if="isAuthenticated" to="/myPage" class="mypage">마이페이지</v-btn>
+
+
+          <v-list-item v-if="isAuthenticated" to="/myPage">
             <v-list-item-title>마이페이지</v-list-item-title>
           </v-list-item>
-          <v-list-item v-else to="/login">
-            <v-list-item-title>Login / Signup</v-list-item-title>
-          </v-list-item>
+          <div class="hidden-sm-and-down">
+            <v-btn text="" v-if="isAuthenticated" @click="handleLogout">Logout</v-btn>
+            <v-btn text="" v-else to="/login">Login / Signup</v-btn>
+          </div>
           <v-list-item v-if="authStore.user" @click="handleLogout">
             <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
@@ -57,13 +62,15 @@
 </template>
 
 <script setup>
-  import {useAuthStore} from '@/store/modules/auth';
-  import {useRouter} from 'vue-router';
+  import { useAuthStore } from '@/store/modules/auth';
+  import { useRouter } from 'vue-router';
+  import { computed } from 'vue';
   import Logo from "@/components/layout/Logo.vue";
 
   const authStore = useAuthStore();
   const router = useRouter();
 
+  const isAuthenticated = computed(() => !!authStore.user);
 
   const handleLogout = () => {
     authStore.logout();

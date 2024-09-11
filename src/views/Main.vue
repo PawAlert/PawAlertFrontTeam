@@ -21,20 +21,6 @@ import MainView_5 from "@/components/layout/MainView_5.vue";
 export default {
   components: {MainView_5, MainView_4, MainView_3, MainView_2, MainView_1},
 
-  data() {
-    return {
-      user: null
-    }
-  },
-  async created() {
-    try {
-      const response = await profile();
-      this.user = response
-      console.log('사용자 정보:', response);
-    } catch (error) {
-      console.error('에러 발생:', error.response?.data || error.message);
-    }
-  }
 }
 
 
