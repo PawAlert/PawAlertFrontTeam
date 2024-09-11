@@ -14,44 +14,22 @@
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import Header from '@/components/layout/Header.vue';
-import Footer from '@/components/layout/Footer.vue';
 import { useAuthStore } from '@/store/modules/auth';
+import Footer from "@/components/layout/Footer.vue";
 
 const authStore = useAuthStore();
-const router = useRouter();
-const route = useRoute();
-
-// 앱이 로드될 때 로그인 상태 확인
-authStore.checkAuth();
-
-// URL 쿼리 파라미터에서 JWT 토큰을 처리하는 함수
-const handleToken = () => {
-  const token = route.query.token;
-  if (token) {
-    console.log('Token found in URL:', token);
-    authStore.setToken(token); // 스토어에 토큰 저장
-
-    // 토큰을 처리한 후 query parameter 제거
-    router.replace({ query: {} });
-  }
-};
-
-// 컴포넌트가 마운트될 때 토큰 처리
-onMounted(() => {
-  handleToken();
-});
-
-// URL 변경을 감지하여 토큰 처리
-watch(() => route.fullPath, handleToken);
+authStore.checkAuth(); // 앱이 로드될 때 로그인 상태 확인
 </script>
 
 <style scoped>
+
+
 .content-container {
   max-width: 1280px; /* 고정된 최대 너비 설정 */
   margin: 0 auto; /* 중앙 정렬 */
   padding: 0; /* 내부 여백 제거 */
 }
+
+
 </style>
