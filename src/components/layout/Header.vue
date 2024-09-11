@@ -42,10 +42,10 @@
             <v-list-item-title>동물봉사</v-list-item-title>
           </v-list-item>
 
-          <v-btn text="" v-if="isAuthenticated" to="/myPage" class="mypage">마이페이지</v-btn>
 
 
-          <v-list-item v-if="isAuthenticated" to="/myPage">
+
+          <v-list-item v-if="isAuthenticated" to="/myPage" class="mypage">
             <v-list-item-title>마이페이지</v-list-item-title>
           </v-list-item>
           <div class="hidden-sm-and-down">

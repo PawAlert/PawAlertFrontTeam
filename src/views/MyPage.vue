@@ -25,7 +25,6 @@ const router = useRouter();
             <v-list-item @click="router.push({name: 'MyPage'})">
               <v-card-text>
                 마이페이지
-
               </v-card-text>
             </v-list-item>
             <v-list-item>
