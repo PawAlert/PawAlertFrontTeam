@@ -74,12 +74,11 @@
     </v-row>
   </v-container>
 </template>
-
 <script setup>
-import {ref, onMounted} from 'vue';
-import {useAuthStore} from '@/store/modules/auth';
-import {AUTH_URLS} from '@/config/url';
-import {useRouter} from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useAuthStore } from '@/store/modules/auth';
+import { AUTH_URLS } from '@/config/url';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -99,45 +98,54 @@ const passwordRules = [
 
 const handleLogin = async () => {
   try {
-    await authStore.login({email: email.value, password: password.value});
+    await authStore.login({ email: email.value, password: password.value });
     if (authStore.status === 'success') {
-      // 로그인 성공 시 홈 페이지로 리디렉션
-      await router.push({name: 'Main'});
+      await router.push({ name: 'Main' });
     }
   } catch (error) {
     console.error('로그인 중 오류 발생:', error);
   }
 };
+const handleTokenAndRedirect = () => {
+  console.log('Current URL:', window.location.href);
 
-// 페이지가 로드될 때 JWT 토큰을 URL에서 추출하고 저장
-const getTokenFromUrl = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('token'); // 'token'은 URL에 포함된 JWT 토큰의 쿼리 파라미터 이름
+  // URL에서 토큰 추출을 위한 정규표현식
+  const tokenMatch = window.location.href.match(/[?&]token=([^&]+)/);
+
+  if (tokenMatch) {
+    const token = decodeURIComponent(tokenMatch[1]);
+    console.log('Extracted Token:', token);
+
+    authStore.setToken(token);
+    router.replace({ name: 'Main' });
+  } else {
+    console.log('No token found in URL');
+  }
 };
 
-onMounted(() => {
-  const jwtToken = getTokenFromUrl();
-  if (jwtToken) {
-    localStorage.setItem('jwt', jwtToken); // JWT 토큰을 로컬 스토리지에 저장
-    console.log('JWT 토큰이 저장되었습니다:', jwtToken);
+// 즉시 실행 함수
+(() => {
+  console.log("즉시 실행 함수 시작");
+  handleTokenAndRedirect();
+  console.log("handleTokenAndRedirect 실행 완료");
+})();
 
-    // 로그인 후 홈 페이지로 리디렉션
-    router.push({name: 'Main'});
-  }
+onMounted(() => {
+  console.log("onMounted 호출");
 });
 
 const redirectToGoogle = () => {
-  // 사용자를 구글 소셜 로그인 페이지로 리다이렉트
+  console.log("Google 로그인 리다이렉트 시작");
   window.location.href = AUTH_URLS.GOOGLE;
 };
 
 const redirectToNaver = () => {
-  // 사용자를 네이버 소셜 로그인 페이지로 리다이렉트
+  console.log("Naver 로그인 리다이렉트 시작");
   window.location.href = AUTH_URLS.NAVER;
 };
 
 const redirectToKakao = () => {
-  // 사용자를 카카오 소셜 로그인 페이지로 리다이렉트
+  console.log("Kakao 로그인 리다이렉트 시작");
   window.location.href = AUTH_URLS.KAKAO;
 };
 </script>
@@ -148,7 +156,7 @@ const redirectToKakao = () => {
 }
 
 .google-btn {
-  background-color: rgba(255, 252, 243, 0.16); /* Google 버튼 색상 */
+  background-color: rgba(255, 252, 243, 0.16);
   color: white;
 }
 </style>
