@@ -7,7 +7,7 @@
           <v-col class="text-center">
             <h1>실종 신고 목록</h1>
           </v-col>
-          <v-btn @click="router.push({name: 'MissingCreate'})">글쓰러가기</v-btn>
+          <v-btn @click="router.push({name: 'MissingPostCreate'})">글쓰러가기</v-btn>
         </v-row>
 
         <!-- 검색 필드 -->

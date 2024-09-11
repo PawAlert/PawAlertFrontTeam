@@ -53,5 +53,6 @@ watch(() => route.fullPath, handleToken);
   max-width: 1280px; /* 고정된 최대 너비 설정 */
   margin: 0 auto; /* 중앙 정렬 */
   padding: 0; /* 내부 여백 제거 */
+  font-family: "Noto Sans KR",serif;
 }
 </style>

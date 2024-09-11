@@ -6,13 +6,11 @@ import Signup from "@/views/Signup.vue";
 import Main from "@/views/Main.vue";
 import DetailViewMissing from "@/views/DetailViewMissing.vue";
 import AnimalHome from "@/views/AnimalHome.vue";
-import ShelterHome from "@/views/ShelterHome.vue";
 import OfficialGroup from "@/views/OfficialGroup.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
 import SignupHospital from "@/views/hospital/signup/SignupHospital.vue";
 import SignupShelter from "@/views/shelter/SignupShelter.vue";
 import SignupShelterInfo from "@/views/SignupShelterInfo.vue";
-import SignupHospitalInfo from "@/views/SignupStart.vue";
 import SignupStart from "@/views/SignupStart.vue";
 import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
 
@@ -44,9 +42,9 @@ const routes = [
         meta: {showHeader: true, showFooter: true}
     },
     {
-        path: '/missingCreate',
-        name: 'MissingCreate',
-        component: () => import('@/views/MissingCreate.vue'),
+        path: '/missingPostCreate',
+        name: 'MissingPostCreate',
+        component: () => import('@/views/PetMissingPost/MissingPostCreate.vue'),
         meta: {showHeader: true, showFooter: true}
     },
     {

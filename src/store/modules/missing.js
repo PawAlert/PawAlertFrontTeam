@@ -59,6 +59,8 @@ export const useMissingStore = defineStore('missing', {
             this.status = 'loading';
             try {
                 const response = await createMissingReportRequest(data, images);
+                console.log("data = " ,data)
+
                 this.status = 'sucess;';
                 console.log("성공적 생성", response)
             } catch (error) {

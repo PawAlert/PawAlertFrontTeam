@@ -17,21 +17,45 @@ export const fetchMissingListViewRequest = async (searchRequest) => {
 
 export const createMissingReportRequest = async (data, images) => {
     const formData = new FormData();
-    formData.append('MissingPost', new Blob([JSON.stringify(data)], {type: 'application/json'}));
 
-    // 이미지 파일들 FormData에 추가
+    // JSON 데이터를 Blob으로 변환하여 FormData에 추가
+    const jsonData = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    formData.append('MissingPost', jsonData);
+
+    // 이미지 파일들을 FormData에 추가
     images.forEach((image, index) => {
         formData.append('MissingImage', image, `image-${index + 1}.jpg`);
     });
 
-    const response = await axios.post(API_MISSING.M_CREATE, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // 로컬 저장소에서 토큰 가져오기
-        },
-    });
-    return response.data;
+    // FormData 확인 (디버깅)
+    console.log("FormData 내용:");
+    for (const pair of formData.entries()) {
+        console.log(pair[0] + ':', pair[1]);
+    }
+
+    try {
+        const response = await fetch(API_MISSING.M_CREATE, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`, // 로컬 저장소에서 토큰 가져오기
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        return responseData;
+
+    } catch (error) {
+        console.error('서버로 데이터 전송 중 오류 발생:', error.message);
+        throw error;
+    }
 };
+
+
 
 export const detailViewRequest = async (id) => {
     const response = await axios.get(API_MISSING.M_DetailView(id));
