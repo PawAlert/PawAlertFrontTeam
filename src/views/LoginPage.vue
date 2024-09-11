@@ -27,12 +27,10 @@
                 density="comfortable"
             ></v-text-field>
 
-            <!-- 상태가 error일 경우 오류 메시지를 표시 -->
             <v-alert v-if="authStore.status === 'error'" type="error" class="mt-4">
               {{ authStore.error }}
             </v-alert>
 
-            <!-- 상태가 loading이면 스피너를 표시하고, 아니면 로그인 버튼을 표시 -->
             <v-btn
                 type="submit"
                 color="primary"
@@ -58,7 +56,6 @@
                 Kakao 로그인
               </v-btn>
 
-
               <v-btn @click="redirectToNaver" color="green darken-2" class="flex-grow-1 mx-2 my-2">
                 Naver 로그인
               </v-btn>
@@ -66,7 +63,6 @@
               <v-btn @click="redirectToGoogle" color="grey darken-1" class="flex-grow-1 mx-2 my-2 google-btn">
                 Google 로그인
               </v-btn>
-
 
               <v-btn @click="router.push('/SignupStart')" class="flex-grow-1 mx-2 my-2">
                 회원가입
@@ -80,7 +76,7 @@
 </template>
 
 <script setup>
-import {ref, watchEffect} from 'vue';
+import {ref, onMounted} from 'vue';
 import {useAuthStore} from '@/store/modules/auth';
 import {AUTH_URLS} from '@/config/url';
 import {useRouter} from 'vue-router';
@@ -113,20 +109,35 @@ const handleLogin = async () => {
   }
 };
 
-// 로그인 상태를 감시하여 성공 시 리디렉션을 처리
-watchEffect(() => {
-  if (authStore.status === 'success') {
+// 페이지가 로드될 때 JWT 토큰을 URL에서 추출하고 저장
+const getTokenFromUrl = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('token'); // 'token'은 URL에 포함된 JWT 토큰의 쿼리 파라미터 이름
+};
+
+onMounted(() => {
+  const jwtToken = getTokenFromUrl();
+  if (jwtToken) {
+    localStorage.setItem('jwt', jwtToken); // JWT 토큰을 로컬 스토리지에 저장
+    console.log('JWT 토큰이 저장되었습니다:', jwtToken);
+
+    // 로그인 후 홈 페이지로 리디렉션
     router.push('/home');
   }
 });
 
 const redirectToGoogle = () => {
+  // 사용자를 구글 소셜 로그인 페이지로 리다이렉트
   window.location.href = AUTH_URLS.GOOGLE;
 };
+
 const redirectToNaver = () => {
+  // 사용자를 네이버 소셜 로그인 페이지로 리다이렉트
   window.location.href = AUTH_URLS.NAVER;
 };
+
 const redirectToKakao = () => {
+  // 사용자를 카카오 소셜 로그인 페이지로 리다이렉트
   window.location.href = AUTH_URLS.KAKAO;
 };
 </script>
@@ -136,10 +147,8 @@ const redirectToKakao = () => {
   min-height: 100vh;
 }
 
-
 .google-btn {
-  background-color: rgba(255, 252, 243, 0.16); /* Google 빨간색 */
-  color: white; /* 텍스트 색상 */
+  background-color: rgba(255, 252, 243, 0.16); /* Google 버튼 색상 */
+  color: white;
 }
-
 </style>
