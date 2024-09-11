@@ -68,7 +68,7 @@
   const router = useRouter();
 
   // user 상태의 변경을 정확히 반영하도록 computed 설정
-  const isAuthenticated = computed(() => !!authStore.user);
+  const isAuthenticated = computed(() => authStore.user);
 
   const handleLogout = () => {
     authStore.logout();

@@ -28,16 +28,25 @@ const route = useRoute();
 authStore.checkAuth();
 
 // URL 쿼리 파라미터에서 JWT 토큰을 처리하는 함수
-const handleToken = () => {
+const handleToken = async () => {
   const token = route.query.token;
   if (token) {
     console.log('Token found in URL:', token);
     authStore.setToken(token); // 스토어에 토큰 저장
 
+    // 토큰을 설정한 후 사용자 인증 확인
+    await authStore.checkAuth();
+
     // 토큰을 처리한 후 query parameter 제거
-    router.replace({query: {}});
+    await router.replace({query: {}});
   }
 };
+
+// 컴포넌트가 마운트될 때 토큰 처리
+onMounted(async () => {
+  await handleToken();
+});
+
 
 // 컴포넌트가 마운트될 때 토큰 처리
 onMounted(() => {
