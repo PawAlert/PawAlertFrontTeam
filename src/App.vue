@@ -19,7 +19,9 @@ import { useAuthStore } from '@/store/modules/auth';
 import Footer from "@/components/layout/Footer.vue";
 
 const authStore = useAuthStore();
+
 authStore.checkAuth(); // 앱이 로드될 때 로그인 상태 확인
+
 </script>
 
 <style scoped>
