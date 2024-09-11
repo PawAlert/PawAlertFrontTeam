@@ -122,7 +122,7 @@ onMounted(() => {
     console.log('JWT 토큰이 저장되었습니다:', jwtToken);
 
     // 로그인 후 홈 페이지로 리디렉션
-    router.push('/home');
+    router.push({name: 'Main'});
   }
 });
 
