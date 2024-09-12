@@ -38,7 +38,7 @@ const addressData = ref({
 const missingPostData = ref({
   title: "",
   content: "",
-  dateLost: new Date().toISOString().slice(0, 19),
+  dateLost: new Date(),
   contact1: "",
   contact2: "",
   description: "",
@@ -114,7 +114,6 @@ const execDaumPostcode = () => {
 };
 
 
-
 const submit = async () => {
   // addressData의 값을 missingPostData에 복사
   missingPostData.value.locataionRecord = {
@@ -140,6 +139,25 @@ const submit = async () => {
   }
 };
 
+
+watch(
+    () => missingPostData.value.dateLost,
+    (newDate) => {
+      console.log('Selected date:', newDate); // 선택된 날짜 확인
+
+      if (newDate instanceof Date) {
+        // Date 객체를 'YYYY-MM-DD' 형식의 문자열로 변환 (로깅이나 전송 시에만 사용)
+        const formattedDate = newDate.toISOString().split('T')[0];
+        console.log('Formatted date:', formattedDate); // 변환된 값 확인
+
+        // 하지만 'v-date-picker'는 Date 객체를 계속 사용해야 함
+      } else {
+        console.error('Error: Selected date is not a Date object');
+      }
+    }
+);
+
+
 const gender = ref('center');
 const species = ref('center');
 const icon = ref('justify');
@@ -147,7 +165,6 @@ const toggle_none = ref(null);
 const toggle_one = ref(0);
 const toggle_exclusive = ref(2);
 const toggle_multiple = ref([0, 1, 2]);
-
 
 
 </script>
@@ -231,12 +248,12 @@ const toggle_multiple = ref([0, 1, 2]);
 
                 <v-col>
                   <p class="title-text"> 실종 날짜 </p>
-                  <v-text-field
-
+                  <v-date-picker
+                      v-model="missingPostData.dateLost"
                       style="width: 540px"
                       class="mt-4"
                       placeholder="날짜를 입력해주세요"
-                  ></v-text-field>
+                  ></v-date-picker>
                 </v-col>
 
 
@@ -304,7 +321,7 @@ const toggle_multiple = ref([0, 1, 2]);
                 ></v-text-field>
               </v-col>
               <v-col>
-<!--성별-->
+                <!--성별-->
                 <v-col class="title-text d-flex">
                   <v-col>
                     <p class="title-text"> 성별 </p>
@@ -374,7 +391,6 @@ const toggle_multiple = ref([0, 1, 2]);
                   style="display: none"
                   @change="handleImageUpload"
               />
-
 
 
               <v-btn type="submit" color="primary">작성하기</v-btn>
