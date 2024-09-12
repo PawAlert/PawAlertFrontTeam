@@ -259,12 +259,16 @@ const toggle_multiple = ref([0, 1, 2]);
 
                 <v-col>
                   <p class="title-text"> 게시글 추가정보 </p>
-                  <v-text-field
+                  <v-textarea
+                      clearable
+                      rows="5"
+                      outlined
+                      max-length="500"
                       v-model="missingPostData.description"
                       style="width: 540px"
                       class="mt-4"
                       placeholder="추가설명을 입력해주세요"
-                  ></v-text-field>
+                  ></v-textarea>
                 </v-col>
               </v-col>
 
@@ -313,12 +317,12 @@ const toggle_multiple = ref([0, 1, 2]);
               </v-col>
               <v-col>
                 <p class="title-text"> 추가정보 </p>
-                <v-text-field
+                <v-textarea
                     v-model="missingPostData.petDescription"
                     style="width: 540px"
                     class="mt-4"
                     placeholder="추가정보"
-                ></v-text-field>
+                ></v-textarea>
               </v-col>
               <v-col>
                 <!--성별-->
@@ -410,16 +414,21 @@ const toggle_multiple = ref([0, 1, 2]);
 .black-background {
   background-color: #CFCBCB; /* 검정색 배경 */
   width: 100%;
-  height: 2000px; /* 화면 전체 높이 */
+  min-height: 100vh; /* 화면 전체 높이를 최소 높이로 설정 */
   position: relative; /* 자식 요소의 기준 */
+  display: flex;
+
 }
 
 .blue-background {
   background-color: #FCFBF6; /* 파란색 배경 */
   width: 97.5%; /* 파란색 배경의 너비 */
-  height: 97%; /* 파란색 배경의 높이 */
-  position: absolute; /* 부모 요소 기준으로 절대 위치 */
+  max-width: 100%; /* 최대 너비 제한 */
+  min-height: 95vh; /* 파란색 배경의 최소 높이 */
+  position: relative; /* 부모 요소 기준으로 절대 위치 */
   margin: auto;
+  overflow: hidden; /* 화면을 벗어나는 요소 숨김 */
+  box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
 }
 
 .title-text {

@@ -33,8 +33,10 @@ export const useAuthStore = defineStore('auth', {
             if (token) {
                 this.setToken(token);
                 await this.fetchUserProfile();
+                return this.user; // 인증된 사용자 정보를 반환
             } else {
                 this.logout();
+                return null; // 인증되지 않은 경우 null 반환
             }
         },
         async fetchUserProfile() {

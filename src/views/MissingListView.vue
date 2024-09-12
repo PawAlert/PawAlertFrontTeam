@@ -1,59 +1,42 @@
 <template>
   <v-container>
     <v-row>
+
+
       <v-col>
-        <!-- Header -->
-        <v-row align="center" class="mb-4">
-          <v-col class="text-center">
-            <h1>실종 신고 목록</h1>
+
+        <v-row>
+          <v-col>
+
+            <v-col>
+              <p style="font-size: 11px; color: #808080">반려동물 찾아요</p>
+
+              <p class="mt-3" style="font-size: 25px; font-weight: bold">게시글 보기</p>
+            </v-col>
+
           </v-col>
-          <v-btn @click="router.push({name: 'MissingPostCreate'})">글쓰러가기</v-btn>
+          <v-btn @click="checkUser">글쓰러가기</v-btn>
         </v-row>
 
-        <!-- 검색 필드 -->
-        <v-card class="pa-3 mb-4 mt-2">
-          <v-row>
-            <!-- 지역 선택 드롭다운 -->
-            <v-col cols="12" md="4">
-              <v-select
-                  v-model="address"
-                  :items="addressOptions"
-                  label="지역 선택"
-                  outlined
-                  dense
-                  clearable
-              />
-            </v-col>
+        <v-row>
+          <v-col cols="auto">
+            <v-select
+                v-model="items1"
+                :items="itemListValue1"
+                label="최신순"
+                class="select-box"
+                style="width: 150px"></v-select>
+          </v-col>
+          <v-col cols="auto">
+            <v-select
+                v-model="items2"
+                :items="itemListValue2"
+                label="실종 상태"
+                class="select-box"
 
-            <!-- 상세 주소 입력 -->
-            <v-col cols="12" md="4">
-              <v-text-field
-                  v-model="addressDetail1"
-                  label="상세 주소"
-                  outlined
-                  dense
-                  clearable
-              />
-            </v-col>
-
-            <!-- 상태 선택 드롭다운 -->
-            <v-col cols="12" md="3">
-              <v-select
-                  v-model="statusFilter"
-                  :items="statusOptions"
-                  label="상태 선택"
-                  outlined
-                  dense
-                  clearable
-              />
-            </v-col>
-
-            <!-- 검색 버튼 -->
-            <v-col cols="12" md="1">
-              <v-btn color="primary" @click="search">검색</v-btn>
-            </v-col>
-          </v-row>
-        </v-card>
+                style="width: 150px"></v-select>
+          </v-col>
+        </v-row>
 
         <!-- 로딩 상태 표시 -->
         <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>
@@ -151,6 +134,7 @@ import {useMissingStore} from '@/store/modules/missing';
 import {storeToRefs} from 'pinia';
 import {ref, onMounted} from 'vue';
 import router from "@/router/router";
+import {useAuthStore} from "@/store/modules/auth";
 
 const missingStore = useMissingStore();
 const {content, totalElements, currentPage, totalPages, status, error} = storeToRefs(missingStore);
@@ -159,34 +143,33 @@ const {content, totalElements, currentPage, totalPages, status, error} = storeTo
 const address = ref('');
 const addressDetail1 = ref('');
 const statusFilter = ref(''); // 기본 상태는 '전체'
+const items1 = ref('최신순');
+const items2 = ref('MISSING');
+
+const itemListValue1 = ['최신순', '오래된순']
+const itemListValue2 = ['MISSING', 'FOUND', 'RESOLVED']
+
+const authStore = useAuthStore();
+
+const checkUser = async () => {
+  const user = await authStore.checkAuth();
+  console.log("user = ", user)
+  if (user) {
+    console.log("user OK");
+    await router.push({
+      name: 'MissingPostCreate'
+    });
+  } else {
+    alert('로그인이 필요합니다.');
+    await router.push({name: 'Login'});
+
+  }
+};
 
 const viewDetail = (getId) => {
   router.push({name: 'DetailView', params: {id: getId}});
 };
 
-// 한국의 행정구역 목록
-const addressOptions = [
-  '서울특별시',
-  '부산광역시',
-  '대구광역시',
-  '인천광역시',
-  '광주광역시',
-  '대전광역시',
-  '울산광역시',
-  '세종특별자치시',
-  '경기도',
-  '강원도',
-  '충청북도',
-  '충청남도',
-  '전라북도',
-  '전라남도',
-  '경상북도',
-  '경상남도',
-  '제주특별자치도'
-];
-
-// 상태 옵션 목록
-const statusOptions = ['전체', 'MISSING', 'FOUND', 'RESOLVED'];
 
 // 컴포넌트가 마운트될 때 초기 데이터 가져오기
 onMounted(() => {
@@ -318,5 +301,10 @@ const getBadgeText = (status) => {
 .rowimage {
   width: 100%;
 }
+
+.select-box{
+
+}
+
 </style>
 
