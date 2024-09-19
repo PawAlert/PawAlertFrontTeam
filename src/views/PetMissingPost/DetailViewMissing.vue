@@ -1,37 +1,7 @@
-<template>
-  <v-container fluid class="black-background">
-    <!-- 파란색 배경 -->
-    <div class="blue-background">
-      <v-col>
-        <v-row style="margin-left: 20px; margin-top: 70px;">
-          <p style="font-size: 10px; color: #808080;">실종글 / 게시글 정보</p>
-<!--          <p style="font-size: 50px; font-weight: bold; color: black">{{ store.detailViewData.title }}</p>-->
-          <v-btn>
-            수정
-          </v-btn>
-          <v-btn>
-            수정
-          </v-btn>
-
-        </v-row>
-      </v-col>
-
-
-      <!-- 로딩 중일 때 메시지 -->
-      <div v-if="store.status === 'loading'">로딩 중...</div>
-      <div v-else-if="store.status === 'error'">에러 발생: {{ store.error }}</div>
-
-      <div>상태 : {{ store.status }}</div>
-      <!-- 상세 정보 출력 -->
-      <div>나이 : {{ store.detailViewData.age}}</div>
-
-    </div>
-  </v-container>
-</template>
-
 <script setup>
 import {useMissingStore} from "@/store/modules/missing";
 import {onMounted} from "vue";
+
 onMounted(() => {
   store.detailView(props.id);  // 가져온 id 값을 넘겨서 API 호출
 
@@ -45,9 +15,81 @@ const store = useMissingStore();
 
 </script>
 
+<template>
+  <v-container fluid class="black-background">
+    <!-- 파란색 배경 -->
+
+    <v-col>
+      <v-col style="margin-left: 20px;">
+        <p style="font-size: 10px; color: #808080;">실종글 / 게시글 정보</p>
+        <v-row class="align-center mr-3" justify="space-between">
+          <p style="margin-left: 4px;
+              font-size: 50px;
+              font-weight: bold;
+              color: black">{{ store.detailViewData.title }} </p>
+
+          <v-btn-group>
+            <v-btn style="background-color: #AEF1B1">수정</v-btn>
+            <v-btn style="background-color: #F4F1F1">삭제</v-btn>
+          </v-btn-group>
+        </v-row>
+
+        <!-- 상세 정보 출력 -->
+        <v-col>
+          <div v-if="store.status === 'loading'">로딩 중...</div>
+          <div v-else-if="store.status === 'error'">에러 발생: {{ store.error }}</div>
+
+          <!-- 이미지 출력 -->
+          <v-row class="mt-7 d-flex" justify="space-between">
+            <v-col
+                v-for="image in store.detailViewData.missingPetImages"
+                :key="image.petId"
+                cols="8"
+                lg="4"
+                class="d-flex justify-center"
+            >
+              <v-img
+                  class="image-list"
+                  :src="image.imageUrl"
+                  :width="300"
+                  height="300px"
+                  cover
+              ></v-img>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-col>
+      <v-divider></v-divider>
+      <v-card class="card-sty mt-12">
+        <!-- 반려동물 이미지 + 텍스트 정보 -->
+        <v-row>
+          <v-col>
+            <!-- 이미지가 상단에 위치 -->
+            <v-img
+                class="mt-5 ml-5"
+                :src="store.detailViewData.missingPetImages[0].imageUrl"
+                :width="416"
+                corver
+                height="auto"
+            ></v-img>
+          </v-col>
+
+        </v-row>
+        <v-col class="ml-5">
+          <p>제 반려동물 이름은 <span style="color: #0D47A1">{{ store.detailViewData.petName }} </span> 입니다.</p>
+          <p>나이는 {{ store.detailViewData.age }}세에요</p>
+          <p>연락처1:{{store.detailViewData }}</p>
+          <p>연락처2: 222-222-222</p>
+        </v-col>
+      </v-card>
+    </v-col>
+
+  </v-container>
+</template>
+
 <style scoped>
 .black-background {
-  background-color: #CFCBCB; /* 검정색 배경 */
+  background-color: #FCFBF6; /* 검정색 배경 */
   width: 100%;
   min-height: 100vh; /* 화면 전체 높이를 최소 높이로 설정 */
   position: relative; /* 자식 요소의 기준 */
@@ -55,24 +97,15 @@ const store = useMissingStore();
 
 }
 
-.blue-background {
-  background-color: #FCFBF6; /* 파란색 배경 */
-  width: 97.5%; /* 파란색 배경의 너비 */
-  max-width: 100%; /* 최대 너비 제한 */
-  min-height: 95vh; /* 파란색 배경의 최소 높이 */
-  position: relative; /* 부모 요소 기준으로 절대 위치 */
-  margin: auto;
-  overflow: hidden; /* 화면을 벗어나는 요소 숨김 */
-  box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
+.image-list {
+  margin-right: 20px;
+  justify-content: space-between;
+  border-radius: 20px;
 }
 
-.title-text {
-  font-size: 20px;
-  color: #222222;
+.card-sty {
+  margin: 0 auto;
+  width: 1090px;
+  background-color: #5DA070;
 }
-
-.address-field {
-  width: 500px;
-}
-
 </style>
