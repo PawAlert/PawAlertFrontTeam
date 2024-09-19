@@ -19,7 +19,7 @@ export const createMissingReportRequest = async (data, images) => {
     const formData = new FormData();
 
     // JSON 데이터를 Blob으로 변환하여 FormData에 추가
-    const jsonData = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const jsonData = new Blob([JSON.stringify(data)], {type: 'application/json'});
     formData.append('MissingPost', jsonData);
 
     // 이미지 파일들을 FormData에 추가
@@ -56,26 +56,63 @@ export const createMissingReportRequest = async (data, images) => {
 };
 
 
-
 export const detailViewRequest = async (id) => {
-    const response = await axios.get(API_MISSING.M_DetailView(id));
+    const url = API_MISSING.M_DetailView(id)
+    const response = await axios.get(
+        url,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        }
+    );
     return response.data;
 };
-export const commentMissingReportRequest = async (id, comment) => {
-    const url = API_MISSING.M_comment(id);
+export const commentMissingReportRequest = async (data) => {
+    const url = API_MISSING.M_comment(data.postId);
+    const getToken = localStorage.getItem('token');
 
-
+    if (getToken) {
         const response = await axios.post(
             url,
-            { content: comment },
+            {content: data.comment},
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${getToken}`,
                 },
             }
         );
-        console.log('Server response:', response); // 서버 응답 로그 추가
         return response.data;
-};
+    } else {
+        const response = await axios.post(
+            url,
+            {content: data.comment},
+        );
+        return response.data;
+    }
 
+};
+export const commentListView = async (postId) => {
+    // 토큰이 있을경우 와 없을 경우를 분리해야함
+    const getToken = localStorage.getItem('token');
+    const url = API_MISSING.M_comment(postId);
+    if (getToken) {
+        const response = await axios.get(
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getToken}`,
+                },
+            }
+        );
+        return response.data;
+    } else {
+        const response = await axios.get(
+            url,
+        );
+        return response.data;
+    }
+}

@@ -1,6 +1,7 @@
 // src/store/modules/missing.js
 import {defineStore} from 'pinia';
 import {
+    commentListView,
     commentMissingReportRequest,
     createMissingReportRequest,
     detailViewRequest,
@@ -84,11 +85,11 @@ export const useMissingStore = defineStore('missing', {
             }
         },
 
-        async commentMissingReport(id, comment) {
+        async commentMissingReport(data) {
             this.status = 'loading';
 
             try {
-                const response = await commentMissingReportRequest(id, comment);
+                const response = await commentMissingReportRequest(data);
                 console.log("댓글 작성 성공", response);
                 this.status = 'success';
             } catch (error) {
@@ -97,6 +98,18 @@ export const useMissingStore = defineStore('missing', {
 
                 console.error('댓글 작성 중 오류 발생:', error);
             }
-        }
-    },
+        },
+        async commentListResponse(id) {
+            this.status = 'loading';
+            try {
+                const response = await commentListView(id);
+                this.commentList = response.data;
+                this.status = 'success';
+            } catch (error) {
+                this.status = 'error';
+                this.error = error.message;
+                console.error('댓글 목록 가져오기 오류:', error);
+            }
+        },
+    }
 });
