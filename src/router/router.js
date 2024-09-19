@@ -4,7 +4,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import LoginPage from '@/views/LoginPage.vue';
 import Signup from "@/views/Signup.vue";
 import Main from "@/views/Main.vue";
-import DetailViewMissing from "@/views/DetailViewMissing.vue";
+import DetailViewMissing from "@/views/PetMissingPost/DetailViewMissing.vue";
 import AnimalHome from "@/views/AnimalHome.vue";
 import OfficialGroup from "@/views/OfficialGroup.vue";
 import GroupChoice from "@/views/GroupChoice.vue";
@@ -38,7 +38,7 @@ const routes = [
     {
         path: '/missing',
         name: 'Missing',
-        component: () => import('@/views/MissingListView.vue'),
+        component: () => import('@/views/PetMissingPost/MissingListView.vue'),
         meta: {showHeader: true, showFooter: true}
     },
     {

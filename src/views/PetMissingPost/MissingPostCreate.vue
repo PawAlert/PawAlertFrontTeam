@@ -182,7 +182,7 @@ const toggle_multiple = ref([0, 1, 2]);
         <v-form @submit.prevent="submit">
           <v-row>
             <v-col>
-              <v-col class="left-column">
+              <v-col>
                 <v-col>
                   <p class="title-text"> 제목 </p>
                   <v-text-field
@@ -192,7 +192,7 @@ const toggle_multiple = ref([0, 1, 2]);
                       placeholder="게시글 제목을 입력해주세요"
                   ></v-text-field>
                 </v-col>
-                <v-col class="left-column">
+                <v-col>
                   <p class="title-text"> 긴급 연락처 </p>
                   <v-text-field
                       v-model="missingPostData.contact1"
@@ -285,7 +285,7 @@ const toggle_multiple = ref([0, 1, 2]);
                     placeholder="반려동물 이름을 입력해주세요"
                 ></v-text-field>
               </v-col>
-              <v-col class="left-column">
+              <v-col>
 
                 <p class="title-text"> 나이 </p>
                 <v-text-field

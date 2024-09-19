@@ -30,6 +30,7 @@ export const useMissingStore = defineStore('missing', {
                     size: this.pageSize,     // 페이지 크기 전달
                 });
 
+                console.log(response)
                 // 응답에서 데이터 설정
                 this.content = response.content;
                 this.totalElements = response.totalElements;
@@ -59,7 +60,7 @@ export const useMissingStore = defineStore('missing', {
             this.status = 'loading';
             try {
                 const response = await createMissingReportRequest(data, images);
-                console.log("data = " ,data)
+                console.log("data = ", data)
 
                 this.status = 'sucess;';
                 console.log("성공적 생성", response)
@@ -74,9 +75,8 @@ export const useMissingStore = defineStore('missing', {
             console.log("detailView 함수 호출 ID:", id);
             try {
                 const response = await detailViewRequest(id);
-                this.detail = response;
+                this.detailViewData = response.data;
                 this.status = 'success';
-                console.log("상세 정보:", response);
             } catch (error) {
                 this.status = 'error';
                 this.error = error.message;
