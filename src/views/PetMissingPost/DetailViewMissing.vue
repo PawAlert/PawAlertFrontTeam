@@ -68,6 +68,7 @@ const commentCreate = async () => {
               font-weight: bold;
               color: black">{{ store.detailViewData.title }} </p>
 
+
           <v-btn-group v-if="store.detailViewData.isMine">
             <v-btn style="background-color: #AEF1B1">수정</v-btn>
             <v-btn style="background-color: #F4F1F1">삭제</v-btn>
