@@ -164,7 +164,7 @@ const myPageInfoUpdate = async () => {
                 <v-col>
                   <p class="text-field" style="font-size: 20px; font-weight: bold; color: #2D2D2D">연락처</p>
                   <v-text-field
-                      v-model="userName"
+                      v-model="phoneNumber"
                       variant="outlined"
                       readonly
                       disabled
