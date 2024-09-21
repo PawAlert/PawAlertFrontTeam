@@ -30,7 +30,7 @@ const onFileSelected = (event) => {
     selectedImage.value = file;
     authStore.fetchUserProfileUpdate(file);
     if (authStore.status === 'success') {
-      router.push({name: 'MyPage'});
+      router.push({name: 'Profile'});
     }
   }
 }

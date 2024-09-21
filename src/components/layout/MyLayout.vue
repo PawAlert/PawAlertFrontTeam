@@ -22,7 +22,7 @@ onMounted(() => {
         <v-list>
           <!-- 왼쪽 리스트 배치 -->
           <v-list>
-            <v-list-item @click="router.push({name: 'MyPage'})">
+            <v-list-item @click="router.push({name: 'Profile'})">
               <v-card-text>
                 프로필
               </v-card-text>

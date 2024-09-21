@@ -15,7 +15,7 @@
           <!--        <v-btn class="v_text1" text to="/동물봉사">동물봉사</v-btn>-->
           <!--        <v-btn class="v_text1" text to="/">커뮤니티</v-btn>-->
           <v-col cols="5" md="5" v-if="isAuthenticated">
-            <v-btn class="mypage" text to="/myPage">마이페이지</v-btn>
+            <v-btn class="mypage" text to="/myPage/Profile">마이페이지</v-btn>
             <v-btn @click="handleLogout">Logout</v-btn>
           </v-col>
           <v-col v-else>
@@ -52,7 +52,7 @@
           <!--            <v-list-item-title>커뮤니티</v-list-item-title>-->
           <!--          </v-list-item>-->
 
-          <v-list-item v-if="isAuthenticated" @click="router.push('/myPage')" class="mypage">
+          <v-list-item v-if="isAuthenticated" @click="router.push('/Profile')" class="mypage">
             <v-list-item-title>마이페이지</v-list-item-title>
           </v-list-item>
           <v-list-item v-if="isAuthenticated" @click="handleLogout">

@@ -22,8 +22,8 @@ const routes = [
         component: () => import('@/components/layout/MyLayout.vue'),
         children: [
             {
-                path: 'MyPage',
-                name: 'MyPage',
+                path: 'profile',
+                name: 'Profile',
                 component: () => import('@/views/mypage/MyPage.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
