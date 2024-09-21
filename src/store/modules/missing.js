@@ -4,8 +4,9 @@ import {
     commentListView,
     commentMissingReportRequest,
     createMissingReportRequest,
-    detailViewRequest,
-    fetchMissingListViewRequest
+    detailViewRequest, fetchMissingDelete,
+    fetchMissingListViewRequest,
+    fetchMissingUpdate
 } from '@/api/api_missing';
 
 export const useMissingStore = defineStore('missing', {
@@ -16,6 +17,7 @@ export const useMissingStore = defineStore('missing', {
         currentPage: 0,       // 현재 페이지 번호
         pageSize: 10,         // 페이지 크기 기본값
         status: 'idle',       // 상태
+        commentStatus: 'idle', // comment Status
         error: null,          // 오류 메시지
         detail: null,
     }),
@@ -86,30 +88,53 @@ export const useMissingStore = defineStore('missing', {
         },
 
         async commentMissingReport(data) {
-            this.status = 'loading';
+            this.commentStatus = 'loading';
 
             try {
                 const response = await commentMissingReportRequest(data);
                 console.log("댓글 작성 성공", response);
-                this.status = 'success';
+                this.commentStatus = 'success';
             } catch (error) {
-                this.status = 'error';
+                this.commentStatus = 'error';
                 this.error = error.message;
 
                 console.error('댓글 작성 중 오류 발생:', error);
             }
         },
         async commentListResponse(id) {
-            this.status = 'loading';
+            this.commentStatus = 'loading';
             try {
                 const response = await commentListView(id);
                 this.commentList = response.data;
-                this.status = 'success';
+                this.commentStatus = 'success';
             } catch (error) {
-                this.status = 'error';
+                this.commentStatus = 'error';
                 this.error = error.message;
                 console.error('댓글 목록 가져오기 오류:', error);
             }
         },
-    }
+        async updateMissingPost(data) {
+            this.status = 'loading';
+            try {
+                const response = await fetchMissingUpdate(data);
+                this.updatePosts = response.data;
+                this.status = 'success';
+            } catch (error) {
+                this.status = 'error';
+                this.error = error.message;
+                console.error('게시글 수정 오류:', error);
+            }
+        },
+        async deleteMissingPost(id) {
+            this.status = 'loading';
+            try {
+                await fetchMissingDelete(id);
+                this.status = "success";
+            } catch (error) {
+                this.status = 'error';
+                this.error = error.message;
+                console.error('게시글 삭제 오류:', error);
+            }
+        }
+    },
 });

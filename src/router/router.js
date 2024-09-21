@@ -57,7 +57,7 @@ const routes = [
         path: '/detail/:id',  // URL 파라미터로 id 받기
         name: 'DetailView',
         component: DetailViewMissing,
-        meta: {showHeader: true, showFooter: true},
+        meta: {showHeader: true, showFooter: false},
         props: true,
     },
     {

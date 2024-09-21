@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {API_MISSING} from '@/config/url'; // URL 설정 가져오기
+import {API_MISSING} from '@/config/url';
 
 // 게시글 목록을 가져오는 API 호출 함수
 export const fetchMissingListViewRequest = async (searchRequest) => {
@@ -15,6 +15,7 @@ export const fetchMissingListViewRequest = async (searchRequest) => {
     return response.data; // 서버 응답 데이터 반환
 };
 
+// 게시글 작성하기
 export const createMissingReportRequest = async (data, images) => {
     const formData = new FormData();
 
@@ -55,7 +56,7 @@ export const createMissingReportRequest = async (data, images) => {
     }
 };
 
-
+// 게시글 상세조회 하기
 export const detailViewRequest = async (id) => {
     const url = API_MISSING.M_DetailView(id)
     const response = await axios.get(
@@ -69,6 +70,7 @@ export const detailViewRequest = async (id) => {
     );
     return response.data;
 };
+// 댓글 남기기
 export const commentMissingReportRequest = async (data) => {
     const url = API_MISSING.M_comment(data.postId);
     const getToken = localStorage.getItem('token');
@@ -94,8 +96,8 @@ export const commentMissingReportRequest = async (data) => {
     }
 
 };
+// 댓글 가져오기
 export const commentListView = async (postId) => {
-    // 토큰이 있을경우 와 없을 경우를 분리해야함
     const getToken = localStorage.getItem('token');
     const url = API_MISSING.M_comment(postId);
     if (getToken) {
@@ -115,4 +117,36 @@ export const commentListView = async (postId) => {
         );
         return response.data;
     }
+}
+
+export const fetchMissingUpdate = async (data) => {
+    const getToken = localStorage.getItem('token');
+    console.log("API_MISSING.M_PATCH:", API_MISSING.M_PATCH);
+    const url = API_MISSING.M_PATCH;
+
+    const response = await axios.patch(
+        url,
+        data,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    )
+    return response.data;
+}
+
+export const fetchMissingDelete = async (id) => {
+    const getToken = localStorage.getItem('token');
+    const url = API_MISSING.M_DELETE(id);
+    const response = await axios.delete(
+        url,
+        {
+            headers: {
+                Authorization: `Bearer ${getToken}`,
+            }
+        }
+    );
+    return response.data;
 }

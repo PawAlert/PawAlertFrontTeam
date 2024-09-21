@@ -9,8 +9,8 @@ export const AUTH_URLS = {
 };
 
 export const API_MISSING = {
-    M_CREATE : `${API_URL}/api/missing/create`,
-    M_PATCH : `${API_URL}/api/missing/update`,
+    M_CREATE: `${API_URL}/api/missing/create`,
+    M_PATCH: `${API_URL}/api/missing/update`,
     M_DELETE: (id) => `${API_URL}/api/missing/delete/${id}`,
     M_DetailView: (id) => `${API_URL}/api/missing/getdetail/${id}`,
     M_LIST: `${API_URL}/api/missing/list`,
@@ -18,19 +18,19 @@ export const API_MISSING = {
 }
 
 //병원, 보호센터 인증하기
-export const API_CERTIFICATION={
+export const API_CERTIFICATION = {
     C_HOSPITAL: `${API_URL}/api/hospital/doctor/certification`,
     C_SHELTER: `${API_URL}/api/shelter/certification`,
 }
 // 병원으로 회원가입
-export const API_HOSPITAL={
-    H_CREATE : `${API_URL}/api/hospital/doctor/signupCreate`,
+export const API_HOSPITAL = {
+    H_CREATE: `${API_URL}/api/hospital/doctor/signupCreate`,
 }
 // 보호센터로 회원가입
-export const API_SHELTER={
-    H_SIGNUP_CREATE : `${API_URL}/api/shelter/signupCreate`,
+export const API_SHELTER = {
+    H_SIGNUP_CREATE: `${API_URL}/api/shelter/signupCreate`,
 }
 // 회원가입
-export const API_SIGNUP={
-    USER_SIGNUP : `${API_URL}/api/user/register`,
+export const API_SIGNUP = {
+    USER_SIGNUP: `${API_URL}/api/user/register`,
 }
