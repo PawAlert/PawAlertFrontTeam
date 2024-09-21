@@ -2,6 +2,7 @@
 import {ref, onMounted, watch} from 'vue';
 import {useMissingStore} from "@/store/modules/missing";
 import {createMissingReportRequest} from "@/api/api_missing";
+import router from "@/router/router";
 
 const missingStore = useMissingStore();
 const previewImages = ref([]);
@@ -130,6 +131,13 @@ const submit = async () => {
     // API 요청 호출
     const response = await missingStore.createMissingReport(missingPostData.value, imageFiles.value);
     console.log('서버 응답:', response);
+    console.log(missingStore.status, "status")
+
+    if (missingStore.status === 'success;') {
+      await router.push({name: 'Missing'});
+    } else {
+      alert('게시글 작성에 실패했습니다.');
+    }
 
     // 성공 처리 (예: 사용자에게 성공 메시지 표시, 다른 페이지로 리다이렉트 등)
 
