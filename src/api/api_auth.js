@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "@/config/url";
+import {API_MYPAGE, API_URL} from "@/config/url";
 
 export const login = async (credentials) => {
     try {
@@ -11,7 +11,7 @@ export const login = async (credentials) => {
         if (token) {
             localStorage.setItem('token', token);
             console.log('토큰이 로컬스토리지에 저장되었습니다:', token);
-            return { token };
+            return {token};
         } else {
             throw new Error('토큰을 추출하지 못했습니다');
         }
@@ -32,7 +32,6 @@ export const profile = async () => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
         });
-        console.log(response);
         return response.data;
     } catch (e) {
         console.error('오류 세부 사항:', e);
@@ -42,3 +41,18 @@ export const profile = async () => {
         throw new Error(`오류 ${status}: ${message}`);
     }
 };
+
+export const updateProfileImage = async (image) => {
+    const formData = new FormData();
+    formData.append('userImage', image);
+    const response = await axios.post(
+        API_MYPAGE.MYPAGE_PROFILE_UPDATE,
+        formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
+    return response.data;
+}
+

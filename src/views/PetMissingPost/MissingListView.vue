@@ -148,7 +148,8 @@ const authStore = useAuthStore();
 
 const checkUser = async () => {
   const user = await authStore.checkAuth();
-  if (user) {
+
+  if (authStore.status === 'success') {
     await router.push({ name: 'MissingPostCreate' });
   } else {
     alert('로그인이 필요합니다.');

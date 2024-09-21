@@ -16,6 +16,26 @@ import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
 
 // 라우트 설정
 const routes = [
+
+    {
+        path: '/myPage',
+        component: () => import('@/components/layout/MyLayout.vue'),
+        children: [
+            {
+                path: '',  // 이렇게 하면 /myPage로 접근 시 MyPage 컴포넌트가 로드됩니다.
+                name: 'MyPage',
+                component: () => import('@/views/mypage/MyPage.vue'),
+                meta: {showSidebar: true, showHeader: true, showFooter: false},
+            },
+            {
+                path:'/myPost',
+                name: 'MyPost',
+                component: () => import('@/views/mypage/MyPost.vue'),
+                meta: {showSidebar: true, showHeader: true, showFooter: false},
+            }
+        ]
+    },
+
     {
         path: '/',
         name: 'Main',
@@ -46,12 +66,6 @@ const routes = [
         name: 'MissingPostCreate',
         component: () => import('@/views/PetMissingPost/MissingPostCreate.vue'),
         meta: {showHeader: true, showFooter: true}
-    },
-    {
-        path: '/myPage',
-        name: 'MyPage',
-        component: () => import('@/views/MyPage.vue'),
-        meta: {showHeader: true, showFooter: false}
     },
     {
         path: '/detail/:id',  // URL 파라미터로 id 받기
@@ -107,12 +121,11 @@ const routes = [
         name: 'HospitalInfo',
         component: HospitalInfo,
     },
-
 ];
 
 // 라우터 생성
 const router = createRouter({
-    history: createWebHistory(), // HTML5 History 모드를 사용
+    history: createWebHistory(),
     routes,
 });
 

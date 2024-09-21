@@ -8,6 +8,7 @@ export const AUTH_URLS = {
     KAKAO: `${API_URL}/oauth2/authorization/kakao`,
 };
 
+//실종 게시글
 export const API_MISSING = {
     M_CREATE: `${API_URL}/api/missing/create`,
     M_PATCH: `${API_URL}/api/missing/update`,
@@ -33,4 +34,9 @@ export const API_SHELTER = {
 // 회원가입
 export const API_SIGNUP = {
     USER_SIGNUP: `${API_URL}/api/user/register`,
+}
+//마이페이지
+export const API_MYPAGE = {
+    MYPAGE_PROFILE_UPDATE: `${API_URL}/api/user/updateProfileImage`,
+    MYPAGE_INFO_UPDATE: `${API_URL}/api/user/update`,
 }

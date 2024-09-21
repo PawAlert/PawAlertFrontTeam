@@ -1,7 +1,7 @@
 <script setup>
 import {useMissingStore} from "@/store/modules/missing";
 import {useAuthStore} from "@/store/modules/auth";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {KakaoMap, KakaoMapMarker} from "vue3-kakao-maps";
 
 import {useRouter} from 'vue-router';
@@ -26,6 +26,7 @@ const petSpecies = ref('');
 const microchipId = ref('');
 const description = ref('');
 const missingReportId = ref('');
+const missingStatus = ref('');
 
 // onMounted에서 데이터를 불러온 후 업데이트
 onMounted(async () => {
@@ -46,6 +47,7 @@ onMounted(async () => {
   microchipId.value = store.detailViewData?.microchipId || '';
   description.value = store.detailViewData?.description || '';
   missingReportId.value = store.detailViewData?.missingReportId || '';
+  missingStatus.value = store.detailViewData?.missingStatus || '';
 });
 
 
@@ -59,14 +61,19 @@ const editingPostRequest = async () => {
     contact2: contact2.value,
     petSpecies: petSpecies.value,
     microchipId: microchipId.value,
-    description: description.value
+    description: description.value,
+    missingStatus: missingStatus.value
   }
 
   await store.updateMissingPost(data1);
-  if(store.status === 'success') {
+  if (store.status === 'success') {
     isEditing.value = false;
   }
 }
+// status 변경 상태 확인
+watch(missingStatus, (newValue) => {
+    console.log(newValue)
+})
 
 
 const commentCreate = async () => {
@@ -107,6 +114,34 @@ const deleteClick = async () => {
     alert('삭제에 실패하였습니다. 다시 시도해주세요');
   }
 }
+
+// 뱃지 색상 설정
+const getBadgeColor = (status) => {
+  switch (status) {
+    case 'MISSING':
+      return '#ED7474';
+    case 'FOUND':
+      return '#94ED74';
+    case 'RESOLVED':
+      return '#DC74ED';
+    default:
+      return 'grey';
+  }
+};
+
+// 뱃지 텍스트 설정
+const getBadgeText = (status) => {
+  switch (status) {
+    case 'MISSING':
+      return '실종';
+    case 'FOUND':
+      return '발견';
+    case 'RESOLVED':
+      return '해결';
+    default:
+      return '알 수 없음';
+  }
+};
 
 </script>
 
@@ -220,10 +255,9 @@ const deleteClick = async () => {
                   v-if="!isEditing">
                 <p style="font-weight: bold;"> 연락처2:
                   <span style="font-weight: normal"> {{ store.detailViewData.contact2 }}
-                  </span></p>
-                <p>
-
+                  </span>
                 </p>
+
             </span>
 
               <span v-else>
@@ -235,7 +269,35 @@ const deleteClick = async () => {
               >
               </v-text-field>
             </span>
+              <div>
+                <div v-if="isEditing" class="custom-badge"
+                     :style="{backgroundColor: getBadgeColor(store.detailViewData.missingStatus),
+                     borderRadius: '50px',
+                     width: '10%',
+                     textAlign: 'center',
+                }">
+                  {{ getBadgeText(store.detailViewData.missingStatus) }}
+                </div>
+                <div v-else>
+                  <p
+                      :style="{backgroundColor: getBadgeColor(store.detailViewData.missingStatus),
+                     borderRadius: '50px',
+                     width: '30%',
+                  marginTop: '10px',
+                  marginBottom:'10px',
+                     textAlign: 'center',}">
+                    {{ store.detailViewData.missingStatus }}</p>
+                  <v-select
+                      v-model="missingStatus"
+                      label="상태변경"
+                      :items="['MISSING', 'FOUND', 'RESOLVED']"
+                  >
 
+
+                  </v-select>
+                </div>
+
+              </div>
 
               <p style="color:
                     #808080;
@@ -448,10 +510,6 @@ const deleteClick = async () => {
   border: 1px solid green;
 }
 
-.editing-all-style {
-  border: 1px solid green;
-}
-
 @media screen and (max-width: 768px) {
   .text-field-sty {
     width: 400px
@@ -475,7 +533,6 @@ const deleteClick = async () => {
 
   .editing-pet-description {
     width: 35%;
-
   }
 
   .text-editing-style {

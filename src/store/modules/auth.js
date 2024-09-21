@@ -1,7 +1,7 @@
 // src/store/modules/auth.js
-import { defineStore } from 'pinia';
-import { login, profile } from '@/api/api_auth';
-import { register } from "@/api/hospital/api_certification";
+import {defineStore} from 'pinia';
+import {login, profile, updateProfileImage} from '@/api/api_auth';
+import {register} from "@/api/hospital/api_certification";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
         async login(credentials) {
             this.status = 'loading';
             try {
-                const { token } = await login(credentials);
+                const {token} = await login(credentials);
                 this.setToken(token);
                 await this.fetchUserProfile();
             } catch (error) {
@@ -32,17 +32,18 @@ export const useAuthStore = defineStore('auth', {
             const token = localStorage.getItem('token');
             if (token) {
                 this.setToken(token);
-                await this.fetchUserProfile();
-                return this.user; // 인증된 사용자 정보를 반환
+                const response = await this.fetchUserProfile();
+                this.status = 'success'
+                this.user = response.data;
             } else {
                 this.logout();
-                return null; // 인증되지 않은 경우 null 반환
             }
         },
         async fetchUserProfile() {
             try {
                 const response = await profile();
                 this.user = response.data;
+                return response;
             } catch (error) {
                 console.error('사용자 정보 가져오기 실패:', error);
                 this.logout();
@@ -52,6 +53,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await register(data);
                 console.log('fetchUserSignup response:', response);
+                this.status = 'success';
                 return response;
             } catch (error) {
                 console.error('회원가입 실패:', error);
@@ -62,6 +64,17 @@ export const useAuthStore = defineStore('auth', {
             this.token = token;
             this.status = 'success';
             localStorage.setItem('token', token);
+        },
+        async fetchUserProfileUpdate(image) {
+            try {
+                const response = await updateProfileImage(image);
+                this.status = 'success';
+            } catch (error) {
+                this.status = 'error';
+                console.error('프로필 이미지 업데이트 실패:', error);
+                throw error;
+            }
+
         }
     },
 });
