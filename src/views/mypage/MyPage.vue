@@ -146,25 +146,24 @@ const myPageInfoUpdate = async () => {
                 <v-col>
                   <p style="font-size: 20px; font-weight: bold; color: #2D2D2D">이름</p>
                   <v-text-field
-                      v-model="userName"
+
                       variant="outlined"
                       readonly
                       disabled
                       v-if="!isEditing">
-                    <p> {{ authStore.user.userName ? authStore.user.userName : "등록된 이름이 없습니다." }}</p>
+                    <p> {{ userName ? userName : "등록된 이름이 없습니다." }}</p>
                   </v-text-field>
                   <v-text-field v-else
+                                v-model="userName"
                                 label="이름을 입력해주세요"
                                 variant="outlined"
                   >
-
                   </v-text-field>
                 </v-col>
 
                 <v-col>
                   <p class="text-field" style="font-size: 20px; font-weight: bold; color: #2D2D2D">연락처</p>
                   <v-text-field
-                      v-model="phoneNumber"
                       variant="outlined"
                       readonly
                       disabled
@@ -173,6 +172,7 @@ const myPageInfoUpdate = async () => {
                   </v-text-field>
                   <v-text-field
                       v-else
+                      v-model="phoneNumber"
                       label="연락처를 등록해주세요"
                       variant="outlined"
                   >
@@ -198,7 +198,7 @@ const myPageInfoUpdate = async () => {
 
 <style scoped>
 @media screen and (max-width: 768px) {
-  .profile-btn{
+  .profile-btn {
     margin-left: 20px;
   }
 }
