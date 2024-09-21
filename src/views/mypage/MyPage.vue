@@ -41,7 +41,8 @@ const myPageInfoUpdate = async () => {
   }
   await myStore.fetchMyPageInfoUpdate(data);
   if (myStore.status === 'success') {
-    console.log("수정완료")
+    window.location.reload();
+
   }
 
 }
