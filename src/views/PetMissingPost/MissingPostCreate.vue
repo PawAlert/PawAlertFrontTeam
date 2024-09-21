@@ -133,7 +133,7 @@ const submit = async () => {
     console.log('서버 응답:', response);
     console.log(missingStore.status, "status")
 
-    if (missingStore.status === 'success;') {
+    if (missingStore.status === 'success') {
       await router.push({name: 'Missing'});
     } else {
       alert('게시글 작성에 실패했습니다.');
