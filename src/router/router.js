@@ -22,7 +22,7 @@ const routes = [
         component: () => import('@/components/layout/MyLayout.vue'),
         children: [
             {
-                path: '',  // 이렇게 하면 /myPage로 접근 시 MyPage 컴포넌트가 로드됩니다.
+                path: 'MyPage',
                 name: 'MyPage',
                 component: () => import('@/views/mypage/MyPage.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
