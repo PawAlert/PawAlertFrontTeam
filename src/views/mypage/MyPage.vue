@@ -2,6 +2,7 @@
 import {ref, watch, computed} from 'vue'
 import {useAuthStore} from '@/store/modules/auth';
 import {useMyPageStore} from "@/store/modules/mypageInfo";
+import router from "@/router/router";
 
 const authStore = useAuthStore();
 const myStore = useMyPageStore();
@@ -29,7 +30,7 @@ const onFileSelected = (event) => {
     selectedImage.value = file;
     authStore.fetchUserProfileUpdate(file);
     if (authStore.status === 'success') {
-      window.location.reload();
+      router.push({name: 'MyPage'});
     }
   }
 }
@@ -41,7 +42,7 @@ const myPageInfoUpdate = async () => {
   }
   await myStore.fetchMyPageInfoUpdate(data);
   if (myStore.status === 'success') {
-    window.location.reload();
+    await router.push({name: 'MyPage'});
 
   }
 
