@@ -38,7 +38,7 @@ export const useMissingStore = defineStore('missing', {
                 this.content = response.content;
                 this.totalElements = response.totalElements;
                 this.totalPages = response.totalPages;
-                this.status = 'success'; // 성공 상태로 설정
+                this.status = 'success' // 성공 상태로 설정
             } catch (error) {
                 this.status = 'error'; // 오류 상태로 설정
                 this.error = error.message; // 오류 메시지 저장
@@ -65,7 +65,7 @@ export const useMissingStore = defineStore('missing', {
                 const response = await createMissingReportRequest(data, images);
                 console.log("data = ", data)
 
-                this.status = 'sucess;';
+                this.status = 'success';
                 console.log("성공적 생성", response)
             } catch (error) {
                 this.status = 'error';
