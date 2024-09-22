@@ -8,13 +8,13 @@ export const useMyPageStore = defineStore('mypage', {
     }),
     actions: {
         async fetchMyPageInfoUpdate(data) {
-            this.status = 'loading';
+            this.status = 'myImageLoading';
             try{
                 await myPageInfoUpdate(data);
-                this.status = 'success';
+                this.status = 'myImageSuccess';
             }catch (error) {
                 this.error = error.message;
-                this.status = 'error';
+                this.status = 'myImagError';
             }
         }
 

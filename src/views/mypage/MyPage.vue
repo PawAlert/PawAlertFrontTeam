@@ -1,15 +1,15 @@
 <script setup>
-import {ref, watch, computed} from 'vue'
+import {ref} from 'vue'
 import {useAuthStore} from '@/store/modules/auth';
 import {useMyPageStore} from "@/store/modules/mypageInfo";
 import router from "@/router/router";
 
 const authStore = useAuthStore();
 const myStore = useMyPageStore();
+
 const isEditing = ref(false);
 
 const selectedImage = ref(null);
-const profileImage = computed(() => authStore.user.profileImageUrl)
 
 const userName = ref(authStore.user.userName);
 const phoneNumber = ref(authStore.user.phoneNumber);
@@ -41,7 +41,8 @@ const myPageInfoUpdate = async () => {
     phoneNumber: phoneNumber.value
   }
   await myStore.fetchMyPageInfoUpdate(data);
-  if (myStore.status === 'success') {
+  if (myStore.status === 'myImageSuccess') {
+    console.log(myStore.status)
     await router.push({name: 'MyPage'});
 
   }
@@ -50,7 +51,9 @@ const myPageInfoUpdate = async () => {
 </script>
 
 <template>
+
   <v-container fluid>
+
     <v-col>
       <v-col>
         <p style="font-size: 15px; color: #2D2D2D">마이페이지/</p>
@@ -60,7 +63,7 @@ const myPageInfoUpdate = async () => {
         <v-col cols="2">
           <v-avatar
               :key="authStore.user.profileImageUrl"
-              :image="profileImage"
+              :image="authStore.user.profileImageUrl"
               size="80">
           </v-avatar>
           <div>

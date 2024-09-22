@@ -29,25 +29,29 @@ const missingReportId = ref('');
 const missingStatus = ref('');
 
 // onMounted에서 데이터를 불러온 후 업데이트
-onMounted(async () => {
-  await store.detailView(props.id);
+// onMounted(async () => {
+//   await store.detailView(props.id);
+//
+//   console.log(store.status, "store.status");
+//   if (store.status === "success") {
+//     await store.commentListResponse(props.id);
+//     console.log("댓글 호출")
+//   }
+//
+//   // store.detailViewData가 업데이트되면 각 ref 값도 업데이트
+//   title.value = store.detailViewData?.title || '';
+//   petDescription.value = store.detailViewData?.petDescription || '';
+//   contact1.value = store.detailViewData?.contact1 || '';
+//   contact2.value = store.detailViewData?.contact2 || '';
+//   petSpecies.value = store.detailViewData?.petSpecies || '';
+//   microchipId.value = store.detailViewData?.microchipId || '';
+//   description.value = store.detailViewData?.description || '';
+//   missingReportId.value = store.detailViewData?.missingReportId || '';
+//   missingStatus.value = store.detailViewData?.missingStatus || '';
+// });
 
-  console.log(store.status, "store.status");
-  if (store.status === "success") {
-    await store.commentListResponse(props.id);
-    console.log("댓글 호출")
-  }
-
-  // store.detailViewData가 업데이트되면 각 ref 값도 업데이트
-  title.value = store.detailViewData?.title || '';
-  petDescription.value = store.detailViewData?.petDescription || '';
-  contact1.value = store.detailViewData?.contact1 || '';
-  contact2.value = store.detailViewData?.contact2 || '';
-  petSpecies.value = store.detailViewData?.petSpecies || '';
-  microchipId.value = store.detailViewData?.microchipId || '';
-  description.value = store.detailViewData?.description || '';
-  missingReportId.value = store.detailViewData?.missingReportId || '';
-  missingStatus.value = store.detailViewData?.missingStatus || '';
+onMounted(() => {
+  store.detailView(props.id);
 });
 
 
@@ -72,7 +76,7 @@ const editingPostRequest = async () => {
 }
 // status 변경 상태 확인
 watch(missingStatus, (newValue) => {
-    console.log(newValue)
+  console.log(newValue)
 })
 
 
@@ -148,7 +152,7 @@ const getBadgeText = (status) => {
 <template>
 
   <v-container fluid class="black-background">
-    <!-- 파란색 배경 -->
+
     <div v-if="store.status === 'loading'">로딩 중...</div>
     <div v-else-if="store.status === 'error'">에러 발생: {{ store.error }}</div>
 
@@ -278,7 +282,7 @@ const getBadgeText = (status) => {
                 }">
                   {{ getBadgeText(store.detailViewData.missingStatus) }}
                 </div>
-                <div v-else>
+                <div v-if="isEditing">
                   <p
                       :style="{backgroundColor: getBadgeColor(store.detailViewData.missingStatus),
                      borderRadius: '50px',
