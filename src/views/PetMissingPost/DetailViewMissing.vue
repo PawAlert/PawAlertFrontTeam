@@ -50,8 +50,9 @@ const missingStatus = ref('');
 //   missingStatus.value = store.detailViewData?.missingStatus || '';
 // });
 
-onMounted(() => {
-  store.detailView(props.id);
+onMounted(async () => {
+  await store.detailView(props.id);
+  await store.commentListResponse(props.id);
 });
 
 
@@ -74,10 +75,6 @@ const editingPostRequest = async () => {
     isEditing.value = false;
   }
 }
-// status 변경 상태 확인
-watch(missingStatus, (newValue) => {
-  console.log(newValue)
-})
 
 
 const commentCreate = async () => {
@@ -157,7 +154,7 @@ const getBadgeText = (status) => {
     <div v-else-if="store.status === 'error'">에러 발생: {{ store.error }}</div>
 
 
-    <v-col v-else-if="store.status === 'success'">
+    <v-col v-if="store.detailViewData">
       <!--상단 이미지와 수정/취소 보이는 부분-->
       <v-col style="margin-left: 20px;">
         <p style="font-size: 10px; color: #808080;">실종글 / 게시글 정보</p>

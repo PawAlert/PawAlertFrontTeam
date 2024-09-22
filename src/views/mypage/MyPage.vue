@@ -11,8 +11,8 @@ const isEditing = ref(false);
 
 const selectedImage = ref(null);
 
-const userName = ref(authStore.user.userName);
-const phoneNumber = ref(authStore.user.phoneNumber);
+const userName = ref('');
+const phoneNumber = ref('');
 
 const openFileDialog = () => {
   const fileInput = document.querySelector('input[type="file"]');
