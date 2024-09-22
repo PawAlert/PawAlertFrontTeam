@@ -52,8 +52,9 @@ const myPageInfoUpdate = async () => {
 
 <template>
 
-  <v-container fluid>
-
+  <div v-if="authStore.status === 'loading'">로딩 중...</div>
+  <div v-else-if="authStore.status === 'error'">에러 발생: {{ store.error }}</div>
+  <v-container v-if="authStore.user" fluid>
     <v-col>
       <v-col>
         <p style="font-size: 15px; color: #2D2D2D">마이페이지/</p>
