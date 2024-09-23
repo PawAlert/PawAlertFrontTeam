@@ -73,6 +73,7 @@ export const useMissingStore = defineStore('missing', {
                 console.error('게시글 생성 오류:', error);
             }
         },
+        // 게시글 상세조회 하기
         async detailView(id) {
             this.status = 'loading';
             console.log("detailView 함수 호출 ID:", id);
@@ -86,7 +87,7 @@ export const useMissingStore = defineStore('missing', {
                 console.error('상세 정보 가져오기 오류:', error);
             }
         },
-
+        // 게시글 댓글 작성
         async commentMissingReport(data) {
             this.commentStatus = 'loading';
 
@@ -101,6 +102,7 @@ export const useMissingStore = defineStore('missing', {
                 console.error('댓글 작성 중 오류 발생:', error);
             }
         },
+        // 게시글 댓글 가져오기
         async commentListResponse(id) {
             this.commentStatus = 'loading';
             try {
@@ -113,6 +115,7 @@ export const useMissingStore = defineStore('missing', {
                 console.error('댓글 목록 가져오기 오류:', error);
             }
         },
+        // 게시글 정보 수정하기
         async updateMissingPost(data) {
             this.status = 'loading';
             try {
@@ -125,6 +128,7 @@ export const useMissingStore = defineStore('missing', {
                 console.error('게시글 수정 오류:', error);
             }
         },
+        // 게시글 삭제하기
         async deleteMissingPost(id) {
             this.status = 'loading';
             try {

@@ -9,3 +9,4 @@ export const fetchShelterSignup = async (data) => {
         body: JSON.stringify(data),
     })
 }
+

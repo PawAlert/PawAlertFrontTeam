@@ -1,41 +1,47 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/store/modules/auth";
+import {ref, computed, onMounted} from "vue";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/store/modules/auth";
 
 const authStore = useAuthStore();
 const router = useRouter();
 
 const userRole = ref('');
 
+
+const logout = () => {
+  authStore.logout();
+  router.push({name: 'Main'});
+}
+
 // 메뉴 아이템을 계산된 속성으로 정의
 const menuItems = computed(() => {
   const items = [
-    { text: '프로필', route: 'Profile' },
-    { text: '내가 작성한 글', route: 'MyPost' },
-    { text: '찜 글', route: 'MyFavorites' },
-    { text: '문의하기', route: 'Contact' },
-    { text: '로그아웃', route: 'myLogout' },
+    {text: '프로필', route: 'Profile'},
+    {text: '내가 작성한 글', route: 'MyPost'},
+    {text: '찜 글', route: 'MyPageContact'},
+    {text: '문의하기', route: 'MyFavorites'},
+    {text: '로그아웃', route: 'myLogout'},
   ];
 
   if (userRole.value === 'ROLE_USER') {
-    items.push({ text: '동물병원 / 보호센터 등록하기', route: 'joinHospitalShelter' });
+    items.push({text: '동물병원 / 보호센터 등록하기', route: 'joinHospitalShelter'});
   } else if (userRole.value === 'ROLE_ANIMAL_HOSPITAL_USER') {
-    items.push({ text: '나의 동물병원', route: 'myHospital' });
+    items.push({text: '나의 동물병원', route: 'myHospital'});
   } else if (userRole.value === 'ROLE_ASSOCIATION_USER') {
-    items.push({ text: '나의 보호센터', route: 'MyShelter' });
+    items.push({text: '나의 보호센터', route: 'MyShelter'});
   }
 
   return items;
 });
 
 const navigateTo = (route) => {
-  router.push({ name: route });
+  router.push({name: route});
 };
 
 
 onMounted(() => {
-    authStore.checkAuth()
+  authStore.checkAuth()
 })
 
 </script>
@@ -45,7 +51,9 @@ onMounted(() => {
     <v-row>
       <v-col cols="2" class="hidden-sm-and-down">
         <v-list>
-          <v-list-item v-for="item in menuItems" :key="item.route" @click="navigateTo(item.route)">
+          <v-list-item v-for="item in menuItems"
+                       :key="item.route"
+                       @click="item.route === 'myLogout' ? logout() : navigateTo(item.route)">
             <v-card-text>{{ item.text }}</v-card-text>
           </v-list-item>
         </v-list>

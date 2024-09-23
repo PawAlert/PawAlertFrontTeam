@@ -28,11 +28,24 @@ const routes = [
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
             {
-                path:'/myPost',
+                path:'myPost',
                 name: 'MyPost',
                 component: () => import('@/views/mypage/MyPost.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
-            }
+            },
+            {
+                path:'myFavorites',
+                name: 'MyFavorites',
+                component: () => import('@/views/mypage/Contact.vue'),
+                meta: {showSidebar: true, showHeader: true, showFooter: false},
+            },
+            {
+                path:'myPageContact',
+                name: 'MyPageContact',
+                component: () => import('@/views/mypage/MyFavorites.vue'),
+                meta: {showSidebar: true, showHeader: true, showFooter: false},
+            },
+
         ]
     },
 

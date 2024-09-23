@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from 'vue'
 import {useAuthStore} from '@/store/modules/auth';
-import {useMyPageStore} from "@/store/modules/mypageInfo";
+import {useMyPageStore} from "@/store/modules/mypage/mypageInfo";
 import router from "@/router/router";
 
 const authStore = useAuthStore();

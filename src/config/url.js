@@ -39,4 +39,5 @@ export const API_SIGNUP = {
 export const API_MYPAGE = {
     MYPAGE_PROFILE_UPDATE: `${API_URL}/api/user/updateProfileImage`,
     MYPAGE_INFO_UPDATE: `${API_URL}/api/user/update`,
+    MYPAGE_POSTS: `${API_URL}/api/mypage/myposts`,
 }
