@@ -43,7 +43,9 @@ const myPageInfoUpdate = async () => {
   await myStore.fetchMyPageInfoUpdate(data);
   if (myStore.status === 'myImageSuccess') {
     console.log(myStore.status)
-    await router.push({name: 'MyPage'});
+
+    window.location.reload()
+
 
   }
 
@@ -157,7 +159,7 @@ const myPageInfoUpdate = async () => {
                       readonly
                       disabled
                       v-if="!isEditing">
-                    <p> {{ userName ? userName : "등록된 이름이 없습니다." }}</p>
+                    <p> {{ authStore.user.userName ? authStore.user.userName : "등록된 이름이 없습니다." }}</p>
                   </v-text-field>
                   <v-text-field v-else
                                 v-model="userName"
