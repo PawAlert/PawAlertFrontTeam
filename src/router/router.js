@@ -45,6 +45,12 @@ const routes = [
                 component: () => import('@/views/mypage/MyFavorites.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
+            {
+                path:'joinHospitalShelter',
+                name: 'MyPageJoin',
+                component: () => import('@/views/mypage/MyPageJoin.vue'),
+                meta: {showSidebar: true, showHeader: true, showFooter: false},
+            },
 
         ]
     },
