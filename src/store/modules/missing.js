@@ -14,7 +14,7 @@ export const useMissingStore = defineStore('missing', {
         content: [],          // 현재 페이지에 보여줄 게시글 목록
         totalElements: 0,     // 전체 데이터 개수
         totalPages: 0,        // 전체 페이지 수
-        currentPage: 0,       // 현재 페이지 번호
+        currentPage: 1,       // 현재 페이지 번호
         pageSize: 10,         // 페이지 크기 기본값
         status: 'idle',       // 상태
         commentStatus: 'idle', // comment Status

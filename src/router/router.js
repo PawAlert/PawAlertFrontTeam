@@ -106,6 +106,12 @@ const routes = [
         meta: {showHeader: true, showFooter: false},
     },
     {
+        path: '/hospitalPosts',  // URL 파라미터로 id 받기
+        name: 'HospitalPosts',
+        component: () => import('@/views/hospital/page/HospitalMain.vue'),
+        meta: {showHeader: true, showFooter: true},
+    },
+    {
         path: '/official',
         name: 'Official',
         component: OfficialGroup,

@@ -1,131 +1,3 @@
-<template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-row>
-          <v-col>
-            <v-col>
-              <p style="font-size: 11px; color: #808080">반려동물 찾아요</p>
-              <p class="mt-3" style="font-size: 25px; font-weight: bold">게시글 보기</p>
-            </v-col>
-          </v-col>
-        </v-row>
-
-        <v-row justify="space-between" class="align-content-space-between">
-          <!-- 두 개의 v-select를 한 그룹으로 배치 -->
-          <v-col cols="auto" class="d-flex">
-            <v-select
-                v-model="items1"
-                :items="itemListValue1"
-                label="최신순"
-                class="select-box"
-                style="width: 150px"
-            ></v-select>
-            <v-select
-                v-model="items2"
-                :items="itemListValue2"
-                label="실종 상태"
-                class="select-box"
-                style="width: 150px; margin-left: 10px;"
-            ></v-select>
-          </v-col>
-
-          <!-- 버튼을 오른쪽 끝으로 -->
-          <v-col cols="auto">
-            <v-btn @click="checkUser">글쓰러가기</v-btn>
-          </v-col>
-        </v-row>
-
-        <!-- 로딩 상태 표시 -->
-        <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>
-        <v-alert type="error" v-else-if="status === 'error'">오류: {{ error }}</v-alert>
-
-        <!-- 게시글 목록 -->
-        <v-row v-else>
-          <v-col @click="viewDetail(post.missingReportId)"
-                 v-for="post in filteredPosts"
-                 :key="post.missingReportId"
-                 cols="12"
-                 md="6"
-                 class="d-flex justify-center"
-          >
-            <!-- 전체 카드 크기 조절 -->
-            <v-card
-                class="d-flex flex-column align-center justify-center my-2 post-card card-item"
-                :style="{ width: '700px', height: '250px' }"
-            >
-              <v-row class="rowimage">
-                <!-- 이미지와 상태 -->
-                <v-col cols="4" class="d-flex align-center justify-center">
-                  <v-img
-                      :src="post.petImageUrls"
-                      width="100%"
-                      height="100%"
-                      cover
-                      class="rounded"
-                  ></v-img>
-                </v-col>
-
-                <!-- 게시글 내용 -->
-                <v-col cols="8" class="position-relative">
-                  <v-container class="pa-0">
-                    <v-row justify="center" align="center">
-                      <v-col cols="12" class="post-text">
-                        <!-- 제목 -->
-                        <v-list-item-title class="font-weight-bold mb-1" style="font-size: 20px;">
-                          {{ post.title }}
-                        </v-list-item-title>
-
-                        <!-- 설명 -->
-                        <v-row class="text-items">
-                          <v-list-item-subtitle class="mt-3" style="width: 97%; font-size: 15px; color: #514949;">
-                            {{ truncateText(post.content, 90) }}
-                          </v-list-item-subtitle>
-
-                          <!-- 구분선 -->
-                          <v-divider class="custom-divider"></v-divider>
-
-                          <v-alert-title style="font-weight: bold; color: #2D2D2D; font-size: 20px; margin-top: 5px">
-                            발견 장소
-                          </v-alert-title>
-
-                          <v-list-item-subtitle class="date-text">
-                            {{ post.address }} - {{ post.addressDetail }}
-                          </v-list-item-subtitle>
-
-                          <v-alert-title style="font-weight: bold; color: #2D2D2D; font-size: 20px; margin-top: 10px">
-                            {{ getStatusText(post.missingStatus) }}
-                          </v-alert-title>
-                          <v-list-item-subtitle class="date-text mt-1" style="font-size: 0.9rem; color: #666;">
-                            {{ formatDate(post.dateLost) }}
-                          </v-list-item-subtitle>
-                        </v-row>
-
-                        <!-- 상태 뱃지 -->
-                        <div class="custom-badge-container">
-                          <div class="custom-badge" :style="{ backgroundColor: getBadgeColor(post.missingStatus) }">
-                            {{ getBadgeText(post.missingStatus) }}
-                          </div>
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <!-- 페이지네이션 -->
-        <v-row justify="center" class="mt-4">
-          <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>
-          <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
-          <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
 
 <script setup>
 import {useMissingStore} from '@/store/modules/missing';
@@ -249,6 +121,136 @@ const getBadgeText = (status) => {
   }
 };
 </script>
+
+<template>
+  <v-container>
+    <v-row>
+      <v-col>
+        <v-row>
+          <v-col>
+            <v-col>
+              <p style="font-size: 11px; color: #808080">반려동물 찾아요</p>
+              <p class="mt-3" style="font-size: 25px; font-weight: bold">게시글 보기</p>
+            </v-col>
+          </v-col>
+        </v-row>
+
+        <v-row justify="space-between" class="align-content-space-between">
+          <!-- 두 개의 v-select를 한 그룹으로 배치 -->
+          <v-col cols="auto" class="d-flex">
+            <v-select
+                v-model="items1"
+                :items="itemListValue1"
+                label="최신순"
+                class="select-box"
+                style="width: 150px"
+            ></v-select>
+            <v-select
+                v-model="items2"
+                :items="itemListValue2"
+                label="실종 상태"
+                class="select-box"
+                style="width: 150px; margin-left: 10px;"
+            ></v-select>
+          </v-col>
+
+          <!-- 버튼을 오른쪽 끝으로 -->
+          <v-col cols="auto">
+            <v-btn @click="checkUser">글쓰러가기</v-btn>
+          </v-col>
+        </v-row>
+
+        <!-- 로딩 상태 표시 -->
+        <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>
+        <v-alert type="error" v-else-if="status === 'error'">오류: {{ error }}</v-alert>
+
+        <!-- 게시글 목록 -->
+        <v-row v-else>
+          <v-col @click="viewDetail(post.missingReportId)"
+                 v-for="post in filteredPosts"
+                 :key="post.missingReportId"
+                 cols="12"
+                 md="6"
+                 class="d-flex justify-center"
+          >
+            <!-- 전체 카드 크기 조절 -->
+            <v-card
+                class="d-flex flex-column align-center justify-center my-2 post-card card-item"
+                :style="{ width: '700px', height: '250px' }"
+            >
+              <v-row class="rowimage">
+                <!-- 이미지와 상태 -->
+                <v-col cols="4" class="d-flex align-center justify-center">
+                  <v-img
+                      :src="post.petImageUrls"
+                      width="100%"
+                      height="100%"
+                      cover
+                      class="rounded"
+                  ></v-img>
+                </v-col>
+
+                <!-- 게시글 내용 -->
+                <v-col cols="8" class="position-relative">
+                  <v-container class="pa-0">
+                    <v-row justify="center" align="center">
+                      <v-col cols="12" class="post-text">
+                        <!-- 제목 -->
+                        <v-list-item-title class="font-weight-bold mb-1" style="font-size: 20px;">
+                          {{ post.title }}
+                        </v-list-item-title>
+
+                        <!-- 설명 -->
+                        <v-row class="text-items">
+                          <v-list-item-subtitle class="mt-3" style="width: 97%; font-size: 15px; color: #514949;">
+                            {{ truncateText(post.content, 90) }}
+                          </v-list-item-subtitle>
+
+                          <!-- 구분선 -->
+                          <v-divider class="custom-divider"></v-divider>
+
+                          <v-alert-title style="font-weight: bold; color: #2D2D2D; font-size: 20px; margin-top: 5px">
+                            발견 장소
+                          </v-alert-title>
+
+                          <v-list-item-subtitle class="date-text">
+                            {{ post.address }} - {{ post.addressDetail }}
+                          </v-list-item-subtitle>
+
+                          <v-alert-title style="font-weight: bold; color: #2D2D2D; font-size: 20px; margin-top: 10px">
+                            {{ getStatusText(post.missingStatus) }}
+                          </v-alert-title>
+                          <v-list-item-subtitle class="date-text mt-1" style="font-size: 0.9rem; color: #666;">
+                            {{ formatDate(post.dateLost) }}
+                          </v-list-item-subtitle>
+                        </v-row>
+
+                        <!-- 상태 뱃지 -->
+                        <div class="custom-badge-container">
+                          <div class="custom-badge" :style="{ backgroundColor: getBadgeColor(post.missingStatus) }">
+                            {{ getBadgeText(post.missingStatus) }}
+                          </div>
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <!-- 페이지네이션 -->
+<!--        <v-row justify="center" class="mt-4">-->
+<!--          <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>-->
+<!--          <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>-->
+<!--          <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>-->
+<!--        </v-row>-->
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
 
 <style scoped>
 .mx-4 {

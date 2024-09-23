@@ -6,15 +6,18 @@
 
       <v-col class="hidden-sm-and-down">
         <v-row>
-          <v-col cols="9" md="7">
+          <v-col class="ml-9" cols="5" md="2">
             <v-btn class="v_text1" @click="router.push({ name: 'Missing' })">반려동물 찾아요</v-btn>
           </v-col>
+          <v-col cols="5" md="2">
+            <v-btn class="v_text1" @click="router.push({ name: 'HospitalPosts' })">동물병원</v-btn>
+          </v-col>
+<v-spacer></v-spacer>
           <!--        <v-btn class="v_text1" @click="router.push({ name: 'Protect' })">보호중이에요</v-btn>-->
           <!--        <v-btn class="v_text1" text to="/shelter">보호소</v-btn>-->
-          <!--        <v-btn class="v_text1" text to="/동물병원">동물병원</v-btn>-->
           <!--        <v-btn class="v_text1" text to="/동물봉사">동물봉사</v-btn>-->
           <!--        <v-btn class="v_text1" text to="/">커뮤니티</v-btn>-->
-          <v-col cols="5" md="5" v-if="isAuthenticated">
+          <v-col cols="3" v-if="isAuthenticated">
             <v-btn class="mypage" text to="/myPage/Profile">마이페이지</v-btn>
             <v-btn @click="handleLogout">Logout</v-btn>
           </v-col>
@@ -36,15 +39,16 @@
           <v-list-item @click="router.push({ name: 'Missing' })">
             <v-list-item-title>반려동물 찾아요</v-list-item-title>
           </v-list-item>
+          <v-list-item @click="router.push('/동물병원')">
+            <v-list-item-title>동물병원</v-list-item-title>
+          </v-list-item>
           <!--          <v-list-item @click="router.push({ name: 'Protect' })">-->
           <!--            <v-list-item-title>보호중이에요</v-list-item-title>-->
           <!--          </v-list-item>-->
           <!--          <v-list-item @click="router.push('/shelter')">-->
           <!--            <v-list-item-title>보호소</v-list-item-title>-->
-          <!--          </v-list-item>-->
-          <!--          <v-list-item @click="router.push('/동물병원')">-->
-          <!--            <v-list-item-title>동물병원</v-list-item-title>-->
-          <!--          </v-list-item>-->
+          <!--                    </v-list-item>-->
+
           <!--          <v-list-item @click="router.push('/동물봉사')">-->
           <!--            <v-list-item-title>동물봉사</v-list-item-title>-->
           <!--          </v-list-item>-->
