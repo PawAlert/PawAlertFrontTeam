@@ -116,7 +116,7 @@ const reserve = async () => {
                   ></v-progress-linear>
                 </template>
                 <v-img v-if="missingStore.detailViewData"
-                       height="250"
+                       height="200"
                        :src="missingStore.detailViewData.missingPetImages[0].imageUrl"
                        cover
                 ></v-img>

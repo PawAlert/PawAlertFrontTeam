@@ -56,9 +56,9 @@
                 Kakao 로그인
               </v-btn>
 
-              <v-btn @click="redirectToNaver" color="green darken-2" class="flex-grow-1 mx-2 my-2">
-                Naver 로그인
-              </v-btn>
+<!--              <v-btn @click="redirectToNaver" color="green darken-2" class="flex-grow-1 mx-2 my-2">-->
+<!--                Naver 로그인-->
+<!--              </v-btn>-->
 
               <v-btn @click="redirectToGoogle" color="grey darken-1" class="flex-grow-1 mx-2 my-2 google-btn">
                 Google 로그인
