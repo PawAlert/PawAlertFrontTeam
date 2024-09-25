@@ -1,4 +1,3 @@
-
 <script setup>
 import {useMissingStore} from '@/store/modules/missing';
 import {storeToRefs} from 'pinia';
@@ -22,20 +21,20 @@ const checkUser = async () => {
   const user = await authStore.checkAuth();
 
   if (authStore.status === 'success') {
-    await router.push({ name: 'MissingPostCreate' });
+    await router.push({name: 'MissingPostCreate'});
   } else {
     alert('로그인이 필요합니다.');
-    await router.push({ name: 'Login' });
+    await router.push({name: 'Login'});
   }
 };
 
 const viewDetail = (getId) => {
-  router.push({ name: 'DetailView', params: { id: getId } });
+  router.push({name: 'DetailView', params: {id: getId}});
 };
 
 // 데이터가 마운트될 때 가져오기
 onMounted(() => {
-  missingStore.fetchPosts({ address: '', addressDetail1: '', status: '' });
+  missingStore.fetchPosts({address: '', addressDetail1: '', status: ''});
 });
 
 // 필터링 및 정렬된 데이터
@@ -123,12 +122,17 @@ const getBadgeText = (status) => {
 </script>
 
 <template>
+
+
   <v-container>
+
+
     <v-row>
       <v-col>
         <v-row>
           <v-col>
             <v-col>
+
               <p style="font-size: 11px; color: #808080">반려동물 찾아요</p>
               <p class="mt-3" style="font-size: 25px; font-weight: bold">게시글 보기</p>
             </v-col>
@@ -160,11 +164,14 @@ const getBadgeText = (status) => {
           </v-col>
         </v-row>
 
-        <!-- 로딩 상태 표시 -->
-        <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>
-        <v-alert type="error" v-else-if="status === 'error'">오류: {{ error }}</v-alert>
+        <!--        &lt;!&ndash; 로딩 상태 표시 &ndash;&gt;-->
+        <!--                <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>-->
+        <!--                <v-alert type="error" v-else-if="status === 'error'">오류: {{ error }}</v-alert>-->
 
         <!-- 게시글 목록 -->
+        <v-alert type="info" v-if="content.length === 0">게시글을 작성해주세요...</v-alert>
+
+
         <v-row v-else>
           <v-col @click="viewDetail(post.missingReportId)"
                  v-for="post in filteredPosts"
@@ -241,11 +248,11 @@ const getBadgeText = (status) => {
         </v-row>
 
         <!-- 페이지네이션 -->
-<!--        <v-row justify="center" class="mt-4">-->
-<!--          <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>-->
-<!--          <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>-->
-<!--          <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>-->
-<!--        </v-row>-->
+        <!--        <v-row justify="center" class="mt-4">-->
+        <!--          <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>-->
+        <!--          <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>-->
+        <!--          <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>-->
+        <!--        </v-row>-->
       </v-col>
     </v-row>
   </v-container>
