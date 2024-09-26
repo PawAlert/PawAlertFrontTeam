@@ -435,7 +435,7 @@ const getBadgeText = (status) => {
               <p>{{ comment.content }}</p>
             </div>
             <div v-else>
-              <p>비공개 댓글입니다.</p>
+              <p>작성자만 볼 수 있습니다.</p>
             </div>
             <p>{{ comment.timestamp }}</p>
 
