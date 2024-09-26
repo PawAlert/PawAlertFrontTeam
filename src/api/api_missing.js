@@ -95,7 +95,7 @@ export const commentMissingReportRequest = async (data) => {
 
 };
 // 댓글 가져오기
-export const commentListView = async (postId) => {
+export const commentListView = async (postId, page = 0) => {
     const getToken = localStorage.getItem('token');
     const url = API_MISSING.M_comment(postId);
     if (getToken) {
@@ -106,6 +106,9 @@ export const commentListView = async (postId) => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${getToken}`,
                 },
+                params: {
+                    page: page,
+                }
             }
         );
         return response.data;

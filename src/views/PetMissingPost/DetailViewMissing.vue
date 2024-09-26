@@ -1,13 +1,16 @@
 <script setup>
 import {useMissingStore} from "@/store/modules/missing";
 import {useAuthStore} from "@/store/modules/auth";
+import {useCommentStore} from "@/store/modules/commentList";
 import {onMounted, ref, watch} from "vue";
 import {KakaoMap, KakaoMapMarker} from "vue3-kakao-maps";
-
 import {useRouter} from 'vue-router';
+import {storeToRefs} from "pinia";
 
 const router = useRouter();
+const commentStore = useCommentStore();
 
+const {commentStatus, error, totalElements, totalPages, currentPage, pageSize, commentList} = storeToRefs(commentStore);
 
 // Pinia Store 가져오기
 const store = useMissingStore();
@@ -52,8 +55,31 @@ const missingStatus = ref('');
 
 onMounted(async () => {
   await store.detailView(props.id);
-  await store.commentListResponse(props.id);
 });
+
+watch(() => store.status, (newStatus) => {
+      if (newStatus === "success") {
+        commentListView(props.id);
+      }
+    }
+);
+
+
+
+const commentListView = async (id) => {
+  await commentStore.commentListResponse(id);
+}
+
+const prevPage = () => {
+  commentStore.prevPage(); // 이전 페이지 요청
+  console.log("이젠페이지")
+};
+
+const nextPage = () => {
+  commentStore.nextPage(); // 다음 페이지 요청
+  console.log("다음페이지")
+
+};
 
 
 // 수정하기 전송
@@ -76,7 +102,6 @@ const editingPostRequest = async () => {
   }
 }
 
-
 const commentCreate = async () => {
   const getToken = localStorage.getItem('token');
   if (!getToken) {
@@ -90,10 +115,10 @@ const commentCreate = async () => {
   };
   try {
     // 댓글 작성 API 호출 (서버로 댓글 전송)
-    await store.commentMissingReport(data);
-    if (store.commentStatus === "success") {
+    await commentStore.commentMissingReport(data);
+    if (commentStore.commentStatus === "success") {
       // 댓글 작성 후, 서버에서 최신 댓글 목록 다시 가져오기
-      await store.commentListResponse(props.id);
+      await commentStore.commentListResponse(props.id);
       // 댓글 입력 필드 초기화
       comment.value = '';
     }
@@ -149,10 +174,6 @@ const getBadgeText = (status) => {
 <template>
 
   <v-container fluid class="black-background">
-
-    <div v-if="store.status === 'loading'">로딩 중...</div>
-    <div v-else-if="store.status === 'error'">에러 발생: {{ store.error }}</div>
-
 
     <v-col v-if="store.detailViewData">
       <!--상단 이미지와 수정/취소 보이는 부분-->
@@ -394,9 +415,18 @@ const getBadgeText = (status) => {
           </v-col>
         </v-row>
 
-        <v-col v-if="store.commentList != ''">
-          <v-col class="comment-user" v-for="comment in store.commentList">
+        <!--    <p>{{// commentStore.commentList}}</p> -->
+        <p>{{ currentPage }}, 퓨ㅔ이지 </p>
+        <!--    commentStatus, error, totalElements, totalPages, currentPage, pageSize, commentList-->
+
+        <v-col v-if="commentList.length !== 0">
+          <v-col class="comment-user" v-for="comment in commentList">
             <!--         <p>작성자 이미지</p>-->
+<!--            <v-avatar-->
+<!--            datasrc=""-->
+<!--            >-->
+
+<!--            </v-avatar>-->
             <p>{{ comment.userId }}</p>
             <div v-if="comment.isCommentMine">
               <p>{{ comment.content }}</p>
@@ -405,7 +435,13 @@ const getBadgeText = (status) => {
               <p>비공개 댓글입니다.</p>
             </div>
             <p>{{ comment.timestamp }}</p>
+
           </v-col>
+          <v-row justify="center" class="mt-4">
+            <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>
+            <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
+            <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>
+          </v-row>
         </v-col>
         <v-col class="comment-class" v-else>
           <div>작성된 댓글이 없습니다. 댓글을 남겨주세요</div>
@@ -417,6 +453,7 @@ const getBadgeText = (status) => {
         <v-btn class="comment-create" @click="commentCreate">
           댓글 작성하기
         </v-btn>
+
       </v-col>
     </v-col>
 

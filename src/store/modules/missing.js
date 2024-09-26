@@ -1,8 +1,6 @@
 // src/store/modules/missing.js
 import {defineStore} from 'pinia';
 import {
-    commentListView,
-    commentMissingReportRequest,
     createMissingReportRequest,
     detailViewRequest, fetchMissingDelete,
     fetchMissingListViewRequest,
@@ -49,7 +47,8 @@ export const useMissingStore = defineStore('missing', {
                 this.content = response.content;
                 this.totalElements = response.totalElements;
                 this.totalPages = response.totalPages;
-                this.status = 'success'; // 성공 상태
+                this.status = 'missingPostDetailSuccess'; // 성공 상태
+
             } catch (error) {
                 this.status = 'error'; // 에러 발생 시 상태 업데이트
                 this.error = error.message;
@@ -108,34 +107,7 @@ export const useMissingStore = defineStore('missing', {
                 console.error('상세 정보 가져오기 오류:', error);
             }
         },
-        // 게시글 댓글 작성
-        async commentMissingReport(data) {
-            this.commentStatus = 'loading';
 
-            try {
-                const response = await commentMissingReportRequest(data);
-                console.log("댓글 작성 성공", response);
-                this.commentStatus = 'success';
-            } catch (error) {
-                this.commentStatus = 'error';
-                this.error = error.message;
-
-                console.error('댓글 작성 중 오류 발생:', error);
-            }
-        },
-        // 게시글 댓글 가져오기
-        async commentListResponse(id) {
-            this.commentStatus = 'loading';
-            try {
-                const response = await commentListView(id);
-                this.commentList = response.data;
-                this.commentStatus = 'success';
-            } catch (error) {
-                this.commentStatus = 'error';
-                this.error = error.message;
-                console.error('댓글 목록 가져오기 오류:', error);
-            }
-        },
         // 게시글 정보 수정하기
         async updateMissingPost(data) {
             this.status = 'loading';
