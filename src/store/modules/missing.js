@@ -20,43 +20,64 @@ export const useMissingStore = defineStore('missing', {
         commentStatus: 'idle', // comment Status
         error: null,          // 오류 메시지
         detail: null,
+        currentSortDirection: 'DESC', // 현재 정렬 방향
+        currentStatusFilter: 'MISSING', // 현재 상태 필터
     }),
     actions: {
         // 서버에서 데이터 가져오기
+        // 서버에서 게시글 목록 가져오기
         async fetchPosts(searchRequest = {}) {
-            this.status = 'loading'; // 로딩 상태로 설정
+            this.status = 'loading'; // 로딩 중 상태 설정
+
+            // 새로운 요청이 들어오면, 정렬 및 상태 필터 업데이트
+            const sortDirection = searchRequest.sortDirection || this.currentSortDirection;
+            const statusFilter = searchRequest.statusFilter || this.currentStatusFilter;
+
+            // 상태 저장
+            this.currentSortDirection = sortDirection;
+            this.currentStatusFilter = statusFilter;
+
             try {
-                // 서버로부터 데이터 가져오기
+                // 서버에서 데이터 가져오기
                 const response = await fetchMissingListViewRequest({
-                    ...searchRequest,
-                    page: this.currentPage,  // 현재 페이지 번호 전달
-                    size: this.pageSize,     // 페이지 크기 전달
+                    page: this.currentPage,      // 현재 페이지 번호
+                    sortDirection: this.currentSortDirection, // 정렬 조건
+                    statusFilter: this.currentStatusFilter,   // 상태 필터
                 });
-                this.postData = response.data;
-                console.log(response)
-                // 응답에서 데이터 설정
+
+                // 응답 데이터 설정
                 this.content = response.content;
                 this.totalElements = response.totalElements;
                 this.totalPages = response.totalPages;
-                this.status = 'success' // 성공 상태로 설정
+                this.status = 'success'; // 성공 상태
             } catch (error) {
-                this.status = 'error'; // 오류 상태로 설정
-                this.error = error.message; // 오류 메시지 저장
+                this.status = 'error'; // 에러 발생 시 상태 업데이트
+                this.error = error.message;
                 console.error('게시글 가져오기 오류:', error);
             }
         },
+
         // 다음 페이지로 이동
         nextPage() {
             if (this.currentPage < this.totalPages - 1) {
                 this.currentPage++;
-                this.fetchPosts(); // 페이지 이동 후 데이터 다시 가져오기
+                // 현재 페이지를 증가시키고 다시 요청
+                this.fetchPosts({
+                    sortDirection: this.currentSortDirection,  // 현재 정렬 유지
+                    statusFilter: this.currentStatusFilter,    // 현재 상태 필터 유지
+                });
             }
         },
+
         // 이전 페이지로 이동
         prevPage() {
             if (this.currentPage > 0) {
                 this.currentPage--;
-                this.fetchPosts(); // 페이지 이동 후 데이터 다시 가져오기
+                // 현재 페이지를 감소시키고 다시 요청
+                this.fetchPosts({
+                    sortDirection: this.currentSortDirection,  // 현재 정렬 유지
+                    statusFilter: this.currentStatusFilter,    // 현재 상태 필터 유지
+                });
             }
         },
         async createMissingReport(data, images) {

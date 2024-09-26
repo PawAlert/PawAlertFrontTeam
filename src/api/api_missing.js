@@ -2,15 +2,13 @@ import axios from 'axios';
 import {API_MISSING} from '@/config/url';
 
 // 게시글 목록을 가져오는 API 호출 함수
-export const fetchMissingListViewRequest = async (searchRequest) => {
+export const fetchMissingListViewRequest = async (params) => {
     const response = await axios.get(API_MISSING.M_LIST, {
         params: {
-            address: searchRequest.address || '',
-            addressDetail1: searchRequest.addressDetail1 || '',
-            status: searchRequest.status || '',
-            page: searchRequest.page || 0,  // 페이지 번호
-            size: searchRequest.size || 10,  // 페이지 크기
-        },
+            page: params.page || 0,                     // 페이지 번호 (기본값 0)
+            sortDirection: params.sortDirection || 'DESC',  // 정렬 방식 (기본값 DESC)
+            statusFilter: params.statusFilter || 'MISSING'  // 상태 필터 (기본값 MISSING)
+        }
     });
     return response.data; // 서버 응답 데이터 반환
 };

@@ -1,7 +1,7 @@
 <script setup>
 import {useMissingStore} from '@/store/modules/missing';
 import {storeToRefs} from 'pinia';
-import {ref, computed, onMounted} from 'vue';
+import {ref, computed, onMounted, watch} from 'vue';
 import router from "@/router/router";
 import {useAuthStore} from "@/store/modules/auth";
 
@@ -13,8 +13,7 @@ const {content, totalElements, currentPage, totalPages, status, error} = storeTo
 const items1 = ref('최신순');  // 최신순 또는 오래된순
 const items2 = ref('MISSING'); // 실종 상태 (MISSING, FOUND, RESOLVED)
 const itemListValue1 = ['최신순', '오래된순'];
-const itemListValue2 = ['MISSING', 'FOUND', 'RESOLVED', '전체'];
-
+const itemListValue2 = ['MISSING', 'FOUND', 'RESOLVED'];
 const authStore = useAuthStore();
 
 const checkUser = async () => {
@@ -28,50 +27,41 @@ const checkUser = async () => {
   }
 };
 
-const viewDetail = (getId) => {
-  router.push({name: 'DetailView', params: {id: getId}});
-};
 
 // 데이터가 마운트될 때 가져오기
 onMounted(() => {
-  missingStore.fetchPosts({address: '', addressDetail1: '', status: ''});
-});
-
-// 필터링 및 정렬된 데이터
-const filteredPosts = computed(() => {
-  // 상태 필터링
-  let filtered = content.value.filter(post => {
-    return items2.value === '전체' || post.missingStatus === items2.value;
-  });
-
-  // 날짜 정렬
-  if (items1.value === '최신순') {
-    filtered.sort((a, b) => new Date(b.dateLost) - new Date(a.dateLost)); // 최신순
-  } else {
-    filtered.sort((a, b) => new Date(a.dateLost) - new Date(b.dateLost)); // 오래된순
-  }
-
-  return filtered;
+  missingStore.fetchPosts();
 });
 
 // 페이지네이션 함수
 const prevPage = () => {
-  missingStore.prevPage();
+  missingStore.prevPage(); // 이전 페이지 요청
+  window.scrollTo(0, 0); // 페이지 이동 시 맨 위로 이동
 };
 
 const nextPage = () => {
-  missingStore.nextPage();
+  missingStore.nextPage(); // 다음 페이지 요청
+  console.log(currentPage.value)
+  window.scrollTo(0, 0); // 페이지 이동 시 맨 위로 이동
+
 };
 
-// 날짜 형식을 가독성 있게 변환
-const formatDate = (dateStr) => {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+const selectSearchPost = () => {
+  missingStore.fetchPosts({
+    page: currentPage.value, // 현재 페이지 번호
+    sortDirection: items1.value === '최신순' ? 'DESC' : 'asc', // 정렬 기준
+    statusFilter: items2.value === 'MISSING' ? '' : items2.value // 전체 선택 시 빈 값
   });
+  console.log("전송")
 };
+
+watch([items1, items2], ([newItems1, newItems2], [oldItems1, oldItems2]) => {
+  // 값이 실제로 변경되었을 때만 함수 호출
+  if (newItems1 !== oldItems1 || newItems2 !== oldItems2) {
+    selectSearchPost();
+  }
+
+});
 
 // 설명을 90자로 줄이고 ... 추가하는 함수
 const truncateText = (text, maxLength) => {
@@ -119,6 +109,20 @@ const getBadgeText = (status) => {
       return '알 수 없음';
   }
 };
+
+// 날짜 형식을 가독성 있게 변환
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+const viewDetail = (getId) => {
+  router.push({name: 'DetailView', params: {id: getId}});
+};
 </script>
 
 <template>
@@ -143,6 +147,7 @@ const getBadgeText = (status) => {
           <!-- 두 개의 v-select를 한 그룹으로 배치 -->
           <v-col cols="auto" class="d-flex">
             <v-select
+                @input="selectSearchPost"
                 v-model="items1"
                 :items="itemListValue1"
                 label="최신순"
@@ -150,6 +155,7 @@ const getBadgeText = (status) => {
                 style="width: 150px"
             ></v-select>
             <v-select
+                @input="selectSearchPost"
                 v-model="items2"
                 :items="itemListValue2"
                 label="실종 상태"
@@ -165,7 +171,7 @@ const getBadgeText = (status) => {
         </v-row>
 
         <!--        &lt;!&ndash; 로딩 상태 표시 &ndash;&gt;-->
-        <!--                <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>-->
+        <!--                        <v-alert type="info" v-if="status === 'loading'">로딩 중...</v-alert>-->
         <!--                <v-alert type="error" v-else-if="status === 'error'">오류: {{ error }}</v-alert>-->
 
         <!-- 게시글 목록 -->
@@ -173,9 +179,9 @@ const getBadgeText = (status) => {
 
 
         <v-row v-else>
-          <v-col @click="viewDetail(post.missingReportId)"
-                 v-for="post in filteredPosts"
-                 :key="post.missingReportId"
+          <v-col v-for="post in content"
+                 :key="post.size"
+                 @click="viewDetail(post.missingReportId)"
                  cols="12"
                  md="6"
                  class="d-flex justify-center"
@@ -248,11 +254,11 @@ const getBadgeText = (status) => {
         </v-row>
 
         <!-- 페이지네이션 -->
-        <!--        <v-row justify="center" class="mt-4">-->
-        <!--          <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>-->
-        <!--          <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>-->
-        <!--          <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>-->
-        <!--        </v-row>-->
+        <v-row justify="center" class="mt-4">
+          <v-btn @click="prevPage" :disabled="currentPage === 0">이전</v-btn>
+          <span class="mx-4">페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
+          <v-btn @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</v-btn>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
