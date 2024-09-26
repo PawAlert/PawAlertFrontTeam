@@ -55,6 +55,9 @@ const missingStatus = ref('');
 
 onMounted(async () => {
   await store.detailView(props.id);
+  // 최상단으로
+  window.scrollTo(0, 0);
+
 });
 
 watch(() => store.status, (newStatus) => {
@@ -63,6 +66,7 @@ watch(() => store.status, (newStatus) => {
       }
     }
 );
+
 
 
 
