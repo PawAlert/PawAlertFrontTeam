@@ -420,7 +420,6 @@ const getBadgeText = (status) => {
         </v-row>
 
         <!--    <p>{{// commentStore.commentList}}</p> -->
-        <p>{{ currentPage }}, 퓨ㅔ이지 </p>
         <!--    commentStatus, error, totalElements, totalPages, currentPage, pageSize, commentList-->
 
         <v-col v-if="commentList.length !== 0">
