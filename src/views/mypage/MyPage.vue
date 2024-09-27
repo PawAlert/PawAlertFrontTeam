@@ -43,10 +43,7 @@ const myPageInfoUpdate = async () => {
   await myStore.fetchMyPageInfoUpdate(data);
   if (myStore.status === 'myImageSuccess') {
     console.log(myStore.status)
-
     window.location.reload()
-
-
   }
 
 }

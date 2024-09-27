@@ -45,7 +45,7 @@ export const profile = async () => {
 export const updateProfileImage = async (image) => {
     const formData = new FormData();
     formData.append('userImage', image);
-    const response = await axios.post(
+    const response = await axios.patch(
         API_MYPAGE.MYPAGE_PROFILE_UPDATE,
         formData, {
             headers: {
