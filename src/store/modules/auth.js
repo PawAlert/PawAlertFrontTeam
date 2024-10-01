@@ -67,8 +67,8 @@ export const useAuthStore = defineStore('auth', {
         },
         async fetchUserProfileUpdate(image) {
             try {
-                const response = await updateProfileImage(image);
-                this.status = 'success';
+                await updateProfileImage(image);
+                this.status = 'uploadSuccess';
             } catch (error) {
                 this.status = 'error';
                 console.error('프로필 이미지 업데이트 실패:', error);

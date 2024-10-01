@@ -13,6 +13,7 @@ import SignupShelter from "@/views/shelter/SignupShelter.vue";
 import SignupShelterInfo from "@/views/SignupShelterInfo.vue";
 import SignupStart from "@/views/SignupStart.vue";
 import HospitalInfo from "@/views/hospital/signup/HospitalInfo.vue";
+import ChatPage from "@/views/chat/ChatPage.vue";
 
 // 라우트 설정
 const routes = [
@@ -28,25 +29,25 @@ const routes = [
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
             {
-                path:'myPost',
+                path: 'myPost',
                 name: 'MyPost',
                 component: () => import('@/views/mypage/MyPost.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
             {
-                path:'myFavorites',
+                path: 'myFavorites',
                 name: 'MyFavorites',
                 component: () => import('@/views/mypage/Contact.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
             {
-                path:'myPageContact',
+                path: 'myPageContact',
                 name: 'MyPageContact',
                 component: () => import('@/views/mypage/MyFavorites.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
             },
             {
-                path:'joinHospitalShelter',
+                path: 'joinHospitalShelter',
                 name: 'MyPageJoin',
                 component: () => import('@/views/mypage/MyPageJoin.vue'),
                 meta: {showSidebar: true, showHeader: true, showFooter: false},
@@ -146,6 +147,14 @@ const routes = [
         name: 'HospitalInfo',
         component: HospitalInfo,
     },
+    {
+        path: '/chatRoom',
+        name: 'ChatRoom',
+        component: () => import('@/views/chat/ChatPage.vue'),
+        props: true,
+        meta: { showHeader: true, showFooter: false }
+    }
+
 ];
 
 // 라우터 생성

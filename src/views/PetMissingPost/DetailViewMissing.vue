@@ -31,28 +31,6 @@ const description = ref('');
 const missingReportId = ref('');
 const missingStatus = ref('');
 
-// onMounted에서 데이터를 불러온 후 업데이트
-// onMounted(async () => {
-//   await store.detailView(props.id);
-//
-//   console.log(store.status, "store.status");
-//   if (store.status === "success") {
-//     await store.commentListResponse(props.id);
-//     console.log("댓글 호출")
-//   }
-//
-//   // store.detailViewData가 업데이트되면 각 ref 값도 업데이트
-//   title.value = store.detailViewData?.title || '';
-//   petDescription.value = store.detailViewData?.petDescription || '';
-//   contact1.value = store.detailViewData?.contact1 || '';
-//   contact2.value = store.detailViewData?.contact2 || '';
-//   petSpecies.value = store.detailViewData?.petSpecies || '';
-//   microchipId.value = store.detailViewData?.microchipId || '';
-//   description.value = store.detailViewData?.description || '';
-//   missingReportId.value = store.detailViewData?.missingReportId || '';
-//   missingStatus.value = store.detailViewData?.missingStatus || '';
-// });
-
 onMounted(async () => {
   await store.detailView(props.id);
   // 최상단으로
@@ -66,8 +44,6 @@ watch(() => store.status, (newStatus) => {
       }
     }
 );
-
-
 
 
 const commentListView = async (id) => {
@@ -172,7 +148,19 @@ const getBadgeText = (status) => {
       return '알 수 없음';
   }
 };
+// 채팅 시작하기
+const chatStart = (senderId, receiverId) => {
+  console.log("senderId = ", senderId, "receiverId = ", receiverId);
 
+  // query 파라미터로 값을 넘기기
+  router.push({
+    name: 'ChatRoom',
+    query: {
+      senderId: senderId,
+      receiverId: receiverId
+    }
+  });
+};
 </script>
 
 <template>
@@ -235,6 +223,7 @@ const getBadgeText = (status) => {
       <v-row style="width: 1180px; margin-left: 10px" class="mt-12 pet-detail">
         <v-row style="border: 1px solid rgba(222,222,222,0.53);">
           <v-card style="margin-bottom: 10px; margin-left: 5px; margin-top: 5px">
+
             <!-- 반려동물 이미지 + 텍스트 정보 -->
             <v-img
                 :src="store.detailViewData.missingPetImages[0].imageUrl"
@@ -324,13 +313,20 @@ const getBadgeText = (status) => {
                 </div>
 
               </div>
-
-              <p style="color:
+<!--              todo : 채팅하기 로그인 유저만 가능하도록 -->
+              <v-col v-if="userStore.user">
+                <!--                uid 정보-->
+                <!--                <p>{{userStore.user.uid}}</p>-->
+                <!--                <p>{{store.detailViewData.userUid}}</p>-->
+                <v-btn @click="chatStart(userStore.user.uid, store.detailViewData.userUid)">채팅하기</v-btn>
+                <p style="color:
                     #808080;
                    font-size: 12px;
                    margin-top: 15px;">
-                많은 관심을 가져주세요
-              </p>
+                  많은 관심을 가져주세요
+                </p>
+
+              </v-col>
             </v-col>
           </v-card>
 
@@ -425,11 +421,11 @@ const getBadgeText = (status) => {
         <v-col v-if="commentList.length !== 0">
           <v-col class="comment-user" v-for="comment in commentList">
             <!--         <p>작성자 이미지</p>-->
-<!--            <v-avatar-->
-<!--            datasrc=""-->
-<!--            >-->
+            <!--            <v-avatar-->
+            <!--            datasrc=""-->
+            <!--            >-->
 
-<!--            </v-avatar>-->
+            <!--            </v-avatar>-->
             <p>{{ comment.userId }}</p>
             <div v-if="comment.isCommentMine">
               <p>{{ comment.content }}</p>

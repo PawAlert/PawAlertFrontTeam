@@ -56,3 +56,8 @@ export const updateProfileImage = async (image) => {
     return response.data;
 }
 
+export const otherUserEmail = async (uid) => {
+    const response = await axios.get(`http://localhost:8080/api/user/otherUser?userUid=${uid}`)
+    return response.data;
+}
+

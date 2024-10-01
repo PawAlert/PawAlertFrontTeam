@@ -56,7 +56,10 @@ export const createMissingReportRequest = async (data, images) => {
 
 // 게시글 상세조회 하기
 export const detailViewRequest = async (id) => {
-    const url = API_MISSING.M_DetailView(id)
+    // 서버용
+    // const url = API_MISSING.M_DetailView(id)
+    // 로컬 테스트용
+    const url = `http://localhost:8080/api/missing/getdetail/${id}`
     const response = await axios.get(
         url,
         {

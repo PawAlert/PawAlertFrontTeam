@@ -15,7 +15,7 @@ module.exports = defineConfig({
     ],
 
     devServer: {
-        port: 8080, // 개발 서버 포트를 8080으로 설정
+        port: 8081, // 개발 서버 포트를 8080으로 설정
     },
 
     pluginOptions: {

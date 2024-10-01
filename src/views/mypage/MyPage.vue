@@ -29,8 +29,9 @@ const onFileSelected = (event) => {
   if (file) {
     selectedImage.value = file;
     authStore.fetchUserProfileUpdate(file);
-    if (authStore.status === 'success') {
-      router.push({name: 'Profile'});
+    console.log(authStore.status)
+  if (authStore.status === 'uploadSuccess') {
+    window.location.reload()
     }
   }
 }

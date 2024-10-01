@@ -22,6 +22,7 @@ export const useMyPageStore = defineStore('mypage', {
             try {
                 const response = await fetchMyPosts();
                 this.posts = response.data;
+
                 this.status = 'myPostsSuccess';
             } catch (error) {
                 this.error = error.message;

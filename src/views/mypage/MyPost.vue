@@ -48,15 +48,23 @@ const reserve = async () => {
                    style="background-color: #EED6D6;
                     width: 100%;
                     height: 100%">
+<!--              작성 글 없을 경우-->
+              <div
+                  style="width: 100%; height: 500px;
+                  justify-content: center;
+                  text-align: center;"
+                  v-if="userStore.posts.length === 0">
+                <p>작성한 글이 없습니다.</p>
+              </div>
+              <v-col v-for="(post, index) in userStore.posts"
+                     :key="userStore.posts.length">
 
-              <v-col v-for="(post, index) in userStore.posts" :key="userStore.posts.length">
                 <v-card color="#1F7087">
                   <div class="d-flex flex-no-wrap justify-space-between">
                     <div>
                       <v-card-title class="text-h5">
                         {{ post.title }}
                       </v-card-title>
-
                       <v-card-subtitle>
                         {{ post.content }}
                       </v-card-subtitle>
@@ -84,11 +92,9 @@ const reserve = async () => {
                       <v-img :src="post.petImageUrls"></v-img>
                     </v-avatar>
                   </div>
+
                 </v-card>
-
-
               </v-col>
-
             </v-col>
           </v-row>
         </v-col>
@@ -213,7 +219,9 @@ const reserve = async () => {
       </v-row>
     </v-col>
 
+
   </v-container>
+
 
 </template>
 
