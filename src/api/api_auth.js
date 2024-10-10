@@ -3,7 +3,7 @@ import {API_MYPAGE, API_URL} from "@/config/url";
 
 export const login = async (credentials) => {
     try {
-        const response = await axios.post(`${API_URL}/api/user/login`, credentials);
+        const response = await axios.get(`${API_URL}/api/user/login`, credentials);
         console.log('응답 객체:', response);
 
         const token = response.data.data.token;
